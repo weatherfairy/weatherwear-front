@@ -1,9 +1,7 @@
-import {useEffect} from 'react';
 import {Platform, StatusBar, Dimensions} from 'react-native';
-import styled, {ThemeProvider} from 'styled-components/native';
+import styled from 'styled-components/native';
 import {theme} from '../themes/theme';
 import {useFonts} from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 
 const screenHeight = Dimensions.get('window').height;
 const fontSize = screenHeight / 35;
