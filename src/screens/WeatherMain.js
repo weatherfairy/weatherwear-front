@@ -1,12 +1,17 @@
 import {useEffect} from 'react';
-import styled, {ThemeProvider} from 'styled-components/native';
+import styled from 'styled-components/native';
+import {ThemeProvider} from 'styled-components/native';
 import {theme} from '../themes/theme';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import TitleBar from '../components/TitleBar';
+import BriefInfos from '../components/BriefInfos';
+import ShortForecast from '../components/ShortForecast';
+import WeekForecast from '../components/WeekForecast';
 
 SplashScreen.preventAutoHideAsync();
-const Container = styled.SafeAreaView`
+
+const Container = styled.ScrollView`
     flex: 1;
     flex-direction: column;
     background-color: ${({theme}) => theme.dayBackground};
@@ -14,8 +19,7 @@ const Container = styled.SafeAreaView`
 
 const WeatherMain = () => {
     const [fontsLoaded] = useFonts({
-        "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf"),
-        "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf")
+        "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
     });
 
     useEffect(() => {
@@ -34,8 +38,11 @@ const WeatherMain = () => {
         
     return (
         <ThemeProvider theme={theme}>
+            <TitleBar theme={theme} />
             <Container>
-                <TitleBar theme={theme} />
+                <BriefInfos theme={theme} />
+                <ShortForecast theme={theme} />
+                <WeekForecast theme={theme} />
             </Container>
         </ThemeProvider>
     );

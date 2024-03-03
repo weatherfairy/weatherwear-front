@@ -7,10 +7,19 @@ const Colors = {
     night_highlight: '#fed943',
     wear_highlight: '#3165f6',
     grey: '#dadada',
+    day_opacity: '#B0D8FF',
+    night_opacity: '#1A394E'
 };
 
 export const theme = {
     dayBackground: Colors.day_main,
     dayText: Colors.black,
     dayHighlight: Colors.day_highlight,
+    dayForecastContainer: Colors.day_opacity,
+
+    //Indicator
+    unselecIndic: Colors.grey,
+    daySelecIndic: Colors.day_highlight,
+    nightSelecIndic: Colors.night_highlight,
+
 }
