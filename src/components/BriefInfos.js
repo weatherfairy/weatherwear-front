@@ -32,8 +32,8 @@ const Location = styled.Text`
 const InfoCardContainer = styled.View`
     flex-direction: row;
     padding-top: ${screenHeight/40}px;
-    padding-left: ${screenHeight*0.065}px;
-    padding-right: ${screenHeight*0.065}px;
+    padding-left: ${screenWidth*0.135}px;
+    padding-right: ${screenWidth*0.135}px;
 `;
 const WeatherCardsContainer = styled.View`
     flex:1;
@@ -91,7 +91,7 @@ const IndicatorIcon = styled.TouchableOpacity`
 `;
 const DateIndicator = styled.Text`
     font-family: GmarketSansTTFMedium;
-    font-size: ${fontSize*0.7}px;
+    font-size: ${fontSize*0.6}px;
     color: ${({theme}) => theme.dayText};
     margin-bottom: ${fontSize*0.25}px;
 `;
@@ -118,7 +118,7 @@ const BriefInfos = () => {
                     <TemperatureCard></TemperatureCard>
                     <FinedustCard></FinedustCard>
                 </WeatherCardsContainer>
-                <WearCard style={{shadow: { width:0, height: 2 }}}></WearCard>
+                <WearCard style={{shadow: { width:1, height: 2 }}}></WearCard>
             </InfoCardContainer>
             <IndicatorContainer>
                 <Indicator>

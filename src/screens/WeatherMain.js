@@ -11,7 +11,11 @@ import WeekForecast from '../components/WeekForecast';
 
 SplashScreen.preventAutoHideAsync();
 
-const Container = styled.ScrollView`
+const Container = styled.SafeAreaView`
+    flex: 1;
+    background-color: ${({theme}) => theme.dayBackground};
+`;
+const ScrollContainer = styled.ScrollView`
     flex: 1;
     flex-direction: column;
     background-color: ${({theme}) => theme.dayBackground};
@@ -38,11 +42,13 @@ const WeatherMain = () => {
         
     return (
         <ThemeProvider theme={theme}>
-            <TitleBar theme={theme} />
             <Container>
-                <BriefInfos theme={theme} />
-                <ShortForecast theme={theme} />
-                <WeekForecast theme={theme} />
+                <TitleBar theme={theme} />
+                <ScrollContainer>
+                    <BriefInfos theme={theme} />
+                    <ShortForecast theme={theme} />
+                    <WeekForecast theme={theme} />
+                </ScrollContainer>
             </Container>
         </ThemeProvider>
     );

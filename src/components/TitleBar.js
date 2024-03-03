@@ -12,8 +12,8 @@ const TitleContainer = styled.View`
     justify-content: space-between;
     //align-items: center;
     background-color: ${({theme}) => theme.dayBackground};
-    //padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
-    padding-top: ${StatusBar.currentHeight}px;
+    padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
+    //padding-top: ${StatusBar.currentHeight}px;
     padding-left: ${screenWidth*0.05}px;
     padding-right: ${screenWidth*0.05}px;
     height: ${fontSize*1.7 + StatusBar.currentHeight};
