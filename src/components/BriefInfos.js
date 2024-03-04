@@ -11,7 +11,7 @@ const Container = styled.SafeAreaView`
     flex-direction: column;
     justify-content: center;
     background-color: ${({theme}) => theme.dayBackground};
-    height: ${screenHeight*0.60};
+    height: ${screenHeight*0.65};
 `;
 const LocationContainer = styled.View`
     flex-direction: row;
