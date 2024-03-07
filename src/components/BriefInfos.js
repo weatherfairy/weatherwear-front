@@ -1,7 +1,7 @@
+import {useState} from 'react';
 import styled from 'styled-components/native';
 import {useFonts} from 'expo-font';
 import {Dimensions} from 'react-native';
-import {theme} from '../themes/theme';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -10,7 +10,6 @@ const Container = styled.SafeAreaView`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    background-color: ${({theme}) => theme.dayBackground};
     height: ${screenHeight*0.65};
 `;
 const LocationContainer = styled.View`
@@ -26,7 +25,7 @@ const LocationIcon = styled.Image`
 const Location = styled.Text`
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFMedium;
-    color: ${({theme}) => theme.dayText};
+    color: ${({theme}) => theme.text};
     padding-left:10px;
 `;
 const InfoCardContainer = styled.View`
@@ -86,13 +85,17 @@ const Indicator = styled.View`
 const IndicatorIcon = styled.TouchableOpacity`
     width: ${screenWidth*0.22}px;
     height: ${screenHeight*0.015}px;
-    background-color: ${({theme}) => theme.unselecIndic};
+    background-color: ${({theme, selected}) => selected ? theme.selecIndic : theme.unselecIndic};
     border-radius: ${screenHeight*0.0075}px;
+    elevation: 2;
+    shadow-color: #000;
+    shadow-opacity: 0.7;
+    shadow-radius: 1px;
 `;
 const DateIndicator = styled.Text`
     font-family: GmarketSansTTFMedium;
     font-size: ${fontSize*0.6}px;
-    color: ${({theme}) => theme.dayText};
+    color: ${({theme}) => theme.text};
     margin-bottom: ${fontSize*0.25}px;
 `;
 
@@ -101,16 +104,17 @@ const BriefInfos = () => {
         "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf"),
         "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
     });
+    const [selectedIndicator, setSelectedIndicator] = useState(1);
 
     if(!fontsLoaded) {
         return null;
     };
 
     return (
-        <Container theme={theme}>
+        <Container>
             <LocationContainer>
                 <LocationIcon source={require('../../assets/icons/day_location.png')}/>
-                <Location theme={theme}>성북구 삼성동</Location>
+                <Location>성북구 삼성동</Location>
             </LocationContainer>
             <InfoCardContainer>
                 <WeatherCardsContainer>
@@ -121,7 +125,16 @@ const BriefInfos = () => {
                 <WearCard style={{shadow: { width:1, height: 2 }}}></WearCard>
             </InfoCardContainer>
             <IndicatorContainer>
-                <Indicator>
+                {['yesterday', 'today', 'tomorrow'].map((label, index) => (
+                    <Indicator key={label}>
+                        <DateIndicator>{label}</DateIndicator>
+                        <IndicatorIcon
+                            selected={selectedIndicator === index}
+                            onPress={() => setSelectedIndicator(index)}
+                        />
+                    </Indicator>
+                ))}
+                {/*<Indicator>
                     <DateIndicator>yesterday</DateIndicator>
                     <IndicatorIcon />
                 </Indicator>
@@ -132,7 +145,7 @@ const BriefInfos = () => {
                 <Indicator>
                     <DateIndicator>tomorrow</DateIndicator>
                     <IndicatorIcon />
-                </Indicator>
+                </Indicator>*/}
             </IndicatorContainer>
         </Container>
     );

@@ -12,7 +12,7 @@ const ShortForecastContainer = styled.ScrollView.attrs(() => ({
     showsHorizontalScrollIndicator: true
 }))`
     flex-direction: row;
-    background-color: ${({theme}) => theme.dayForecastContainer};
+    background-color: ${({theme}) => theme.forecastContainer};
     height: ${screenHeight/4.5};
     opacity: 0.8;
     margin-top: ${screenHeight*0.02}px;
@@ -24,22 +24,24 @@ const OneHourContainer = styled.View`
     height: ${screenHeight/4.5};
     width: ${screenWidth/8};
 `;
-const Hour = styled.Text`
+const InnerContainer = styled.View`
     flex: 1;
+    justify-content: center;
+    height: ${screenHeight/4.5/3}px;
+`;
+const Hour = styled.Text`
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFMedium;
-    color: ${({theme}) => theme.dayText};
+    color: ${({theme}) => theme.text};
 `
 const Sky = styled.Image`
-
     width: ${fontSize*2}px;
     height: ${fontSize*2}px;
 `;
 const Temperature = styled.Text`
-    flex: 1;
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFMedium;
-    color: ${({theme}) => theme.dayText};
+    color: ${({theme}) => theme.text};
 `;
 
 const ShortForecast = () => {
@@ -53,12 +55,14 @@ const ShortForecast = () => {
     };
 
     return (
-        <ShortForecastContainer theme={theme}>
+        <ShortForecastContainer>
             {hours.map((hour) => (
                 <OneHourContainer key={hour}>
-                    <Hour>{hour}</Hour>
-                    <Sky source={require('../../assets/icons/day_clear.png')} />
-                    <Temperature>5°C</Temperature>
+                    <InnerContainer><Hour>{hour}</Hour></InnerContainer>
+                    <InnerContainer>
+                        <Sky source={require('../../assets/icons/day_clear.png')} />
+                    </InnerContainer>
+                    <InnerContainer><Temperature>5°C</Temperature></InnerContainer>
                 </OneHourContainer>
             ))}
         </ShortForecastContainer>

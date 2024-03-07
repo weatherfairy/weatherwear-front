@@ -11,7 +11,7 @@ const TitleContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
     //align-items: center;
-    background-color: ${({theme}) => theme.dayBackground};
+    //background-color: ${({theme}) => theme.dayBackground};
     padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
     //padding-top: ${StatusBar.currentHeight}px;
     padding-left: ${screenWidth*0.05}px;
@@ -25,7 +25,7 @@ const UserCircle = styled.Image`
 const Title = styled.Text`
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFBold;
-    color: ${({theme}) => theme.dayText};
+    color: ${({theme}) => theme.text};
 `;
 
 const TitleBar = () => {
@@ -38,8 +38,8 @@ const TitleBar = () => {
     };
 
     return (
-        <TitleContainer theme={theme}>
-            <Title theme={theme}>Weather Wear</Title>
+        <TitleContainer>
+            <Title>Weather Wear</Title>
             <UserCircle source={require('../../assets/icons/day_user.png')} />
         </TitleContainer>
     );

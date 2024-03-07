@@ -1,7 +1,7 @@
-import {useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../themes/theme';
+import {dayTheme, nightTheme} from '../themes/theme';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import TitleBar from '../components/TitleBar';
@@ -13,15 +13,24 @@ SplashScreen.preventAutoHideAsync();
 
 const Container = styled.SafeAreaView`
     flex: 1;
-    background-color: ${({theme}) => theme.dayBackground};
+    background-color: ${({theme}) => theme.background};
 `;
 const ScrollContainer = styled.ScrollView`
     flex: 1;
     flex-direction: column;
-    background-color: ${({theme}) => theme.dayBackground};
 `;
 
 const WeatherMain = () => {
+            
+    const [currentTheme, setCurrentTheme] = useState(dayTheme);
+
+    useEffect(() => {
+        const currentTime = new Date().getHours();
+        const isDayTime = currentTime >= 6 && currentTime < 18;
+
+        setCurrentTheme(isDayTime ? dayTheme : nightTheme);
+    }, []);
+
     const [fontsLoaded] = useFonts({
         "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
     });
@@ -39,16 +48,22 @@ const WeatherMain = () => {
     if(!fontsLoaded) {
         return null;
     };
-        
+
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={currentTheme}>
             <Container>
-                <TitleBar theme={theme} />
+                <TitleBar />
+                <ScrollContainer>
+                    <BriefInfos />
+                    <ShortForecast />
+                    <WeekForecast />
+                </ScrollContainer>
+                {/*<TitleBar theme={theme} />
                 <ScrollContainer>
                     <BriefInfos theme={theme} />
                     <ShortForecast theme={theme} />
                     <WeekForecast theme={theme} />
-                </ScrollContainer>
+                </ScrollContainer>*/}
             </Container>
         </ThemeProvider>
     );
