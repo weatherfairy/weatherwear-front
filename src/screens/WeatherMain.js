@@ -26,7 +26,7 @@ const WeatherMain = () => {
 
     useEffect(() => {
         const currentTime = new Date().getHours();
-        const isDayTime = currentTime >= 6 && currentTime < 18;
+        const isDayTime = currentTime >= 6 && currentTime < 13;
 
         setCurrentTheme(isDayTime ? dayTheme : nightTheme);
     }, []);

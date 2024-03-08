@@ -2,6 +2,7 @@ import {useState} from 'react';
 import styled from 'styled-components/native';
 import {useFonts} from 'expo-font';
 import {Dimensions} from 'react-native';
+import { Octicons } from '@expo/vector-icons';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -10,7 +11,7 @@ const Container = styled.SafeAreaView`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    height: ${screenHeight*0.65};
+    height: ${screenHeight*0.6};
 `;
 const LocationContainer = styled.View`
     flex-direction: row;
@@ -18,10 +19,11 @@ const LocationContainer = styled.View`
     align-items: center;
     //padding-top: ${screenHeight/30}px;
 `;
-const LocationIcon = styled.Image`
-    width: ${fontSize*1.5}px;
-    height: ${fontSize*1.5}px;
-`;
+const LocationIcon = styled(Octicons).attrs(({theme}) => ({
+    name: 'location',
+    size: fontSize*1.5,
+    color: theme.highlight
+}))``;
 const Location = styled.Text`
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFMedium;
@@ -41,10 +43,24 @@ const WeatherCardsContainer = styled.View`
     height: ${screenHeight*0.4}px;
 `;
 const PrecipitationPercentCard = styled.View`
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #B5E8FF;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.11}px;
     border-radius: 20px;
+`;
+const PrecipitaionTitle = styled.Text`
+    font-size: ${fontSize*1.1}px;
+    font-family: GmarketSansTTFLight;
+    color: #000;
+    padding-bottom: 7px;
+`;
+const PrecipitationPercent = styled.Text`
+    font-size: ${fontSize*1.8}px;
+    font-family: GmarketSansTTFMedium;
+    color: #000;
 `;
 const TemperatureCard = styled.View`
     background-color: #FEFF99;
@@ -55,20 +71,43 @@ const TemperatureCard = styled.View`
     margin-bottom: ${screenHeight*0.015}px;
 `;
 const FinedustCard = styled.View`
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #F8B99B;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.11}px;
     border-radius: 20px;
+`;
+const FinedustTitle = styled.Text`
+    font-size: ${fontSize*1.1}px;
+    font-family: GmarketSansTTFLight;
+    color: #000;
+    padding-bottom: 7px;
+`;
+const Finedust = styled.Text`
+    font-size: ${fontSize*1.8}px;
+    font-family: GmarketSansTTFMedium;
+    color: #000;
 `;
 const WearCard = styled.TouchableOpacity`
     background-color: #C2C2FC;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.4}px;
     border-radius: 20px;
-    elevation: 15;
-    shadow-color: #000;
-    shadow-opacity: 0.4;
-    shadow-radius: 7px;
+    elevation: 9;
+    shadow-color: ${({theme}) => theme.text};
+    shadow-opacity: 0.2;
+    shadow-radius: 3px;
+`;
+const WearTitle = styled.Text`
+    font-size: ${fontSize}px;
+    font-family: GmarketSansTTFLight;
+    color: #000;
+    padding-top: 10px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    line-height: ${fontSize*1.2}px;
 `;
 const IndicatorContainer = styled.View`
     flex-direction: row;
@@ -87,16 +126,17 @@ const IndicatorIcon = styled.TouchableOpacity`
     height: ${screenHeight*0.015}px;
     background-color: ${({theme, selected}) => selected ? theme.selecIndic : theme.unselecIndic};
     border-radius: ${screenHeight*0.0075}px;
-    elevation: 2;
-    shadow-color: #000;
-    shadow-opacity: 0.7;
+    elevation: 5;
+    shadow-color: ${({theme}) => theme.text};
+    shadow-opacity: 0.2;
     shadow-radius: 1px;
 `;
 const DateIndicator = styled.Text`
     font-family: GmarketSansTTFMedium;
     font-size: ${fontSize*0.6}px;
     color: ${({theme}) => theme.text};
-    margin-bottom: ${fontSize*0.25}px;
+    margin-bottom: ${fontSize*0.3}px;
+    numberOfLines: 1;
 `;
 
 const BriefInfos = () => {
@@ -113,16 +153,24 @@ const BriefInfos = () => {
     return (
         <Container>
             <LocationContainer>
-                <LocationIcon source={require('../../assets/icons/day_location.png')}/>
+                <LocationIcon />
                 <Location>성북구 삼성동</Location>
             </LocationContainer>
             <InfoCardContainer>
                 <WeatherCardsContainer>
-                    <PrecipitationPercentCard></PrecipitationPercentCard>
+                    <PrecipitationPercentCard>
+                        <PrecipitaionTitle>강수확률</PrecipitaionTitle>
+                        <PrecipitationPercent>70%</PrecipitationPercent>
+                    </PrecipitationPercentCard>
                     <TemperatureCard></TemperatureCard>
-                    <FinedustCard></FinedustCard>
+                    <FinedustCard>
+                        <FinedustTitle>미세먼지</FinedustTitle>
+                        <Finedust>나쁨</Finedust>
+                    </FinedustCard>
                 </WeatherCardsContainer>
-                <WearCard style={{shadow: { width:1, height: 2 }}}></WearCard>
+                <WearCard style={{shadow: { width:1, height: 2 }}}>
+                    <WearTitle>{"My\nCloset"}</WearTitle>
+                </WearCard>
             </InfoCardContainer>
             <IndicatorContainer>
                 {['yesterday', 'today', 'tomorrow'].map((label, index) => (
