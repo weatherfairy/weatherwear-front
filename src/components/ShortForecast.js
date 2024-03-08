@@ -60,7 +60,7 @@ const ShortForecast = () => {
                 <OneHourContainer key={hour}>
                     <InnerContainer><Hour>{hour}</Hour></InnerContainer>
                     <InnerContainer>
-                        <Sky source={require('../../assets/icons/day_clear.png')} />
+                        <Sky source={require('../../assets/images/black_weather/clear_night.png')} />
                     </InnerContainer>
                     <InnerContainer><Temperature>5°C</Temperature></InnerContainer>
                 </OneHourContainer>

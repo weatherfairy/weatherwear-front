@@ -63,12 +63,25 @@ const PrecipitationPercent = styled.Text`
     color: #000;
 `;
 const TemperatureCard = styled.View`
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #FEFF99;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.15}px;
     border-radius: 20px;
     margin-top: ${screenHeight*0.015}px;
     margin-bottom: ${screenHeight*0.015}px;
+`;
+const Temperature = styled.Text`
+    font-size: ${fontSize*1.5}px;
+    font-family: GmarketSansTTFMedium;
+    color: #000;
+    padding-bottom: 7px;
+`;
+const SkyImage = styled.Image`
+    width: ${fontSize*3}px;
+    height: ${fontSize*3}px;
 `;
 const FinedustCard = styled.View`
     flex-direction: column;
@@ -91,23 +104,40 @@ const Finedust = styled.Text`
     color: #000;
 `;
 const WearCard = styled.TouchableOpacity`
+    flex-direction: column;
+    //justify-content: center;
     background-color: #C2C2FC;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.4}px;
     border-radius: 20px;
-    elevation: 9;
+    elevation: 12;
     shadow-color: ${({theme}) => theme.text};
-    shadow-opacity: 0.2;
-    shadow-radius: 3px;
+    shadow-opacity: 0.3;
+    shadow-radius: 5px;
+`;
+const ClothesContainer = styled.View`
+    justify-content: center;
+    align-items: center;
 `;
 const WearTitle = styled.Text`
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFLight;
     color: #000;
     padding-top: 10px;
-    padding-bottom: 7px;
+    padding-bottom: 20px;
     padding-left: 10px;
     line-height: ${fontSize*1.2}px;
+`;
+const ClothesImage = styled.Image`
+    width: ${fontSize*4.2}px;
+    height: ${fontSize*4.2}px;
+`;
+const ClothesText = styled.Text`
+    font-size: ${fontSize*0.7}px;
+    font-family: GmarketSansTTFLight;
+    color: #000;
+    padding-top: 5px;
+    padding-bottom: 8px;
 `;
 const IndicatorContainer = styled.View`
     flex-direction: row;
@@ -126,10 +156,10 @@ const IndicatorIcon = styled.TouchableOpacity`
     height: ${screenHeight*0.015}px;
     background-color: ${({theme, selected}) => selected ? theme.selecIndic : theme.unselecIndic};
     border-radius: ${screenHeight*0.0075}px;
-    elevation: 5;
+    elevation: 6;
     shadow-color: ${({theme}) => theme.text};
     shadow-opacity: 0.2;
-    shadow-radius: 1px;
+    shadow-radius: 2px;
 `;
 const DateIndicator = styled.Text`
     font-family: GmarketSansTTFMedium;
@@ -162,7 +192,10 @@ const BriefInfos = () => {
                         <PrecipitaionTitle>강수확률</PrecipitaionTitle>
                         <PrecipitationPercent>70%</PrecipitationPercent>
                     </PrecipitationPercentCard>
-                    <TemperatureCard></TemperatureCard>
+                    <TemperatureCard>
+                        <Temperature>12°C</Temperature>
+                        <SkyImage source={require('../../assets/images/color_weather/snow.png')} />
+                    </TemperatureCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
                         <Finedust>나쁨</Finedust>
@@ -170,6 +203,12 @@ const BriefInfos = () => {
                 </WeatherCardsContainer>
                 <WearCard style={{shadow: { width:1, height: 2 }}}>
                     <WearTitle>{"My\nCloset"}</WearTitle>
+                    <ClothesContainer>
+                        <ClothesImage source={require('../../assets/images/clothes/top.png')} />
+                        <ClothesText>민소매</ClothesText>
+                        <ClothesImage source={require('../../assets/images/clothes/bottom.png')} />
+                        <ClothesText>반바지</ClothesText>
+                    </ClothesContainer>
                 </WearCard>
             </InfoCardContainer>
             <IndicatorContainer>
