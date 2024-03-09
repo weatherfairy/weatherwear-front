@@ -4,10 +4,7 @@ import {ThemeProvider} from 'styled-components/native';
 import {dayTheme, nightTheme} from '../themes/theme';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import TitleBar from '../components/TitleBar';
-import BriefInfos from '../components/BriefInfos';
-import ShortForecast from '../components/ShortForecast';
-import WeekForecast from '../components/WeekForecast';
+import { TitleBar, BriefInfos, ShortForecast, WeekForecast }from '../components';
 
 SplashScreen.preventAutoHideAsync();
 
