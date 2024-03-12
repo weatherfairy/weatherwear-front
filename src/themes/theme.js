@@ -7,10 +7,29 @@ const Colors = {
     night_highlight: '#fed943',
     wear_highlight: '#3165f6',
     grey: '#dadada',
+    day_opacity: '#B0D8FF',
+    night_opacity: '#1A394E'
 };
 
 export const theme = {
-    dayBackground: Colors.day_main,
-    dayText: Colors.black,
-    dayHighlight: Colors.day_highlight,
+}
+
+export const dayTheme = {
+    background: Colors.day_main,
+    text: Colors.black,
+    highlight: Colors.day_highlight,
+    forecastContainer: Colors.day_opacity,
+
+    unselecIndic: Colors.grey,
+    selecIndic: Colors.day_highlight
+}
+
+export const nightTheme = {
+    background: Colors.night_main,
+    text: Colors.white,
+    highlight: Colors.night_highlight,
+    forecastContainer: Colors.night_opacity,
+
+    unselecIndic: Colors.grey,
+    selecIndic: Colors.night_highlight
 }
