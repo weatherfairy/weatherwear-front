@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/metro-config": "^0.17.5",
     "@expo/vector-icons": "^13.0.0",
+    "@react-navigation/material-top-tabs": "^6.6.11",
     "expo": "~50.0.8",
     "expo-app-loading": "^2.1.1",
     "expo-font": "~11.10.3",
@@ -19,6 +20,7 @@
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-page-indicator": "^2.2.1",
+    "react-native-tab-view": "^3.5.2",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
