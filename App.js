@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import WeatherMain from './src/screens/WeatherMain';
+import WearRecommend from './src/screens/WearRecommend';
 
 /*export default function App() {
   return (
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
 
 const App = () => {
   return <WeatherMain />;
+  //return <WearRecommend />
 };
 
 export default App;
