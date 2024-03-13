@@ -9,8 +9,7 @@ const screenWidth = Dimensions.get('window').width;
 const fontSize = screenHeight / 40;
 
 const WeekForecastContainer = styled.View`
-  background-color: ${({theme}) => theme.dayForecastContainer};
-  height: ${screenHeight}px; 
+  background-color: ${({theme}) => theme.forecastContainer};
   align-items: center;
   opacity: 0.8;
 `;
@@ -66,7 +65,6 @@ const DetailItem = styled.View`
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 10px;
-  background-color: #f2f2f2;
 `;
 
 const DetailText = styled.Text`
