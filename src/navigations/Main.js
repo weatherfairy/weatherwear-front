@@ -1,8 +1,9 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 import {WeatherMain} from '../screens';
 import Wear from './Wear';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const Main = () => {
     return (
