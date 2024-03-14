@@ -9,8 +9,7 @@ const screenWidth = Dimensions.get('window').width;
 const fontSize = screenHeight / 40;
 
 const WeekForecastContainer = styled.View`
-  background-color: ${({theme}) => theme.dayForecastContainer};
-  height: ${screenHeight}px; 
+  background-color: ${({theme}) => theme.forecastContainer};
   align-items: center;
   opacity: 0.8;
 `;
@@ -22,11 +21,11 @@ const TitleContainer = styled.View`
   width: 95%;
   height: 60px;
   border-bottom-width: 1px;
-  border-bottom-color: black;
+  border-bottom-color: ${({theme}) => theme.text};
 `;
 
 const Title = styled.Text`
-  color: ${({ theme }) => theme.dayText};
+  color: ${({ theme }) => theme.text};
   position: absolute;
   top: ${({top})=> top}px;
   left: ${({ left }) => left}px;

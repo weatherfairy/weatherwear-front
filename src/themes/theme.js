@@ -12,6 +12,10 @@ const Colors = {
 };
 
 export const theme = {
+    background: Colors.white,
+    text: Colors.black,
+    highlight: Colors.wear_highlight,
+    grey: Colors.grey
 }
 
 export const dayTheme = {
