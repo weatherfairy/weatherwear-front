@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components/native';
+import React, { useState, useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components/native';
 import { Icon } from 'react-native-elements'; 
 import { View, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
-
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -50,11 +49,13 @@ const MediumText = styled.Text`
   font-size: 25px; 
   text-align: left;
   font-family: GmarketSansTTFMedium;
+  color: ${({theme}) => theme.text};
 `;
 const LightText = styled.Text`
   font-size: 23px; 
   text-align: left;
   font-family: GmarketSansTTFLight;
+  color: ${({theme}) => theme.text};
 `;
 
 
@@ -136,6 +137,7 @@ const PrecipitationContainer = styled.View`
 `;
 const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, precipitation }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const theme = useContext(ThemeContext);
 
   return (
     <AccordionItemContainer>
@@ -159,6 +161,7 @@ const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, 
               name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
               type="material"
               size={24}
+              color={theme.highlight}
             />
           </IconActionContainer>
         </AccordionHeader>
