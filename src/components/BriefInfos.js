@@ -7,6 +7,7 @@ import { Octicons } from '@expo/vector-icons';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 const fontSize = screenHeight / 40;
+
 const Container = styled.SafeAreaView`
     flex: 1;
     flex-direction: column;
@@ -166,7 +167,6 @@ const DateIndicator = styled.Text`
     font-size: ${fontSize*0.6}px;
     color: ${({theme}) => theme.text};
     margin-bottom: ${fontSize*0.3}px;
-    numberOfLines: 1;
 `;
 
 const BriefInfos = () => {
@@ -214,7 +214,7 @@ const BriefInfos = () => {
             <IndicatorContainer>
                 {['yesterday', 'today', 'tomorrow'].map((label, index) => (
                     <Indicator key={label}>
-                        <DateIndicator>{label}</DateIndicator>
+                        <DateIndicator numberOfLines={1}>{label}</DateIndicator>
                         <IndicatorIcon
                             selected={selectedIndicator === index}
                             onPress={() => setSelectedIndicator(index)}

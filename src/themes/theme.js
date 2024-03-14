@@ -12,6 +12,7 @@ const Colors = {
 };
 
 export const theme = {
+    
 }
 
 export const dayTheme = {
