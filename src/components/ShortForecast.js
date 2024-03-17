@@ -13,7 +13,7 @@ const ShortForecastContainer = styled.ScrollView.attrs(() => ({
 }))`
     flex-direction: row;
     background-color: ${({theme}) => theme.forecastContainer};
-    height: ${screenHeight/4.5};
+    height: ${screenHeight/4.5}px;
     opacity: 0.8;
     margin-top: ${screenHeight*0.02}px;
     margin-bottom: ${screenHeight*0.05}px;
@@ -21,8 +21,8 @@ const ShortForecastContainer = styled.ScrollView.attrs(() => ({
 const OneHourContainer = styled.View`
     flex-direction: column;
     align-items: center;
-    height: ${screenHeight/4.5};
-    width: ${screenWidth/8};
+    height: ${screenHeight/4.5}px;
+    width: ${screenWidth/8}px;
 `;
 const InnerContainer = styled.View`
     flex: 1;

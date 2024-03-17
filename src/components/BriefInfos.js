@@ -7,11 +7,11 @@ import { Octicons } from '@expo/vector-icons';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 const fontSize = screenHeight / 40;
-const Container = styled.SafeAreaView`
+const Container = styled.View`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    height: ${screenHeight*0.6};
+    height: ${screenHeight*0.6}px;
 `;
 const LocationContainer = styled.View`
     flex-direction: row;
@@ -166,10 +166,9 @@ const DateIndicator = styled.Text`
     font-size: ${fontSize*0.6}px;
     color: ${({theme}) => theme.text};
     margin-bottom: ${fontSize*0.3}px;
-    numberOfLines: 1;
 `;
 
-const BriefInfos = () => {
+const BriefInfos = ({navigation}) => {
     const [fontsLoaded] = useFonts({
         "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf"),
         "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
@@ -201,7 +200,10 @@ const BriefInfos = () => {
                         <Finedust>나쁨</Finedust>
                     </FinedustCard>
                 </WeatherCardsContainer>
-                <WearCard style={{shadow: { width:1, height: 2 }}}>
+                <WearCard 
+                    style={{shadow: { width:1, height: 2 }}}
+                    onPress={() => navigation.navigate('WearMain')}
+                >
                     <WearTitle>{"My\nCloset"}</WearTitle>
                     <ClothesContainer>
                         <ClothesImage source={require('../../assets/images/clothes/top.png')} />
@@ -214,7 +216,7 @@ const BriefInfos = () => {
             <IndicatorContainer>
                 {['yesterday', 'today', 'tomorrow'].map((label, index) => (
                     <Indicator key={label}>
-                        <DateIndicator>{label}</DateIndicator>
+                        <DateIndicator numberOfLines={1}>{label}</DateIndicator>
                         <IndicatorIcon
                             selected={selectedIndicator === index}
                             onPress={() => setSelectedIndicator(index)}

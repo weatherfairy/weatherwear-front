@@ -17,7 +17,7 @@ const ScrollContainer = styled.ScrollView`
     flex-direction: column;
 `;
 
-const WeatherMain = () => {
+const WeatherMain = ({navigation}) => {
             
     const [currentTheme, setCurrentTheme] = useState(dayTheme);
 
@@ -51,16 +51,10 @@ const WeatherMain = () => {
             <Container>
                 <TitleBar />
                 <ScrollContainer>
-                    <BriefInfos />
+                    <BriefInfos navigation={navigation} />
                     <ShortForecast />
                     <WeekForecast />
                 </ScrollContainer>
-                {/*<TitleBar theme={theme} />
-                <ScrollContainer>
-                    <BriefInfos theme={theme} />
-                    <ShortForecast theme={theme} />
-                    <WeekForecast theme={theme} />
-                </ScrollContainer>*/}
             </Container>
         </ThemeProvider>
     );
