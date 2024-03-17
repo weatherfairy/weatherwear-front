@@ -1,7 +1,6 @@
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 import {useFonts} from 'expo-font';
-import { TitleBar } from '../components';
 
 const screenHeight = Dimensions.get('window').height;
 
