@@ -7,7 +7,7 @@ const screenHeight = Dimensions.get('window').height;
 
 const ScreenContainer = styled.SafeAreaView`
     flex: 1;
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.wearBackground};
 `;
 const ScrollContainer = styled.ScrollView`
     flex: 1;
