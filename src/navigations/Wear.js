@@ -1,40 +1,42 @@
 import {Platform, Dimensions} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {WearRecommend, WearRecord} from '../screens';
-import {TitleBar} from '../components';
 import {FontAwesome5} from '@expo/vector-icons';
-import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../themes/theme';
-import styled from 'styled-components/native';
+import {useContext} from 'react';
+import styled, {ThemeContext} from 'styled-components/native';
 
 const tabBarHeight = Dimensions.get('window').height*0.08;
 
 const Container = styled.SafeAreaView`
     flex: 1;
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.wearBackground};
 `;
 const TabIconContainer = styled.View`
     width: ${tabBarHeight*0.6}px;
     height: ${tabBarHeight*1.1}px;
 `;
 const RecommendIcon = ({focused, size}) => {
+    const theme = useContext(ThemeContext);
+
     return (
         <TabIconContainer>
             <FontAwesome5
             name='thumbs-up'
             size={size}
-            color={focused ? theme.highlight : theme.text}
+            color={focused ? theme.wearHighlight : theme.wearText}
             />
         </TabIconContainer>
     )
 }
 const RecordIcon = ({focused, size}) => {
+    const theme = useContext(ThemeContext);
+
     return (
         <TabIconContainer>
             <FontAwesome5
             name='edit'
             size={size}
-            color={focused ? theme.highlight : theme.text}
+            color={focused ? theme.wearHighlight : theme.wearText}
             />
         </TabIconContainer>
     )
@@ -42,15 +44,14 @@ const RecordIcon = ({focused, size}) => {
 const Tab = createMaterialTopTabNavigator();
 
 const Wear = ({ navigation }) => {
+    const theme = useContext(ThemeContext);
 
     return (
-        <ThemeProvider theme={theme}>
             <Container>
-                <TitleBar navigation={navigation}/>
                 <Tab.Navigator
                     screenOptions={{
-                        tabBarActiveTintColor: theme.highlight,
-                        tabBarInactiveTintColor: theme.text
+                        tabBarActiveTintColor: theme.wearHighlight,
+                        tabBarInactiveTintColor: theme.wearText
                     }}
                 >
                     <Tab.Screen
@@ -73,7 +74,6 @@ const Wear = ({ navigation }) => {
                     />
                 </Tab.Navigator>
             </Container>
-        </ThemeProvider>
     )
 }
 export default Wear;

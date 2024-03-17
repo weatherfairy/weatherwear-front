@@ -33,7 +33,7 @@ const ImageContainer = styled.View`
     height: ${Dimensions.get('window').height/4.5}px;
     background-color: ${({theme}) => theme.grey};
     border-width: 1px;
-    border-color: ${({theme}) => theme.background};
+    border-color: ${({theme}) => theme.wearBackground};
 `;
 const DateContainer = styled.View`
     position: absolute;
@@ -43,11 +43,11 @@ const DateContainer = styled.View`
     align-items: center;
     width: ${Dimensions.get('window').width/12}px;
     height: ${Dimensions.get('window').height/60}px;
-    background-color: ${({theme}) => theme.text};
+    background-color: ${({theme}) => theme.wearText};
     border-radius: ${Dimensions.get('window').height/120}px;
 `;
 const DateText = styled.Text`
-    color: ${({theme}) => theme.background};
+    color: ${({theme}) => theme.wearBackground};
     font-size: ${Dimensions.get('window').height/70}px;
 `;
 
