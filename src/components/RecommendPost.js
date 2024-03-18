@@ -3,6 +3,8 @@ import React from 'react';
 import MyImage from './MyImage';
 
 
+
+  
 const PostContainer = styled.View`
     width: 80%;
     height: 35%;
@@ -20,10 +22,13 @@ const InfoContinaer = styled.View`
    margin-top: 5px;
 `;
 const DateContainer = styled.Text`
-    font-size: 30px;
+    font-family: 'GmarketSansTTFMedium';
+    font-size: 20px;
 `;
 const TempContainer = styled.Text`
-    font-size: 40px;
+    font-family: 'GmarketSansTTFMedium';
+    margin-top:5px;
+    font-size: 25px;
 `;
 
 const ClothesAndSatisfactionIconContainer =styled.View`
@@ -31,12 +36,13 @@ const ClothesAndSatisfactionIconContainer =styled.View`
     align-items: center;
 `;
 const ClothesContainer = styled.Text`
-    font-size : 40px;
-    margin-right: 5px;
+    font-size : 25px;
+    margin-right: 10px;
+    font-family: 'GmarketSansTTFMedium';
 `;
 const SatisfactionIcon = styled.Image`
-  width: 50px;  
-  height: 50px;  
+    width: 30px;  
+    height: 30px; 
 `;
 const getSatisfactionIcon = (satisfaction) => {
     switch (satisfaction) {
@@ -51,7 +57,9 @@ const getSatisfactionIcon = (satisfaction) => {
     }
   };
 const CommentContainer = styled.Text`
-    font-size:20px;
+    font-family: 'GmarketSansTTFMedium';
+    margin-top: 5px;
+    font-size:17px;
 `;
 
 
