@@ -32,11 +32,24 @@ const WearRecommend = () => {
                     satisfaction = {1}>
                 </RecommendPost>
 
-                <RecommendPost postNo = {2} postDate = "2024.01.27" minTemp = {-2} maxTemp={4} clothes = {['코트','니트','청바지']} comment = "바람이 많이 불어서 추웠다." satisfaction = {2}>
+                <RecommendPost 
+                    postNo = {2} 
+                    postDate = "2024.01.27" 
+                    minTemp = {-2} maxTemp={4} 
+                    clothes = {['코트','니트','청바지']} 
+                    comment = "바람이 많이 불어서 추웠다." 
+                    satisfaction = {2}>
                 </RecommendPost>
 
 
-                <RecommendPost postNo = {3} postDate = "2024.01.27" minTemp = {0} maxTemp={5} clothes = {['코트','니트','청바지']} comment = "바람이 많이 불어서 추웠다." satisfaction = {1}>
+                <RecommendPost 
+                    postNo = {3} 
+                    postDate = "2024.01.27" 
+                    minTemp = {0} 
+                    maxTemp={5} 
+                    clothes = {['코트','니트','청바지']} 
+                    comment = "바람이 많이 불어서 추웠다." 
+                    satisfaction = {1}>
                 </RecommendPost>
 
             </ScrollContainer>

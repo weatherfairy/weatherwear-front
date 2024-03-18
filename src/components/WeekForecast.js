@@ -166,22 +166,22 @@ const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, 
           </IconActionContainer>
         </AccordionHeader>
       </TouchableOpacity>
-      {isOpen && <AccordionContent>{children}</AccordionContent>}
+      {isOpen && <AccordionContent>{React.cloneElement(children, { theme })}</AccordionContent>}
     </AccordionItemContainer>
   );
 };
 
-const DetailContainer = ({ times }) => {
+const DetailContainer = ({ theme, times }) => {
   return (
     <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>
       {times.map((slot, index) => (
-        <View key={index} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginBottom: 5, borderRadius: 10, backgroundColor: '#f2f2f2' }}>
-          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
+        <View key={index} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginBottom: 5, borderRadius: 10}}>
+          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight', color: theme.text }}>
             {slot.time}
           </Text>
           <Image source={slot.image} style={{ width: 25, height: 25 }} />
           <View style={{ backgroundColor: 'skyblue', width: 100, height: 6 }}/>
-          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
+          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight', color: theme.text }}>
             {slot.temp}°C
           </Text>
         </View>

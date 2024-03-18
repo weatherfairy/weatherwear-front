@@ -9,6 +9,7 @@ const PostContainer = styled.View`
     align-items: left;
     align-self: center;
     margin-top:20px;
+
 `;
 
 const ImageContainer = styled.View`
@@ -37,16 +38,18 @@ const SatisfactionIcon = styled.Image`
     width: 50px;  
     height: 50px;  
 `;
+
+
 const getSatisfactionIcon = (satisfaction) => {
     switch (satisfaction) {
-        case 1:
-            return require('../../assets/icons/best.png');
-        case 2:
-            return require('../../assets/icons/good.png');
-        case 3:
-            return require('../../assets/icons/bad.png');
-        default:
-            return null; 
+      case 1:
+        return require('../../assets/icons/best.png');
+      case 2:
+        return require('../../assets/icons/good.png');
+      case 3:
+        return require('../../assets/icons/bad.png');
+      default:
+        return null; 
     }
 };
 const CommentContainer = styled.Text`
@@ -65,13 +68,13 @@ const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, clothes, comment, 
             <DateContainer> {postDate}</DateContainer>
             <TempContainer>{minTemp}°C ~ {maxTemp}°C</TempContainer>
             <ClothesAndSatisfactionIconContainer>
-                <ClothesContainer>{clothes.join(', ')}</ClothesContainer>
-                <SatisfactionIcon source={getSatisfactionIcon(satisfaction)} />
+               <ClothesContainer>{clothes.join(', ')}</ClothesContainer>
+               <SatisfactionIcon source={getSatisfactionIcon(satisfaction)} />
             </ClothesAndSatisfactionIconContainer>
-
+           
             <CommentContainer>{comment}</CommentContainer>
             </InfoContinaer>
-
+            
 
         </PostContainer>
     );
