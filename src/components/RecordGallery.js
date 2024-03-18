@@ -25,7 +25,7 @@ const data = [
     {id: '1', value: '1', date: '1/25'}
 ];
 const Container = styled.View`
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.wearBackground};
 `;
 const ImageContainer = styled.View`
     position: relative;

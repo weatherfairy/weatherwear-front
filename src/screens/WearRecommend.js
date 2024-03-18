@@ -3,8 +3,6 @@ import styled from 'styled-components/native';
 import {useFonts} from 'expo-font';
 import RecommendPost from '../components/RecommendPost';
 
-const screenHeight = Dimensions.get('window').height;
-
 const ScreenContainer = styled.SafeAreaView`
     flex: 1;
     background-color: ${({theme}) => theme.wearBackground};
@@ -13,15 +11,11 @@ const ScrollContainer = styled.ScrollView`
     flex: 1;
     flex-direction: column;
 `;
-const RecommendContainer = styled.View`
-    flex-direction: column;
-    height: ${screenHeight*0.8}px;
-`;
 
 const WearRecommend = () => {
     return (
         <ScreenContainer>
-            <ScrollContainer>
+            <ScrollContainer contentContainerStyle={{ paddingBottom: 160 }}>
                 <RecommendPost 
                     postNo = {1} 
                     postDate = "2024.01.27" 
