@@ -29,7 +29,7 @@ const WearRecommend = () => {
                     maxTemp={3} 
                     clothes = {['코트','니트','청바지']} 
                     comment = "바람이 많이 불어서 추웠다." 
-                    satisfaction = {1}>
+                    satisfaction = {3}>
                 </RecommendPost>
 
                 <RecommendPost 
