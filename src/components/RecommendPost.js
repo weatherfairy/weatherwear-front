@@ -17,7 +17,7 @@ const ImageContainer = styled.View`
 `;
 
 const InfoContinaer = styled.View`
-   margin-top: 5px;
+    margin-top: 5px;
 `;
 const DateContainer = styled.Text`
     font-size: 30px;
@@ -35,9 +35,11 @@ const ClothesContainer = styled.Text`
     margin-right: 5px;
 `;
 const SatisfactionIcon = styled.Image`
-  width: 50px;  
-  height: 50px;  
+    width: 50px;  
+    height: 50px;  
 `;
+
+
 const getSatisfactionIcon = (satisfaction) => {
     switch (satisfaction) {
       case 1:
@@ -49,7 +51,7 @@ const getSatisfactionIcon = (satisfaction) => {
       default:
         return null; 
     }
-  };
+};
 const CommentContainer = styled.Text`
     font-size:20px;
 `;
