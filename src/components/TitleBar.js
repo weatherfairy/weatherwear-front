@@ -12,25 +12,25 @@ const TitleContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({backgroundColor}) => backgroundColor};
     padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
     //padding-top: ${StatusBar.currentHeight}px;
     padding-left: ${screenWidth*0.05}px;
     padding-right: ${screenWidth*0.05}px;
     height: ${fontSize*1.7 + StatusBar.currentHeight}px;
+    width: ${screenWidth}px;
 `;
-const UserCircle = styled(FontAwesome).attrs(({theme}) => ({
+const UserCircle = styled(FontAwesome).attrs(() => ({
     name: 'user-circle-o',
     size: fontSize*1.3,
-    color: theme.text
 }))``;
 const Title = styled.Text`
     font-size: ${fontSize}px;
     font-family: GmarketSansTTFBold;
-    color: ${({theme}) => theme.text};
+    color: ${({textColor}) => textColor};
 `;
 
-const TitleBar = ({navigation}) => {
+const TitleBar = ({navigation, backgroundColor, textColor}) => {
     const [fontsLoaded] = useFonts({
         "GmarketSansTTFBold": require("../../assets/fonts/GmarketSansTTFBold.ttf")
     });
@@ -40,11 +40,14 @@ const TitleBar = ({navigation}) => {
     };
 
     return (
-        <TitleContainer>
-            <TouchableOpacity onPress={() => navigation.navigate('WeatherMain')}>
-                <Title>Weather Wear</Title>
+        <TitleContainer backgroundColor={backgroundColor}>
+            <TouchableOpacity 
+                onPress={() => navigation.navigate('WeatherMain')}
+                style={{marginLeft: -20}}
+            >
+                <Title textColor={textColor}>Weather Wear</Title>
             </TouchableOpacity>
-            <UserCircle />
+            <UserCircle color={textColor} style={{marginRight: 10}}/>
         </TitleContainer>
     );
 }

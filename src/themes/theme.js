@@ -25,7 +25,12 @@ export const dayTheme = {
     forecastContainer: Colors.day_opacity,
 
     unselecIndic: Colors.grey,
-    selecIndic: Colors.day_highlight
+    selecIndic: Colors.day_highlight,
+
+    wearBackground: Colors.white,
+    wearText: Colors.black,
+    wearHighlight: Colors.wear_highlight,
+    grey: Colors.grey
 }
 
 export const nightTheme = {
@@ -35,5 +40,10 @@ export const nightTheme = {
     forecastContainer: Colors.night_opacity,
 
     unselecIndic: Colors.grey,
-    selecIndic: Colors.night_highlight
+    selecIndic: Colors.night_highlight,
+
+    wearBackground: Colors.white,
+    wearText: Colors.black,
+    wearHighlight: Colors.wear_highlight,
+    grey: Colors.grey
 }

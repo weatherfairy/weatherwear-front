@@ -11,7 +11,7 @@ const BarContainer = styled.View`
     justify-content: space-around;
     align-items: center;
     height: ${screenHeight*0.055}px;
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.wearBackground};
 `;
 const FilterIconButton = styled.TouchableOpacity`
     background-color: ${({theme}) => theme.grey};
@@ -33,10 +33,10 @@ const FilterIcon = styled(FontAwesome5).attrs(({theme}) => ({
     name: 'sliders-h',
     size: screenHeight*0.03
 }))`
-    color: ${({theme}) => theme.text};
+    color: ${({theme}) => theme.wearText};
 `;
 const NameContainer = styled.View`
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.wearBackground};
     height: ${screenHeight*0.025}px;
     width: ${screenWidth*0.14}px;
     border-radius: ${screenHeight*0.003}px;
@@ -44,7 +44,7 @@ const NameContainer = styled.View`
     justify-content: center;
 `;
 const FilterName = styled.Text`
-    color: ${({theme}) => theme.text};
+    color: ${({theme}) => theme.wearText};
     font-size: ${screenHeight*0.02}px;
     font-family: GmarketSansTTFLight;
 `;

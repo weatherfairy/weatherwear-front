@@ -19,7 +19,7 @@ const ImageContainer = styled.View`
 `;
 
 const InfoContinaer = styled.View`
-   margin-top: 5px;
+    margin-top: 5px;
 `;
 const DateContainer = styled.Text`
     font-family: 'GmarketSansTTFMedium';
@@ -44,6 +44,8 @@ const SatisfactionIcon = styled.Image`
     width: 30px;  
     height: 30px; 
 `;
+
+
 const getSatisfactionIcon = (satisfaction) => {
     switch (satisfaction) {
       case 1:
@@ -55,7 +57,7 @@ const getSatisfactionIcon = (satisfaction) => {
       default:
         return null; 
     }
-  };
+};
 const CommentContainer = styled.Text`
     font-family: 'GmarketSansTTFMedium';
     margin-top: 5px;
