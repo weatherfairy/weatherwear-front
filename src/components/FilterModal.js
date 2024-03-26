@@ -3,7 +3,10 @@ import styled from 'styled-components/native';
 import {Dimensions, Platform, StatusBar, Modal} from 'react-native';
 import {useFonts} from 'expo-font';
 import { AntDesign } from '@expo/vector-icons';
-import {TempFilter, WeatherFilter, SatisfyFilter, DateFilter} from './';
+import TempFilter from './TempFilter';
+import WeatherFilter from './WeatherFilter';
+import SatisfyFilter from './SatisfyFilter';
+import DateFilter from './DateFilter';
 
 const modalHeight = Dimensions.get('window').height*0.6;
 const modalWidth = Dimensions.get('window').width;

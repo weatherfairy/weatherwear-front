@@ -3,7 +3,7 @@ import {Dimensions} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {useFonts} from 'expo-font';
 import {useState} from 'react';
-import {FilterModal} from './';
+import FilterModal from './FilterModal';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
