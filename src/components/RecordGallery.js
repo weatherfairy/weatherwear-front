@@ -2,16 +2,15 @@ import styled from 'styled-components/native';
 import React, {useState} from 'react';
 import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';//932,430
-import MyImage from './MyImage';
 
 const data = [
-    {postNo: '1', date: '1/25', image: require('../../assets/images/example.png')},
-    {postNo: '2', date: '1/26'},
-    {postNo: '3',  date: '1/27', image: require('../../assets/images/example.png')},
-    {postNo: '4',  date: '1/29'},
-    {postNo: '5',  date: '1/28', image: require('../../assets/images/example.png')},
-    {postNo: '6', date: '1/30'},
-    {postNo: '7',  date: '2/2'},
+    {postNo: '1', date: '2024/1/25', image: require('../../assets/images/example.png')},
+    {postNo: '2', date: '2024/1/26'},
+    {postNo: '3',  date: '2024/1/27', image: require('../../assets/images/example.png')},
+    {postNo: '4',  date: '2024/1/29'},
+    {postNo: '5',  date: '2024/1/28', image: require('../../assets/images/example.png')},
+    {postNo: '6', date: '2024/1/30'},
+    {postNo: '7',  date: '2024/2/2'},
     {postNo: '8',  date: '2/4'},
     {postNo: '9',  date: '2/1'},
     {postNo: '10', date: '2/5'},
@@ -143,7 +142,7 @@ const RecordGallery = () => {
                         <EmojiComponent emoji = {modalContent?.satisfactionEmoji}/>
                         </View>
                         <View style = {styles.margin}>
-                        <Text style = {styles.lightText}> {modalContent?.comment}</Text>
+                        <Text style = {styles.lightText}>{modalContent?.comment}</Text>
                         </View>
                         </InfoContainer>
                     </ModalContainer>
@@ -192,16 +191,6 @@ const ImagesContainer = styled.ScrollView`
     align-self: center;
 `;
 
-const ImageComponent = ({ imageUrls }) => (
- <ImagesContainer
-   horizontal={true}
-   showsHorizontalScrollIndicator={true}     
- >
-     {imageUrls.map((imageUrl, index) => (
-         <MyImage key={index} imageSource={imageUrl} />
-     ))}
- </ImagesContainer>
-);
 
 
 const InfoContainer = styled.View`
@@ -313,7 +302,7 @@ const styles = StyleSheet.create({
     lightText:{
         fontSize: 17,
         fontWeight: '300',
-        backgroundColor:'lightyellow',
+        marginLeft: '1%',
     },
 
     margin:{

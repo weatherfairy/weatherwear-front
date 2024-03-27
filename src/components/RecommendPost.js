@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
-import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
 import React from 'react';
-import MyImage from './MyImage';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 
 
@@ -11,7 +10,6 @@ const PostContainer = styled.View`
     align-items: left;
     align-self: center;
     margin-top:50px;
-
 `;
 
 const ImagesContainer = styled.ScrollView`
@@ -21,17 +19,21 @@ const ImagesContainer = styled.ScrollView`
 `;
 
 
-const ImageComponent = ({ imageUrls }) => (
+const ImageComponent = ({ imageUrls = [] }) => (
     <ImagesContainer
       horizontal={true}
       showsHorizontalScrollIndicator={true}     
     >
-        {imageUrls.map((imageUrl, index) => (
-            <MyImage key={index} imageSource={imageUrl} />
-        ))}
+    {imageUrls.map((url, index) => (
+      <Image 
+        key = {index}
+        source = {{uri: url}}
+        style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+      />
+    ))}
     </ImagesContainer>
 );
-  
+
 
 const InfoContinaer = styled.View`
     margin-top: 5px;
@@ -42,35 +44,21 @@ const getSkyIcon = (sky) => {
       case 1:
         return require('../../assets/icons/sunny.png');
       case 2:
-        return require('../../assets/icons/windy.png');
+        return require('../../assets/icons/foggy.png');
       case 3:
         return require('../../assets/icons/cloudy.png');
       case 4:
-        return require('../../assets/icons/rainy.png');
+        return require('../../assets/icons/snow&rain.png');
       case 5:
-        return require('../../assets/icons/bad.png');
+        return require('../../assets/icons/rainy.png');
       case 6:
-        return require('../../assets/icons/bad.png');
-      case 7:
         return require('../../assets/icons/snowy.png');
+      case 7:
+        return require('../../assets/icons/windy.png');
       default:
         return null; 
     }
 };
-const DateAndTempContainer = styled.View`
-    width: 100%;
-    flex-direction:row;
-    justify-content: space-between;
-    align-items: center;
-    
-`;
-
-
-const ClothesAndEmojiContainer =styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
 
 
 
@@ -91,10 +79,10 @@ const getSatisfactionIcon = (emoji) => {
 const styles = StyleSheet.create({
   comment:{
     fontFamily: 'GmarketSansTTFMedium',
-    marginTop: 5,
+    marginTop: 10,
     fontSize :17,
-    backgroundColor : 'pink',
     height: 20,
+
   },
   temp:{
     fontFamily: 'GmarketSansTTFLight',
@@ -112,34 +100,47 @@ const styles = StyleSheet.create({
     fontSize : 25,
     marginRight: 10,
     fontFamily: 'GmarketSansTTFMedium',
+  },
+  sky:{
+    width: 25,
+    height: 25,
+  },
+  parallel:{
+    flexDirection:'row',
+    alignItems: 'center',
+  
+  },
+  topTitle:{
+    width: '98%',
+    flexDirection:'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   }
+
 })
 
 
 
-const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, sky, clothes, comment, emoji }) => {
+const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, sky, clothes, comment, emoji, imageUrls }) => {
     
-    const imageUrls = [
-        require('../../assets/images/example.png'),
-        require('../../assets/images/example.png'),
-        require('../../assets/images/example.png'),
-      ];
 
     return(
         <PostContainer>
-            <DateAndTempContainer>
+            <View style = {styles.topTitle}>
             <Text style = {styles.date}> {postDate}</Text>
-            <Text style = {styles.temp}>{minTemp}°C ~ {maxTemp}°C</Text>
-            
-            </DateAndTempContainer>
+            <View style = {styles.parallel}>
+            <Text style = {styles.temp}>{minTemp}°C ~ {maxTemp}°C </Text>
+            <Image style = {styles.sky} source = {getSkyIcon(sky)}/>
+            </View>
+            </View>
             <ImageComponent imageUrls={imageUrls}/>
             <InfoContinaer>           
-            <ClothesAndEmojiContainer>
+            <View style = {styles.parallel}>
                <Text style = {styles.clothes}>{clothes.join(', ')}</Text>
                <Image style = {styles.emoji} source={getSatisfactionIcon(emoji)} />
-            </ClothesAndEmojiContainer>
+            </View>
            
-            <Text style = {styles.comment}>{comment}</Text>
+            <Text style = {styles.comment}> {comment}</Text>
             </InfoContinaer>
             
 

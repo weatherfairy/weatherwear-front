@@ -25,7 +25,12 @@ const WearRecommend = () => {
             "clothesText": "T-shirt and jeans",
             "comment": "Feeling great!",
             "emoji": 1,
-            "sky": 1
+            "sky": 6,
+            "imageUrls": [
+                'https://via.placeholder.com/150',
+                'https://via.placeholder.com/200',
+                'https://via.placeholder.com/250'
+            ],
         },
         {
             "postNo": 2,
@@ -35,7 +40,12 @@ const WearRecommend = () => {
             "clothesText": "Sweater and pants",
             "comment": "A bit chilly but cozy.",
             "emoji": 2,
-            "sky": 1
+            "sky": 3,
+            "imageUrls": [
+                'https://via.placeholder.com/150',
+                'https://via.placeholder.com/200',
+                'https://via.placeholder.com/250'
+            ],
         },
         {
             "postNo": 3,
@@ -45,7 +55,12 @@ const WearRecommend = () => {
             "clothesText": "Sweater and pants",
             "comment": "A bit chilly but cozy.",
             "emoji": 2,
-            "sky": 1
+            "sky": 1,
+            "imageUrls": [
+                'https://via.placeholder.com/150',
+                'https://via.placeholder.com/200',
+                'https://via.placeholder.com/250'
+            ],
         }
     ]);
    
@@ -67,7 +82,7 @@ const WearRecommend = () => {
    
     return (
         <ScreenContainer>
-            <ScrollContainer contentContainerStyle={{ paddingBottom: screenHeight*0.3,}}>
+            <ScrollContainer contentContainerStyle={{ paddingBottom: screenHeight*0.1,}}>
             {recommendations.map((item) => (
                     <RecommendPost
                         key={item.postNo}
@@ -79,6 +94,7 @@ const WearRecommend = () => {
                         clothes={item.clothesText.split(' and ')} // and로 split
                         comment={item.comment}
                         emoji={item.emoji}
+                        imageUrls={item.imageUrls}
                     />
                 ))}
 
