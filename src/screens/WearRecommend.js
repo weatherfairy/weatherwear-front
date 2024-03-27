@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 import {useFonts} from 'expo-font';
@@ -13,44 +14,73 @@ const ScrollContainer = styled.ScrollView`
     flex: 1;
     flex-direction: column;
 `;
-const RecommendContainer = styled.View`
-    flex-direction: column;
-    height: ${screenHeight*0.8}px;
-`;
 
 const WearRecommend = () => {
+    const [recommendations, setRecommendations] = useState([
+        {
+            "postNo": 1,
+            "postDate": "2024-02-10",
+            "minTemp": 10,
+            "maxTemp": 20,
+            "clothesText": "T-shirt and jeans",
+            "comment": "Feeling great!",
+            "emoji": 1,
+            "sky": 1
+        },
+        {
+            "postNo": 2,
+            "postDate": "2024-03-11",
+            "minTemp": 5,
+            "maxTemp": 15,
+            "clothesText": "Sweater and pants",
+            "comment": "A bit chilly but cozy.",
+            "emoji": 2,
+            "sky": 1
+        },
+        {
+            "postNo": 3,
+            "postDate": "2024-03-17",
+            "minTemp": 5,
+            "maxTemp": 15,
+            "clothesText": "Sweater and pants",
+            "comment": "A bit chilly but cozy.",
+            "emoji": 2,
+            "sky": 1
+        }
+    ]);
+   
+    
+    useEffect(()=>{
+        //데이터 불러오기
+        const fetchRecommendations = async ()=>{
+            try{
+                const response = await fetch('api/v1/closet/recommend');
+                const data = await response.json();
+                setRecommendations(data.content);
+            }catch(error){
+                console.error('추천 데이터 fetch실패', error);
+            }
+        };
+        fetchRecommendations();
+    },[])
+   
+   
     return (
         <ScreenContainer>
-            <ScrollContainer>
-                <RecommendPost 
-                    postNo = {1} 
-                    postDate = "2024.01.27" 
-                    minTemp = {-6} 
-                    maxTemp={3} 
-                    clothes = {['코트','니트','청바지']} 
-                    comment = "바람이 많이 불어서 추웠다." 
-                    satisfaction = {3}>
-                </RecommendPost>
-
-                <RecommendPost 
-                    postNo = {2} 
-                    postDate = "2024.01.27" 
-                    minTemp = {-2} maxTemp={4} 
-                    clothes = {['코트','니트','청바지']} 
-                    comment = "바람이 많이 불어서 추웠다." 
-                    satisfaction = {2}>
-                </RecommendPost>
-
-
-                <RecommendPost 
-                    postNo = {3} 
-                    postDate = "2024.01.27" 
-                    minTemp = {0} 
-                    maxTemp={5} 
-                    clothes = {['코트','니트','청바지']} 
-                    comment = "바람이 많이 불어서 추웠다." 
-                    satisfaction = {1}>
-                </RecommendPost>
+            <ScrollContainer contentContainerStyle={{ paddingBottom: screenHeight*0.3,}}>
+            {recommendations.map((item) => (
+                    <RecommendPost
+                        key={item.postNo}
+                        postNo={item.postNo}
+                        postDate={item.postDate}
+                        minTemp={item.minTemp}
+                        maxTemp={item.maxTemp}
+                        sky={item.sky}
+                        clothes={item.clothesText.split(' and ')} // and로 split
+                        comment={item.comment}
+                        emoji={item.emoji}
+                    />
+                ))}
 
             </ScrollContainer>
         </ScreenContainer>

@@ -1,12 +1,15 @@
-import React, { useState, useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components/native';
+import React, {useState } from 'react';
+import styled from 'styled-components/native';
 import { Icon } from 'react-native-elements'; 
-import { View, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, Image, Dimensions, TouchableOpacity,StyleSheet} from 'react-native';
+import { ThemeContext } from '../themes/theme'; 
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 const fontSize = screenHeight / 40;
 
+
+``
 const WeekForecastContainer = styled.View`
   background-color: ${({theme}) => theme.forecastContainer};
   align-items: center;
@@ -20,7 +23,7 @@ const TitleContainer = styled.View`
   width: 95%;
   height: 60px;
   border-bottom-width: 1px;
-  border-bottom-color: ${({theme}) => theme.text};
+  border-bottom-color: black;
 `;
 
 const Title = styled.Text`
@@ -29,14 +32,15 @@ const Title = styled.Text`
   top: ${({top})=> top}px;
   left: ${({ left }) => left}px;
   font-size: ${({size})=>fontSize*size}px;
-  font-family: GmarketSansTTFMedium;
+  font-family: ${({font})=>font};
   padding:10px;
 `;
 
 const AccordionItemContainer = styled.View`
-  width: 88%;
+  width: 90%;
   justify-content: space-between;
   margin: 20px 0;
+  //align-items: center;
 `;
 
 
@@ -48,14 +52,14 @@ const AccordionContent = styled.View`
 const MediumText = styled.Text`
   font-size: 25px; 
   text-align: left;
-  font-family: GmarketSansTTFMedium;
   color: ${({theme}) => theme.text};
+  font-family: GmarketSansTTFMedium;
 `;
 const LightText = styled.Text`
   font-size: 23px; 
   text-align: left;
-  font-family: GmarketSansTTFLight;
   color: ${({theme}) => theme.text};
+  font-family: GmarketSansTTFLight;
 `;
 
 
@@ -66,7 +70,6 @@ const DetailItem = styled.View`
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 10px;
-  background-color: #f2f2f2;
 `;
 
 const DetailText = styled.Text`
@@ -132,12 +135,12 @@ const PrecipitationContainer = styled.View`
   margin-right: 16%;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; 
-  width: 80px;
+  justify-content: space-between;
+  width: 85px;
 `;
+
 const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, precipitation }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const theme = useContext(ThemeContext);
 
   return (
     <AccordionItemContainer>
@@ -161,29 +164,34 @@ const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, 
               name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
               type="material"
               size={24}
-              color={theme.highlight}
             />
           </IconActionContainer>
         </AccordionHeader>
       </TouchableOpacity>
-      {isOpen && <AccordionContent>{React.cloneElement(children, { theme })}</AccordionContent>}
+      {isOpen && <AccordionContent>{children}</AccordionContent>}
     </AccordionItemContainer>
   );
 };
 
-const DetailContainer = ({ theme, times }) => {
+const TimeContainer = styled.View`
+  width: 23%;
+  margin-left: 8px;
+`;
+const DetailContainer = ({ times }) => {
   return (
     <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>
       {times.map((slot, index) => (
-        <View key={index} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginBottom: 5, borderRadius: 10}}>
-          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight', color: theme.text }}>
+        <View key={index} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginBottom: 5, borderRadius: 10 }}>
+          <TimeContainer>
+          <LightText style={{ fontSize: 17, fontFamily: 'GmarketSansTTFLight'}}>
             {slot.time}
-          </Text>
+          </LightText>
+          </TimeContainer>
           <Image source={slot.image} style={{ width: 25, height: 25 }} />
           <View style={{ backgroundColor: 'skyblue', width: 100, height: 6 }}/>
-          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight', color: theme.text }}>
+          <LightText style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
             {slot.temp}°C
-          </Text>
+          </LightText>
         </View>
       ))}
     </View>
@@ -192,13 +200,18 @@ const DetailContainer = ({ theme, times }) => {
 
 
 
+const styles = StyleSheet.create({
+
+})
+//;
+
 
 const WeekForecast = () => {
   return (
     <WeekForecastContainer>
       <TitleContainer>
-        <Title top={10} left={9} size={1.2}>주간예보</Title>
-        <Title top={23} left={screenWidth-120} size={0.8}>최고/최저</Title>
+        <Title top={10} left={9} size={1.2} font ={'GmarketSansTTFBold'}>주간예보</Title>
+        <Title top={23} left={screenWidth-120} size={0.7} font ={'GmarketSansTTFMedium'}>최고/최저</Title>
       </TitleContainer>
       <AccordionItem header={<MediumText>어제</MediumText>} weatherType={"sunny"} minTemp={-6} maxTemp={1} date = {"1/9"} precipitation={10}>
         <DetailContainer 
