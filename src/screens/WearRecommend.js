@@ -16,6 +16,7 @@ const ScrollContainer = styled.ScrollView`
 `;
 
 const WearRecommend = () => {
+    /* dummy data test
     const [recommendations, setRecommendations] = useState([
         {
             "postNo": 1,
@@ -48,14 +49,19 @@ const WearRecommend = () => {
             "sky": 1
         }
     ]);
+    */
+    
+    //server연결
+    const [recommendations, setRecommendations] = useState([]);
 
     useEffect(()=>{
         //데이터 불러오기
         const fetchRecommendations = async ()=>{
             try{
-                const response = await fetch('api/v1/closet/recommend');
+                const response = await fetch('http://223.194.157.73:8080/api/v1/closet/recommend');
                 const data = await response.json();
-                setRecommendations(data.content);
+                setRecommendations(data);
+                //console.log(data);
             }catch(error){
                 console.error('추천 데이터 fetch실패', error);
             }
@@ -65,8 +71,8 @@ const WearRecommend = () => {
 
     return (
         <ScreenContainer>
-            <ScrollContainer contentContainerStyle={{ paddingBottom: screenHeight*0.3,}}>
-                {recommendations.map((item) => (
+            <ScrollContainer contentContainerStyle={{ paddingBottom: screenHeight*0.1,}}>
+            {recommendations.map((item) => (
                     <RecommendPost
                         key={item.postNo}
                         postNo={item.postNo}
@@ -75,8 +81,11 @@ const WearRecommend = () => {
                         maxTemp={item.maxTemp}
                         sky={item.sky}
                         clothes={item.clothesText.split(' and ')} // and로 split
-                        comment={item.comment}
+                        comment={item.review}
                         emoji={item.emoji}
+                        image1 = {item.image1}
+                        image2 = {item.image2}
+                        image3 = {item.image3}
                     />
                 ))}
             </ScrollContainer>

@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
 import React from 'react';
-import MyImage from './MyImage';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 
 const PostContainer = styled.View`
@@ -18,14 +17,39 @@ const ImagesContainer = styled.ScrollView`
     width: ${ScreenWidth * 0.8}px;
 `;
 
-const ImageComponent = ({ imageUrls }) => (
+/*
+const ImageComponent = ({ imageUrls = [] }) => (
     <ImagesContainer
         horizontal={true}
         showsHorizontalScrollIndicator={true}     
     >
-        {imageUrls.map((imageUrl, index) => (
-            <MyImage key={index} imageSource={imageUrl} />
-        ))}
+    {imageUrls.map((url, index) => (
+        <Image 
+            key = {index}
+            source = {{uri: url}}
+            style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+        />
+    ))}
+    </ImagesContainer>
+);*/
+
+const ImageComponent = ({image1, image2, image3} ) => (
+    <ImagesContainer
+        horizontal={true}
+        showsHorizontalScrollIndicator={true}     
+    >
+        <Image 
+            source = {{uri: image1}}
+            style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+        />
+        <Image 
+            source = {{uri: image2}}
+            style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+        />
+        <Image 
+            source = {{uri: image3}}
+            style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+        />
     </ImagesContainer>
 );
 
@@ -33,7 +57,7 @@ const InfoContinaer = styled.View`
     margin-top: 5px;
 `;
 
-/*const getSkyIcon = (sky) => {
+const getSkyIcon = (sky) => {
     switch (sky) {
         case 1:
             return require('../../assets/icons/color_weather/clear_day.png');
@@ -52,29 +76,16 @@ const InfoContinaer = styled.View`
         default:
             return null; 
     }
-};*/
-
-const DateAndTempContainer = styled.View`
-    width: 100%;
-    flex-direction:row;
-    justify-content: space-between;
-    align-items: center;
-    
-`;
-
-const ClothesAndEmojiContainer =styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
+};
 
 const getSatisfactionIcon = (emoji) => {
     switch (emoji) {
         case 1:
-            return require('../../assets/icons/best.png');
+            return require('../../assets/icons/bad.png');
         case 2:
             return require('../../assets/icons/good.png');
         case 3:
-            return require('../../assets/icons/bad.png');
+            return require('../../assets/icons/best.png');
         default:
             return null; 
     }
@@ -85,7 +96,6 @@ const styles = StyleSheet.create({
         fontFamily: 'GmarketSansTTFMedium',
         marginTop: 5,
         fontSize :17,
-        backgroundColor : 'pink',
         height: 20,
     },
     temp:{
@@ -104,30 +114,41 @@ const styles = StyleSheet.create({
         fontSize : 25,
         marginRight: 10,
         fontFamily: 'GmarketSansTTFMedium',
+    },
+    sky:{
+        width: 25,
+        height: 25,
+    },
+    parallel:{
+        flexDirection:'row',
+        alignItems: 'center',
+    },
+    topTitle:{
+        width: '98%',
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     }
 });
 
-const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, skdy, clothes, comment, emoji }) => {
-    const imageUrls = [
-        require('../../assets/images/example.png'),
-        require('../../assets/images/example.png'),
-        require('../../assets/images/example.png')
-    ];
+const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, sky, clothes, comment, emoji, image1, image2, image3}) => {
     
     return(
         <PostContainer>
-            <DateAndTempContainer>
-            <Text style = {styles.date}> {postDate}</Text>
-            <Text style = {styles.temp}>{minTemp}°C ~ {maxTemp}°C</Text>
-            </DateAndTempContainer>
-            <ImageComponent imageUrls={imageUrls}/>
+            <View style = {styles.topTitle}>
+                <Text style = {styles.date}> {postDate}</Text>
+                <View style = {styles.parallel}>
+                    <Text style = {styles.temp}>{minTemp}°C ~ {maxTemp}°C </Text>
+                    <Image style = {styles.sky} source = {getSkyIcon(sky)}/>
+                </View>
+            </View>
+            <ImageComponent image1 = {image1} image2 = {image2} image3 = {image3}/>
             <InfoContinaer>           
-            <ClothesAndEmojiContainer>
-                <Text style = {styles.clothes}>{clothes.join(', ')}</Text>
-                <Image style = {styles.emoji} source={getSatisfactionIcon(emoji)} />
-            </ClothesAndEmojiContainer>
-
-            <Text style = {styles.comment}>{comment}</Text>
+                <View style = {styles.parallel}>
+                    <Text style = {styles.clothes}>{clothes.join(', ')}</Text>
+                    <Image style = {styles.emoji} source={getSatisfactionIcon(emoji)} />
+                </View>
+                <Text style = {styles.comment}> {comment}</Text>
             </InfoContinaer>
         </PostContainer>
     );

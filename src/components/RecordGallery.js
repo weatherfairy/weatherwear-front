@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import MyImage from './MyImage';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const data = [
     {postNo: '1', date: '1/25', image: require('../../assets/images/example.png')},
@@ -38,7 +38,7 @@ const ImageContainer = styled.TouchableOpacity`
     border-width: 1px;
     border-color: ${({theme}) => theme.wearBackground};
 `;
-const TestImage = styled.Image`
+const Img = styled.Image`
     width: 100%;
     height: 100%;
 `;
@@ -88,14 +88,13 @@ const RecordGallery = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);//모달에 표시할 내용
 
-
     const fetchDataFromServer = async (postNo) => {
-        /*
+        
         try {
-            const response = await fetch(`http://223.194.158.167:8080/api/v1/closet/${postNo}`);
+            const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
             if (response.ok) {
-            const data = await response.json();
-            return data;
+                const data = await response.json();
+                return data;
             } else {
                 throw new Error('서버로부터 응답을 받는 데 실패했습니다.');
             }
@@ -103,7 +102,7 @@ const RecordGallery = (props) => {
             Alert.alert("에러", error.message);
             return null;
         }
-        */
+        /*
         const mockData = {
             images: [
                 'https://via.placeholder.com/150',
@@ -117,8 +116,8 @@ const RecordGallery = (props) => {
             maxTemp: 5,            
         };
         return mockData;
+        */
     };
-
 
 
     // 선택된 postNo로 서버로부터 데이터 가져오기.
@@ -149,31 +148,33 @@ const RecordGallery = (props) => {
 
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                    <View style ={styles.buttonClose}>  
-                    <Pressable
-                        style={styles.buttonClose}
-                        onPress={() => setModalVisible(!modalVisible)}>
-                        <Text style={styles.buttonClose}>X</Text>
-                    </Pressable>
-                    </View>
-                    <ModalContainer>
+                        <View style ={styles.buttonClose}>  
+                            <Pressable
+                                style={styles.buttonClose}
+                                onPress={() => setModalVisible(!modalVisible)}>
+                                <Text style={styles.buttonClose}>X</Text>
+                            </Pressable>
+                        </View>
+                        <ModalContainer>
                             <View style = {styles.images}>
-                            {modalContent?.images?.map((image, index) => (
-                                    <Image key={index} source={{uri: image}} /> //styles = {}
-                            ))}
+                                <ImagesContainer horizental= {true} showsHorizontalScrollIndicator={true}   >
+                                    <Image source={{uri: modalContent?.image1}} style={{width: '100%', height: '100%'}} />
+                                    <Image source={{uri: modalContent?.image2}} style={{width: '100%', height: '100%'}} />
+                                    <Image source={{uri: modalContent?.image3}} style={{width: '100%', height: '100%'}} />
+                                </ImagesContainer>
                             </View>
                             <InfoContainer>
-                            <View style = {[styles.parallel, styles.strech]}>
-                            <Text style = {styles.boldText}> {modalContent?.date}</Text>
-                            <Text style = {styles.mediumText}>{modalContent?.minTemp}°C~{modalContent?.maxTemp}°C</Text>
-                            </View>
-                            <View style = {styles.parallel}>
-                            <Text style = {styles.mediumText}> {modalContent?.clothes}</Text>
-                            <EmojiComponent emoji = {modalContent?.satisfactionEmoji}/>
-                            </View>
-                            <View style = {styles.margin}>
-                            <Text style = {styles.lightText}> {modalContent?.comment}</Text>
-                            </View>
+                                <View style = {[styles.parallel, styles.strech]}>
+                                    <Text style = {styles.boldText}> {modalContent?.date}</Text>
+                                    <Text style = {styles.mediumText}>{modalContent?.minTemp}°C~{modalContent?.maxTemp}°C</Text>
+                                </View>
+                                <View style = {styles.parallel}>
+                                    <Text style = {styles.mediumText}> {modalContent?.clothes}</Text>
+                                    <EmojiComponent emoji = {modalContent?.satisfactionEmoji}/>
+                                </View>
+                                <View style = {styles.margin}>
+                                    <Text style = {styles.lightText}> {modalContent?.comment}</Text>
+                                </View>
                             </InfoContainer>
                         </ModalContainer>
                         <ButtonContainer>
@@ -188,7 +189,7 @@ const RecordGallery = (props) => {
                 renderItem={({item}) => (
                     
                     <ImageContainer onPress={() => handleImagePress(item.postNo)}>
-                        <TestImage 
+                        <Img 
                             //source={{ uri: item.imageUrl }} 
                             source={item.image}
                         />
@@ -209,18 +210,6 @@ const ModalContainer = styled.View`
 const ImagesContainer = styled.ScrollView`
     align-self: center;
 `;
-
-const ImageComponent = ({ imageUrls }) => (
-    <ImagesContainer
-        horizontal={true}
-        showsHorizontalScrollIndicator={true}     
-    >
-        {imageUrls.map((imageUrl, index) => (
-            <MyImage key={index} imageSource={imageUrl} />
-        ))}
-    </ImagesContainer>
-);
-
 
 const InfoContainer = styled.View`
     margin-top: 10px;
@@ -319,7 +308,7 @@ const styles = StyleSheet.create({
     lightText:{
         fontSize: 17,
         fontWeight: '300',
-        backgroundColor:'lightyellow',
+        marginLeft: '1%',
     },
 
     margin:{
