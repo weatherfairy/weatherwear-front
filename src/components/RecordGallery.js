@@ -3,7 +3,7 @@ import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, I
 import React, {useEffect, useState} from 'react';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import { ScrollView } from 'react-native-gesture-handler';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 
 const data = [
     {postNo: '1', date: '1/25', image: require('../../assets/images/example.png')},
@@ -59,10 +59,10 @@ const DateText = styled.Text`
     font-size: ${Dimensions.get('window').height/70}px;
 `;
 const FloatingButton = styled.TouchableOpacity`
-    width: ${Dimensions.get('window').height/14}px;
-    height: ${Dimensions.get('window').height/14}px;
+    width: ${Dimensions.get('window').height/16}px;
+    height: ${Dimensions.get('window').height/16}px;
     background-color: ${({theme}) => theme.wearBackground};
-    border-radius: ${Dimensions.get('window').height/28}px;
+    border-radius: ${Dimensions.get('window').height/32}px;
     position: absolute;
     bottom: ${Dimensions.get('window').height*0.075}px;
     right: ${Dimensions.get('window').height*0.02}px;
@@ -75,7 +75,7 @@ const FloatingButton = styled.TouchableOpacity`
 `;
 const AddWritingIcon = styled(FontAwesome6).attrs(({theme}) => ({
     name: 'add',
-    size: Dimensions.get('window').height/20,
+    size: Dimensions.get('window').height/24,
     color: theme.wearText
 }))``;
 const RecordGallery = ({ navigation }) => {
@@ -196,8 +196,12 @@ const RecordGallery = ({ navigation }) => {
                             </InfoContainer>
                         </ModalContainer>
                         <ButtonContainer>
-                                <IconButton onPress={() => console.log('Edit pressed')} source={editIcon} />
-                                <IconButton onPress={() => console.log('Delete pressed')} source={deleteIcon} />
+                                <IconButton onPress={() => console.log('Edit pressed')}>
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton onPress={() => console.log('Delete pressed')}>
+                                    <DeleteIcon/>
+                                </IconButton>
                         </ButtonContainer>
                     </View>
                 </View>
@@ -265,21 +269,29 @@ const EmojiComponent = ({ emoji }) => {
     );
 }
 
-//수정, 삭제 아이콘
-const editIcon = require('../../assets/icons/edit.png');
-const deleteIcon = require('../../assets/icons/delete.png');
-
 const ButtonContainer = styled.View`
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 5px;
+    right: 5px;
     flex-direction: row;
 `;
-const IconButton = ({ onPress, source }) => (
-    <TouchableOpacity onPress={onPress} style={{ marginLeft: 10 }}>
-        <Image source={source} style={{ width: 30, height: 30 }} />
-    </TouchableOpacity>
-);
+
+const IconButton = styled.TouchableOpacity`
+    align-items: center;
+    justify-content: center;
+    height: ${ScreenHeight*0.06}px;
+    width: ${ScreenHeight*0.06}px;
+`;
+const EditIcon = styled(MaterialIcons).attrs(({theme}) => ({
+    name: 'edit',
+    size: ScreenHeight*0.04,
+    color: theme.wearText
+}))``;
+const DeleteIcon = styled(FontAwesome6).attrs(({theme}) => ({
+    name: 'trash-alt',
+    size: ScreenHeight*0.04,
+    color: theme.wearText
+}))``;
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -313,31 +325,31 @@ const styles = StyleSheet.create({
         marginRight: -7,
         marginTop: -10,
         marginBottom: 5,
-        fontSize: 35,
+        fontSize: ScreenHeight*0.03,
         fontWeight: '600',
     },
 
     images:{
         width: ScreenWidth* 0.75,
-        height: ScreenHeight* 0.42,
+        height: ScreenHeight* 0.4,
     },
 
     boldText:{
-        fontSize: 23,
+        fontSize: ScreenHeight*0.03,
         fontWeight: '700',
     },
     mediumText:{
-        fontSize: 23,
+        fontSize: ScreenHeight*0.03,
         fontWeight: '400',
     },
     lightText:{
-        fontSize: 17,
+        fontSize: ScreenHeight*0.02,
         fontWeight: '300',
         marginLeft: '1%',
     },
 
     margin:{
-        marginTop : 15,
+        marginTop : 10,
     },
     parallel:{
         flexDirection: 'row',
