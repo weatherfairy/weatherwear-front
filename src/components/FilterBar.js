@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import {Dimensions} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import {useFonts} from 'expo-font';
 import {useState} from 'react';
 import FilterModal from './FilterModal';
 
@@ -52,15 +51,9 @@ const FilterName = styled.Text`
 `;
 
 const FilterBar = () => {
-    const [fontsLoaded] = useFonts({
-        "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
-    });
+    
     const [isModalVisible, setModalVisible] = useState(false);
     const [activeFilterType, setActiveFilterType] = useState('temp');
-
-    if(!fontsLoaded) {
-        return null;
-    };
 
     const openModal = (filterType) => {
         setActiveFilterType(filterType);

@@ -1,7 +1,6 @@
 import {Platform, StatusBar, Dimensions, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import {theme} from '../themes/theme';
-import {useFonts} from 'expo-font';
 import { FontAwesome } from '@expo/vector-icons';
 
 const screenHeight = Dimensions.get('window').height;
@@ -31,13 +30,6 @@ const Title = styled.Text`
 `;
 
 const TitleBar = ({navigation, backgroundColor, textColor}) => {
-    const [fontsLoaded] = useFonts({
-        "GmarketSansTTFBold": require("../../assets/fonts/GmarketSansTTFBold.ttf")
-    });
-
-    if(!fontsLoaded) {
-        return null;
-    };
 
     return (
         <TitleContainer backgroundColor={backgroundColor}>

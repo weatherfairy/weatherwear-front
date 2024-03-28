@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { TitleBar, BriefInfos, ShortForecast, WeekForecast }from '../components';
+import { BriefInfos, ShortForecast, WeekForecast }from '../components';
 
 const dummy_data = [
     {
@@ -149,20 +148,7 @@ const ScrollContainer = styled.ScrollView`
 
 const WeatherMain = ({navigation}) => {
 
-    const [fontsLoaded] = useFonts({
-        "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
-    });
     const [weatherData, setWeatherData] = useState();
-
-    useEffect(() => {
-        async function hideSplashScreen() {
-            if (fontsLoaded) {
-                await SplashScreen.hideAsync();
-            }
-        }
-
-        hideSplashScreen();
-    }, [fontsLoaded]);
 
     useEffect(() => {
         const fetchWeatherData = async() => {
@@ -187,10 +173,6 @@ const WeatherMain = ({navigation}) => {
 
         fetchWeatherData();
 }, []);
-
-    if(!fontsLoaded) {
-        return null;
-    };
 
     return (
             <Container>

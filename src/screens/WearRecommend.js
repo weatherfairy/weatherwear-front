@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
-import {useFonts} from 'expo-font';
 import RecommendPost from '../components/RecommendPost';
 
 const screenHeight = Dimensions.get('window').height;

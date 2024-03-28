@@ -1,16 +1,15 @@
 import styled from 'styled-components/native';
-import {useFonts} from 'expo-font';
 import { FilterBar, RecordGallery } from '../components';
 
 const Container = styled.SafeAreaView`
     flex: 1;
 `;
 
-const WearRecord = () => {
+const WearRecord = ({ navigation }) => {
     return (
         <Container>
                 <FilterBar />
-                <RecordGallery />
+                <RecordGallery navigation={navigation} />
         </Container>
     )
 }

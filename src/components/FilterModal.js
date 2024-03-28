@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/native';
 import {Dimensions, Platform, StatusBar, Modal} from 'react-native';
-import {useFonts} from 'expo-font';
 import { AntDesign } from '@expo/vector-icons';
 import TempFilter from './TempFilter';
 import WeatherFilter from './WeatherFilter';

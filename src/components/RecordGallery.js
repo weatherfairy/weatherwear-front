@@ -3,6 +3,7 @@ import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, I
 import React, {useEffect, useState} from 'react';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import { ScrollView } from 'react-native-gesture-handler';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 const data = [
     {postNo: '1', date: '1/25', image: require('../../assets/images/example.png')},
@@ -27,7 +28,7 @@ const data = [
     {postNo: '20',  date: '2/5'},
     {postNo: '21',  date: '1/25'}
 ];
-const Container = styled.View`
+const Container = styled.SafeAreaView`
     background-color: ${({theme}) => theme.wearBackground};
 `;
 const ImageContainer = styled.TouchableOpacity`
@@ -57,8 +58,27 @@ const DateText = styled.Text`
     color: ${({theme}) => theme.wearBackground};
     font-size: ${Dimensions.get('window').height/70}px;
 `;
-
-const RecordGallery = (props) => {
+const FloatingButton = styled.TouchableOpacity`
+    width: ${Dimensions.get('window').height/14}px;
+    height: ${Dimensions.get('window').height/14}px;
+    background-color: ${({theme}) => theme.wearBackground};
+    border-radius: ${Dimensions.get('window').height/28}px;
+    position: absolute;
+    bottom: ${Dimensions.get('window').height*0.075}px;
+    right: ${Dimensions.get('window').height*0.02}px;
+    justify-content: center;
+    align-items: center;
+    elevation: 12;
+    shadow-color: ${({theme}) => theme.wearText};
+    shadow-opacity: 0.3;
+    shadow-radius: 5px;
+`;
+const AddWritingIcon = styled(FontAwesome6).attrs(({theme}) => ({
+    name: 'add',
+    size: Dimensions.get('window').height/20,
+    color: theme.wearText
+}))``;
+const RecordGallery = ({ navigation }) => {
     const [imageData, setImageData] = useState([]);
 
     useEffect(() => {
@@ -197,7 +217,13 @@ const RecordGallery = (props) => {
                     </ImageContainer>
                 )}
                 numColumns={3}
-                contentContainerStyle={{ paddingBottom: 45 }} />
+                contentContainerStyle={{ paddingBottom: Dimensions.get('window').height*0.055 }} 
+            />
+            <FloatingButton
+                onPress={() => navigation.navigate('WearWriting')}
+            >
+                <AddWritingIcon></AddWritingIcon>
+            </FloatingButton>
         </Container>
     )
 }

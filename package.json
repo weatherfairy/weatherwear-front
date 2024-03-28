@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@expo/metro-config": "^0.17.5",
-    "@expo/vector-icons": "^13.0.0",
+    "@expo/vector-icons": "^14.0.0",
     "@miblanchard/react-native-slider": "^2.3.1",
     "@react-navigation/material-top-tabs": "^6.6.11",
     "@react-navigation/native-stack": "^6.9.25",

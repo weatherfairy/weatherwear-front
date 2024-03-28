@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import styled from 'styled-components/native';
-import {useFonts} from 'expo-font';
 import {Dimensions} from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 
@@ -167,15 +166,8 @@ const DateIndicator = styled.Text`
 `;
 
 const BriefInfos = ({ data, navigation }) => {
-    const [fontsLoaded] = useFonts({
-        "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf"),
-        "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
-    });
+    
     const [selectedIndicator, setSelectedIndicator] = useState(1);
-
-    if(!fontsLoaded) {
-        return null;
-    };
 
     return (
         <Container>

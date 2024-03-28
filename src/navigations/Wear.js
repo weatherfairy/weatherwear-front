@@ -65,7 +65,8 @@ const Wear = ({ navigation }) => {
                     />
                     <Tab.Screen
                         name="내 기록"
-                        component={WearRecord}
+                        children={() => <WearRecord navigation={navigation} />}
+                        //component={WearRecord}
                         options={{
                             headerShown: false,
                             tabBarIcon: ({focused}) => 

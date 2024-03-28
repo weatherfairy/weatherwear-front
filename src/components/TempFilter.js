@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/native';
 import {Dimensions, View, Text} from 'react-native';
-import {useFonts} from 'expo-font';
 import { Slider } from "@miblanchard/react-native-slider";
 
 const modalHeight = Dimensions.get('window').height*0.6;
