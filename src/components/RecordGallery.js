@@ -193,6 +193,7 @@ const ModalContainer = styled.View`
 `;
 
 const ImagesContainer = styled.ScrollView`
+    flex-direction : row;
     align-self: center;
 `;
 
