@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components/native';
 import { Icon } from 'react-native-elements'; 
-import { View, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, Image, Dimensions, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -34,7 +34,7 @@ const Title = styled.Text`
 `;
 
 const AccordionItemContainer = styled.View`
-  width: 88%;
+  width: 90%;
   justify-content: space-between;
   margin: 20px 0;
 `;
@@ -66,7 +66,6 @@ const DetailItem = styled.View`
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 10px;
-  background-color: #f2f2f2;
 `;
 
 const DetailText = styled.Text`
@@ -133,7 +132,7 @@ const PrecipitationContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between; 
-  width: 80px;
+  width: 85px;
 `;
 const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, precipitation }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -171,19 +170,25 @@ const AccordionItem = ({ header, children, weatherType, maxTemp, minTemp, date, 
   );
 };
 
+const TimeContainer = styled.View`
+  width: 23%;
+  margin-left: 8px;
+`;
+
 const DetailContainer = ({ times }) => {
   return (
     <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>
       {times.map((slot, index) => (
         <View key={index} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginBottom: 5, borderRadius: 10, backgroundColor: '#f2f2f2' }}>
-          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
-            {slot.time}
-          </Text>
+          <TimeContainer>
+            <LightText style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
+            </LightText>
+          </TimeContainer>
           <Image source={slot.image} style={{ width: 25, height: 25 }} />
           <View style={{ backgroundColor: 'skyblue', width: 100, height: 6 }}/>
-          <Text style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
+          <LightText style={{ fontSize: 20, fontFamily: 'GmarketSansTTFLight' }}>
             {slot.temp}°C
-          </Text>
+          </LightText>
         </View>
       ))}
     </View>
@@ -198,7 +203,7 @@ const WeekForecast = () => {
     <WeekForecastContainer>
       <TitleContainer>
         <Title top={10} left={9} size={1.2}>주간예보</Title>
-        <Title top={23} left={screenWidth-120} size={0.8}>최고/최저</Title>
+        <Title top={23} left={screenWidth-120} size={0.7}>최고/최저</Title>
       </TitleContainer>
       <AccordionItem header={<MediumText>어제</MediumText>} weatherType={"sunny"} minTemp={-6} maxTemp={1} date = {"1/9"} precipitation={10}>
         <DetailContainer 

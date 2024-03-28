@@ -17,7 +17,6 @@ const LocationContainer = styled.View`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    //padding-top: ${screenHeight/30}px;
 `;
 const LocationIcon = styled(Octicons).attrs(({theme}) => ({
     name: 'location',
@@ -105,7 +104,6 @@ const Finedust = styled.Text`
 `;
 const WearCard = styled.TouchableOpacity`
     flex-direction: column;
-    //justify-content: center;
     background-color: #C2C2FC;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.4}px;
@@ -168,7 +166,7 @@ const DateIndicator = styled.Text`
     margin-bottom: ${fontSize*0.3}px;
 `;
 
-const BriefInfos = ({navigation}) => {
+const BriefInfos = ({ data, navigation }) => {
     const [fontsLoaded] = useFonts({
         "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf"),
         "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
@@ -189,15 +187,15 @@ const BriefInfos = ({navigation}) => {
                 <WeatherCardsContainer>
                     <PrecipitationPercentCard>
                         <PrecipitaionTitle>강수확률</PrecipitaionTitle>
-                        <PrecipitationPercent>70%</PrecipitationPercent>
+                        <PrecipitationPercent>{data.rain}</PrecipitationPercent>
                     </PrecipitationPercentCard>
                     <TemperatureCard>
-                        <Temperature>12°C</Temperature>
-                        <SkyImage source={require('../../assets/images/color_weather/snow.png')} />
+                        <Temperature>{data.temp}°C</Temperature>
+                        <SkyImage source={require('../../assets/icons/color_weather/snow.png')} />
                     </TemperatureCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
-                        <Finedust>나쁨</Finedust>
+                        <Finedust>{data.dust}</Finedust>
                     </FinedustCard>
                 </WeatherCardsContainer>
                 <WearCard 
@@ -206,9 +204,9 @@ const BriefInfos = ({navigation}) => {
                 >
                     <WearTitle>{"My\nCloset"}</WearTitle>
                     <ClothesContainer>
-                        <ClothesImage source={require('../../assets/images/clothes/top.png')} />
+                        <ClothesImage source={require('../../assets/icons/clothes/top.png')} />
                         <ClothesText>민소매</ClothesText>
-                        <ClothesImage source={require('../../assets/images/clothes/bottom.png')} />
+                        <ClothesImage source={require('../../assets/icons/clothes/bottom.png')} />
                         <ClothesText>반바지</ClothesText>
                     </ClothesContainer>
                 </WearCard>
@@ -223,18 +221,6 @@ const BriefInfos = ({navigation}) => {
                         />
                     </Indicator>
                 ))}
-                {/*<Indicator>
-                    <DateIndicator>yesterday</DateIndicator>
-                    <IndicatorIcon />
-                </Indicator>
-                <Indicator>
-                    <DateIndicator>today</DateIndicator>
-                    <IndicatorIcon />
-                </Indicator>
-                <Indicator>
-                    <DateIndicator>tomorrow</DateIndicator>
-                    <IndicatorIcon />
-                </Indicator>*/}
             </IndicatorContainer>
         </Container>
     );

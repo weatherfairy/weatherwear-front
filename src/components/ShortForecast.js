@@ -44,7 +44,7 @@ const Temperature = styled.Text`
     color: ${({theme}) => theme.text};
 `;
 
-const ShortForecast = () => {
+const ShortForecast = ({data}) => {
     const [fontsLoaded] = useFonts({
         "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf"),
     });
@@ -60,9 +60,9 @@ const ShortForecast = () => {
                 <OneHourContainer key={hour}>
                     <InnerContainer><Hour>{hour}</Hour></InnerContainer>
                     <InnerContainer>
-                        <Sky source={require('../../assets/images/black_weather/clear_night.png')} />
+                        <Sky source={require('../../assets/icons/black_weather/clear_night.png')} />
                     </InnerContainer>
-                    <InnerContainer><Temperature>5°C</Temperature></InnerContainer>
+                    <InnerContainer><Temperature>{data.sky_array[hour-1]}°C</Temperature></InnerContainer>
                 </OneHourContainer>
             ))}
         </ShortForecastContainer>
