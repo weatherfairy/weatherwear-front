@@ -16,62 +16,17 @@ const ScrollContainer = styled.ScrollView`
 `;
 
 const WearRecommend = () => {
-    const [recommendations, setRecommendations] = useState([
-        {
-            "postNo": 1,
-            "postDate": "2024-02-10",
-            "minTemp": 10,
-            "maxTemp": 20,
-            "clothesText": "T-shirt and jeans",
-            "comment": "Feeling great!",
-            "emoji": 1,
-            "sky": 6,
-            "imageUrls": [
-                'https://via.placeholder.com/150',
-                'https://via.placeholder.com/200',
-                'https://via.placeholder.com/250'
-            ],
-        },
-        {
-            "postNo": 2,
-            "postDate": "2024-03-11",
-            "minTemp": 5,
-            "maxTemp": 15,
-            "clothesText": "Sweater and pants",
-            "comment": "A bit chilly but cozy.",
-            "emoji": 2,
-            "sky": 3,
-            "imageUrls": [
-                'https://via.placeholder.com/150',
-                'https://via.placeholder.com/200',
-                'https://via.placeholder.com/250'
-            ],
-        },
-        {
-            "postNo": 3,
-            "postDate": "2024-03-17",
-            "minTemp": 5,
-            "maxTemp": 15,
-            "clothesText": "Sweater and pants",
-            "comment": "A bit chilly but cozy.",
-            "emoji": 2,
-            "sky": 1,
-            "imageUrls": [
-                'https://via.placeholder.com/150',
-                'https://via.placeholder.com/200',
-                'https://via.placeholder.com/250'
-            ],
-        }
-    ]);
+    const [recommendations, setRecommendations] = useState([]);
    
     
     useEffect(()=>{
         //데이터 불러오기
         const fetchRecommendations = async ()=>{
             try{
-                const response = await fetch('api/v1/closet/recommend');
+                const response = await fetch('http://223.194.157.73:8080/api/v1/closet/recommend');
                 const data = await response.json();
-                setRecommendations(data.content);
+                setRecommendations(data);
+                //console.log(data);
             }catch(error){
                 console.error('추천 데이터 fetch실패', error);
             }
@@ -92,9 +47,11 @@ const WearRecommend = () => {
                         maxTemp={item.maxTemp}
                         sky={item.sky}
                         clothes={item.clothesText.split(' and ')} // and로 split
-                        comment={item.comment}
+                        comment={item.review}
                         emoji={item.emoji}
-                        imageUrls={item.imageUrls}
+                        image1 = {item.image1}
+                        image2 = {item.image2}
+                        image3 = {item.image3}
                     />
                 ))}
 

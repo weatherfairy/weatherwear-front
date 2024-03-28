@@ -18,7 +18,7 @@ const ImagesContainer = styled.ScrollView`
    width: ${ScreenWidth * 0.8}px;
 `;
 
-
+/*
 const ImageComponent = ({ imageUrls = [] }) => (
     <ImagesContainer
       horizontal={true}
@@ -32,7 +32,28 @@ const ImageComponent = ({ imageUrls = [] }) => (
       />
     ))}
     </ImagesContainer>
+);*/
+
+const ImageComponent = ({image1, image2, image3} ) => (
+  <ImagesContainer
+    horizontal={true}
+    showsHorizontalScrollIndicator={true}     
+  >
+  <Image 
+      source = {{uri: image1}}
+      style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+    />
+    <Image 
+      source = {{uri: image2}}
+      style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+    />
+    <Image 
+      source = {{uri: image3}}
+      style={{ width: ScreenWidth * 0.8, height: ScreenHeight * 0.4, resizeMode: 'contain', marginRight: 10 }}//contain: 비율유지, stretch: 비율유지x
+    />
+  </ImagesContainer>
 );
+
 
 
 const InfoContinaer = styled.View`
@@ -65,11 +86,11 @@ const getSkyIcon = (sky) => {
 const getSatisfactionIcon = (emoji) => {
     switch (emoji) {
       case 1:
-        return require('../../assets/icons/best.png');
+        return require('../../assets/icons/bad.png');
       case 2:
         return require('../../assets/icons/good.png');
       case 3:
-        return require('../../assets/icons/bad.png');
+        return require('../../assets/icons/best.png');
       default:
         return null; 
     }
@@ -121,7 +142,7 @@ const styles = StyleSheet.create({
 
 
 
-const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, sky, clothes, comment, emoji, imageUrls }) => {
+const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, sky, clothes, comment, emoji, image1, image2, image3}) => {
     
 
     return(
@@ -133,7 +154,7 @@ const RecommendPost =  ({ postNo, postDate, minTemp, maxTemp, sky, clothes, comm
             <Image style = {styles.sky} source = {getSkyIcon(sky)}/>
             </View>
             </View>
-            <ImageComponent imageUrls={imageUrls}/>
+            <ImageComponent image1 = {image1} image2 = {image2} image3 = {image3}/>
             <InfoContinaer>           
             <View style = {styles.parallel}>
                <Text style = {styles.clothes}>{clothes.join(', ')}</Text>

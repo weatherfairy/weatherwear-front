@@ -2,13 +2,14 @@ import styled from 'styled-components/native';
 import React, {useState} from 'react';
 import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';//932,430
+import { ScrollView } from 'react-native-gesture-handler';
 
 const data = [
     {postNo: '1', date: '2024/1/25', image: require('../../assets/images/example.png')},
     {postNo: '2', date: '2024/1/26'},
-    {postNo: '3',  date: '2024/1/27', image: require('../../assets/images/example.png')},
+    {postNo: '3',  date: '2024/1/27'},
     {postNo: '4',  date: '2024/1/29'},
-    {postNo: '5',  date: '2024/1/28', image: require('../../assets/images/example.png')},
+    {postNo: '5',  date: '2024/1/28'},
     {postNo: '6', date: '2024/1/30'},
     {postNo: '7',  date: '2024/2/2'},
     {postNo: '8',  date: '2/4'},
@@ -57,13 +58,13 @@ const DateText = styled.Text`
 
 const RecordGallery = () => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalContent, setModalContent] = useState(null);//모달에 표시할 내용
+    const [modalContent, setModalContent] = useState(null);
 
 
     const fetchDataFromServer = async (postNo) => {
-        /*
+        
         try {
-          const response = await fetch(`http://223.194.158.167:8080/api/v1/closet/${postNo}`);
+          const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
           if (response.ok) {
             const data = await response.json();
             return data;
@@ -74,7 +75,7 @@ const RecordGallery = () => {
           Alert.alert("에러", error.message);
           return null;
         }
-        */
+        /*
         const mockData = {
             images: [
                 'https://via.placeholder.com/150',
@@ -88,6 +89,7 @@ const RecordGallery = () => {
             maxTemp: 5,            
         };
         return mockData;
+        */
       };
     
  
@@ -128,21 +130,24 @@ const RecordGallery = () => {
                   </View>
                   <ModalContainer>
                         <View style = {styles.images}>
-                        {modalContent?.images?.map((image, index) => (
-                                <Image key={index} source={{uri: image}} /> //styles = {}
-                        ))}
+                        <ImagesContainer horizental= {true} showsHorizontalScrollIndicator={true}   >
+                        <Image source={{uri: modalContent?.image1}} style={{width: '100%', height: '100%'}} />
+                        <Image source={{uri: modalContent?.image2}} style={{width: '100%', height: '100%'}} />
+                        <Image source={{uri: modalContent?.image3}} style={{width: '100%', height: '100%'}} />
+                        </ImagesContainer>
                         </View>
+                        
                         <InfoContainer>
                         <View style = {[styles.parallel, styles.strech]}>
                         <Text style = {styles.boldText}> {modalContent?.date}</Text>
                         <Text style = {styles.mediumText}>{modalContent?.minTemp}°C~{modalContent?.maxTemp}°C</Text>
                         </View>
                         <View style = {styles.parallel}>
-                        <Text style = {styles.mediumText}> {modalContent?.clothes}</Text>
-                        <EmojiComponent emoji = {modalContent?.satisfactionEmoji}/>
+                        <Text style = {styles.mediumText}> {modalContent?.clothesText}</Text>
+                        <EmojiComponent emoji = {modalContent?.emoji}/>
                         </View>
                         <View style = {styles.margin}>
-                        <Text style = {styles.lightText}>{modalContent?.comment}</Text>
+                        <Text style = {styles.lightText}>{modalContent?.review}</Text>
                         </View>
                         </InfoContainer>
                     </ModalContainer>
@@ -193,6 +198,7 @@ const ImagesContainer = styled.ScrollView`
 
 
 
+
 const InfoContainer = styled.View`
     margin-top: 10px;
     margin-left: 3px;
@@ -237,7 +243,6 @@ const IconButton = ({ onPress, source }) => (
       <Image source={source} style={{ width: 30, height: 30 }} />
     </TouchableOpacity>
   );
-
 
 
 
