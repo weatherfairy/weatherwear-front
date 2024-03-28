@@ -124,14 +124,12 @@ const RecordGallery = ({ navigation }) => {
         }
         /*
         const mockData = {
-            images: [
-                'https://via.placeholder.com/150',
-                'https://via.placeholder.com/200',
-                'https://via.placeholder.com/250'
-            ],
-            satisfactionEmoji: 1, 
-            comment: "오늘의 코멘트는요..뭘로 할까요,, 모르겠어요!!! 우리 캡스톤은 5/31일 발표예요ㅎ-ㅎ",
-            clothes: "티셔츠, 청바지, 운동화",
+            image1: 'https://picsum.photos/id/237/200/300',
+            image2: 'https://picsum.photos/id/237/200/300',
+            image3: 'https://picsum.photos/id/237/200/300',
+            emoji: 1, 
+            review: "오늘의 코멘트는요..뭘로 할까요,, 모르겠어요!!! 우리 캡스톤은 5/31일 발표예요ㅎ-ㅎ",
+            clothesText: "티셔츠, 청바지, 운동화",
             minTemp: -5,
             maxTemp: 5,            
         };
