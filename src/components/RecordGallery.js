@@ -68,10 +68,10 @@ const FloatingButton = styled.TouchableOpacity`
     right: ${Dimensions.get('window').height*0.02}px;
     justify-content: center;
     align-items: center;
-    elevation: 12;
+    elevation: 15;
     shadow-color: ${({theme}) => theme.wearText};
     shadow-opacity: 0.3;
-    shadow-radius: 5px;
+    shadow-radius: 3px;
 `;
 const AddWritingIcon = styled(FontAwesome6).attrs(({theme}) => ({
     name: 'add',

@@ -59,22 +59,21 @@ const Main = () => {
                 name="WearWriting" 
                 component={WearWriting} 
                 options={{
-                    headerTitle: 'Posting',
+                    headerTitle: 'Post',
                     headerTitleAlign: 'center',
                     headerBackTitleVisible: false,
                     headerTintColor: theme.wearText,
                     headerStyle: {
                         backgroundColor: theme.wearBackground,
-                        height: (screenHeight/35)*3.5,
+                        height: (screenHeight/35)*3.9,
                     },
                     headerTitleStyle: {
                         fontSize: screenHeight/35,
-                        fontFamily: 'GmarketSansTTFBold', // 커스텀 폰트 가족 설정 (예시)
-                        // 커스텀 폰트를 사용하려면 해당 폰트 파일을 프로젝트에 포함시키고, react-native.config.js 등에서 선언해야 할 수 있습니다.
+                        fontFamily: 'GmarketSansTTFBold'
                     },
                     headerLeft: ({onPress, tintColor}) => (<MaterialIcons
                         name="keyboard-arrow-left"
-                        size={screenHeight/20}
+                        size={screenHeight/22}
                         color={tintColor}
                         onPress={onPress}
                     />)
