@@ -109,7 +109,7 @@ const RecordGallery = ({ navigation }) => {
     const [modalContent, setModalContent] = useState(null);//모달에 표시할 내용
 
     const fetchDataFromServer = async (postNo) => {
-        
+        /*
         try {
             const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
             if (response.ok) {
@@ -121,8 +121,8 @@ const RecordGallery = ({ navigation }) => {
         } catch (error) {
             Alert.alert("에러", error.message);
             return null;
-        }
-        /*
+        }*/
+        
         const mockData = {
             image1: 'https://picsum.photos/id/237/200/300',
             image2: 'https://picsum.photos/id/237/200/300',
@@ -134,7 +134,7 @@ const RecordGallery = ({ navigation }) => {
             maxTemp: 5,            
         };
         return mockData;
-        */
+        
     };
 
 
@@ -187,11 +187,11 @@ const RecordGallery = ({ navigation }) => {
                                     <Text style = {styles.mediumText}>{modalContent?.minTemp}°C~{modalContent?.maxTemp}°C</Text>
                                 </View>
                                 <View style = {styles.parallel}>
-                                    <Text style = {styles.mediumText}> {modalContent?.clothes}</Text>
-                                    <EmojiComponent emoji = {modalContent?.satisfactionEmoji}/>
+                                    <Text style = {styles.mediumText}> {modalContent?.clothesText}</Text>
+                                    <EmojiComponent emoji = {modalContent?.emoji}/>
                                 </View>
                                 <View style = {styles.margin}>
-                                    <Text style = {styles.lightText}> {modalContent?.comment}</Text>
+                                    <Text style = {styles.lightText}> {modalContent?.review}</Text>
                                 </View>
                             </InfoContainer>
                         </ModalContainer>
