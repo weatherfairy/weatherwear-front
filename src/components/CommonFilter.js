@@ -3,16 +3,16 @@ import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 
 const modalWidth = Dimensions.get('window').width;
-const modalHeight = Dimensions.get('window').height * 0.6;
+const modalHeight = Dimensions.get('window').height * 0.65;
 
 const OthersContainer = styled.View`
-    height: ${modalHeight-modalHeight/7-modalHeight/8}px;
+    height: ${(modalHeight-modalHeight/9-modalHeight/9)/7*6}px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 `;
 const OptionContainer = styled.View`
-    height: ${(modalHeight-modalHeight/7-modalHeight/8)/6}px;
+    height: ${(modalHeight-modalHeight/9-modalHeight/9)/7}px;
     width: ${modalWidth/2}px;
     align-items: center;
     flex-direction: row;
@@ -26,6 +26,7 @@ const Checkbox = styled.TouchableOpacity`
     border-color: '#000';
 `;
 const CheckboxName = styled.Text`
+    font-family: GmarketSansTTFMedium;
     font-size: ${(modalHeight-modalHeight/7-modalHeight/8)/6*0.4}px;
     padding-left: 10px;
 `;

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import {theme} from '../themes/theme';
 import {Dimensions} from 'react-native';
+import React from 'react';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -42,20 +43,48 @@ const Temperature = styled.Text`
     font-family: GmarketSansTTFMedium;
     color: ${({theme}) => theme.text};
 `;
+const getWeatherIconPath = (sky, isDayTime) => {
+    if (isDayTime) {
+        switch(sky) {
+            case 1: return require('../../assets/icons/black_weather/clear_day.png');
+            case 4: return require('../../assets/icons/black_weather/cloudy_day.png');
+            case 2: return require('../../assets/icons/black_weather/rain.png');
+            case 3: return require('../../assets/icons/black_weather/snow.png');
+            case 5: return require('../../assets/icons/black_weather/overcast.png');
+            case 6: return require('../../assets/icons/black_weather/sleet.png');
+            case 7: return require('../../assets/icons/black_weather/windy.png');
+            default: return require('../../assets/icons/black_weather/clear_day.png');
+        }
+    } else {
+        switch(sky) {
+            case 1: return require('../../assets/icons/white_weather/clear_night.png');
+            case 4: return require('../../assets/icons/white_weather/cloudy_night.png');
+            case 2: return require('../../assets/icons/white_weather/rain.png');
+            case 3: return require('../../assets/icons/white_weather/snow.png');
+            case 5: return require('../../assets/icons/white_weather/overcast.png');
+            case 6: return require('../../assets/icons/white_weather/sleet.png');
+            case 7: return require('../../assets/icons/white_weather/windy.png');
+            default: return require('../../assets/icons/white_weather/clear_night.png');
+        }
+    }
+};
 
 const ShortForecast = ({data}) => {
-
-    let hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    const currentHour = new Date().getHours();
+    const isDayTime = currentHour >=6 && currentHour < 18;
 
     return (
         <ShortForecastContainer>
-            {hours.map((hour) => (
-                <OneHourContainer key={hour}>
-                    <InnerContainer><Hour>{hour}</Hour></InnerContainer>
+            {data.temp_array.map((temp, index) => (
+                <OneHourContainer key={index}>
+                    <InnerContainer><Hour>{index+1}</Hour></InnerContainer>
                     <InnerContainer>
-                        <Sky source={require('../../assets/icons/black_weather/clear_night.png')} />
+                        <Sky 
+                            key={index}
+                            source={getWeatherIconPath(data.sky_array[index], isDayTime)} 
+                        />
                     </InnerContainer>
-                    <InnerContainer><Temperature>{data.sky_array[hour-1]}°C</Temperature></InnerContainer>
+                    <InnerContainer><Temperature>{temp}°C</Temperature></InnerContainer>
                 </OneHourContainer>
             ))}
         </ShortForecastContainer>

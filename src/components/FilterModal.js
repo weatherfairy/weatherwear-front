@@ -7,7 +7,7 @@ import WeatherFilter from './WeatherFilter';
 import SatisfyFilter from './SatisfyFilter';
 import DateFilter from './DateFilter';
 
-const modalHeight = Dimensions.get('window').height*0.6;
+const modalHeight = Dimensions.get('window').height*0.65;
 const modalWidth = Dimensions.get('window').width;
 
 const ModalBackScreen = styled.View`
@@ -23,7 +23,7 @@ const ModalContainer = styled.View`
     flex-direction: column;
 `;
 const TopContainer = styled.View`
-    height: ${modalHeight/8}px;
+    height: ${modalHeight/9}px;
     width: ${modalWidth}px;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
@@ -42,6 +42,7 @@ const CloseIcon = styled(AntDesign).attrs(({theme}) => ({
     color: '#000'
 }))``;
 const FilterTitle = styled.Text`
+    font-family: GmarketSansTTFBold;
     font-size: ${modalHeight/14}px;
     color: #000;
     margin-left: ${modalWidth/2-36-modalHeight/13}px;
@@ -59,8 +60,32 @@ const FilterButton = styled.TouchableOpacity`
     justify-content: center;
 `;
 const FilterOption = styled.Text`
+    font-family: GmarketSansTTFMedium;
     font-size: ${modalHeight/19}px;
     color: #000;
+`;
+const ApplyButtonContainer = styled.View`
+    height: ${modalHeight/9}px;
+    width: ${modalWidth}px;
+    flex-direction: row-reverse;
+    //background-color: #3165F6;
+`;
+const ApplyButton = styled.TouchableOpacity`
+    height: ${modalHeight/15}px;
+    width: ${modalWidth/5}px;
+    border-radius: ${modalHeight/30}px;
+    margin-right: ${modalWidth/20}px;
+    background-color: #3165F6;
+    justify-content: center;
+    align-items: center;
+    elevation: 7;
+    shadow-color: #000;
+    shadow-opacity: 0.3;
+    shadow-radius: 3px;
+`;
+const ApplyText = styled.Text`
+    color: #fff;
+    font-family: GmarketSansTTFMedium;
 `;
 const tempValues = {
     min: -50,
@@ -177,6 +202,9 @@ const FilterModal = ({isVisible, onClose, activeFilterType}) => {
                         </FilterButton>
                     </FilterContainer>
                     {renderActiveFilter()}
+                    <ApplyButtonContainer>
+                        <ApplyButton><ApplyText>적용하기</ApplyText></ApplyButton>
+                    </ApplyButtonContainer>
                 </ModalContainer>
             </ModalBackScreen>
         </Modal>

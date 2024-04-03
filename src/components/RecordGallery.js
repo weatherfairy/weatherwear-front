@@ -6,11 +6,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 
 const data = [
-    {postNo: '1', date: '1/25', image: require('../../assets/images/example.png')},
+    {postNo: '1', date: '1/25', postImageUrl: require('../../assets/images/example.png')},
     {postNo: '2', date: '1/26'},
-    {postNo: '3',  date: '1/27', image: require('../../assets/images/example.png')},
+    {postNo: '3',  date: '1/27', postImageUrl: require('../../assets/images/example.png')},
     {postNo: '4',  date: '1/29'},
-    {postNo: '5',  date: '1/28', image: require('../../assets/images/example.png')},
+    {postNo: '5',  date: '1/28', postImageUrl: require('../../assets/images/example.png')},
     {postNo: '6', date: '1/30'},
     {postNo: '7',  date: '2/2'},
     {postNo: '8',  date: '2/4'},
@@ -26,9 +26,30 @@ const data = [
     {postNo: '18',  date: '2/4'},
     {postNo: '19',  date: '2/1'},
     {postNo: '20',  date: '2/5'},
-    {postNo: '21',  date: '1/25'}
+    {postNo: '21',  date: '1/25'},
+    {postNo: '22', date: '1/25', postImageUrl: require('../../assets/images/example.png')},
+    {postNo: '23', date: '1/26'},
+    {postNo: '24',  date: '1/27', postImageUrl: require('../../assets/images/example.png')},
+    {postNo: '25',  date: '1/29'},
+    {postNo: '26',  date: '1/28', postImageUrl: require('../../assets/images/example.png')},
+    {postNo: '27', date: '1/30'},
+    {postNo: '28',  date: '2/2'},
+    {postNo: '29',  date: '2/4'},
+    {postNo: '30',  date: '2/1'},
+    {postNo: '31', date: '2/5'},
+    {postNo: '32',  date: '1/25'},
+    {postNo: '33',  date: '1/26'},
+    {postNo: '34',  date: '1/27'},
+    {postNo: '35',  date: '1/29'},
+    {postNo: '36',  date: '1/28'},
+    {postNo: '37',  date: '1/30'},
+    {postNo: '38',  date: '2/2'},
+    {postNo: '39',  date: '2/4'},
+    {postNo: '40',  date: '2/1'},
+    {postNo: '41',  date: '2/5'}
 ];
 const Container = styled.SafeAreaView`
+    flex: 1;
     background-color: ${({theme}) => theme.wearBackground};
 `;
 const ImageContainer = styled.TouchableOpacity`
@@ -64,7 +85,7 @@ const FloatingButton = styled.TouchableOpacity`
     background-color: ${({theme}) => theme.wearBackground};
     border-radius: ${Dimensions.get('window').height/32}px;
     position: absolute;
-    bottom: ${Dimensions.get('window').height*0.075}px;
+    bottom: ${Dimensions.get('window').height*0.025}px;
     right: ${Dimensions.get('window').height*0.02}px;
     justify-content: center;
     align-items: center;
@@ -80,16 +101,25 @@ const AddWritingIcon = styled(FontAwesome6).attrs(({theme}) => ({
 }))``;
 const RecordGallery = ({ navigation }) => {
     const [imageData, setImageData] = useState([]);
+    const [page, setPage] = useState(0);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchImageData = async () => {
             try {
-                const response = await fetch('http://223.194.158.167:8080/api/v1/closet/lists', {
-                method: 'GET'
-                /*headers: {
-                    'Content-Type': 'application/json',
-                }*/
-            });
+                const queryParams = new URLSearchParams({
+                    page: 0,
+                    size: 24
+                }).toString();
+                //const response = await fetch('http://223.194.158.167:8080/api/v1/closet/lists', {
+                //method: 'GET'
+                const response = await fetch(`http://15.165.61.76:8080/api/v1/closet/list?${queryParams}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
     
                 const jsonResponse = await response.json();
                 console.log('Response.content');
@@ -103,15 +133,64 @@ const RecordGallery = ({ navigation }) => {
         };
     
         fetchImageData();
-}, []);
+}, []);*/
+    useEffect(() => {
+        fetchImageData();
+    }, []);
+
+    const fetchImageData = async (newPage = page) => {
+        if (!hasMore && newPage !== 0) return; // 더 이상 불러올 페이지가 없으면 요청하지 않음
+        
+        try {
+            const queryParams = new URLSearchParams({
+                page: newPage,
+                size: 24,
+            }).toString();
+
+            const response = await fetch(`http://15.165.61.76:8080/api/v1/closet/list?${queryParams}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const jsonResponse = await response.json();
+            if (jsonResponse.content) {
+                if (newPage === 0) {
+                    setImageData(jsonResponse.contet)
+                } else {
+                    setImageData(prevData => [...prevData, ...jsonResponse.content]);
+                }
+                setHasMore(!jsonResponse.last); //마지막 페이지인지 확인
+                setPage(newPage); //현재 페이지 상태 업데이트
+                //console.log(jsonResponse);
+            }
+            console.log(jsonResponse);
+        } catch (error) {
+            console.error('Error fetching image data:', error);
+        }
+    };
+
+    const handleRefresh = () => {
+        setIsRefreshing(true);
+        fetchImageData(0);
+        setIsRefreshing(false);
+    };
+
+    const handleLoadMore = () => {
+        if (hasMore) {
+            fetchImageData(page + 1);
+        }
+    }
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);//모달에 표시할 내용
 
     const fetchDataFromServer = async (postNo) => {
-        /*
+        
         try {
-            const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
+            //const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
+            const response = await fetch('http://15.165.61.76:8080');
             if (response.ok) {
                 const data = await response.json();
                 return data;
@@ -121,8 +200,8 @@ const RecordGallery = ({ navigation }) => {
         } catch (error) {
             Alert.alert("에러", error.message);
             return null;
-        }*/
-        
+        }
+        /*
         const mockData = {
             image1: 'https://picsum.photos/id/237/200/300',
             image2: 'https://picsum.photos/id/237/200/300',
@@ -134,7 +213,7 @@ const RecordGallery = ({ navigation }) => {
             maxTemp: 5,            
         };
         return mockData;
-        
+        */
     };
 
 
@@ -207,19 +286,23 @@ const RecordGallery = ({ navigation }) => {
                 </View>
             </Modal>
             <FlatList
-                data={data}
+                data={imageData}
                 renderItem={({item}) => (
                     
                     <ImageContainer onPress={() => handleImagePress(item.postNo)}>
                         <Img 
-                            //source={{ uri: item.imageUrl }} 
-                            source={item.image}
+                            //source={{ uri: item.postImageUrl }} 
+                            source={item.postImageUrl}
                         />
                         <DateContainer><DateText>{item.date}</DateText></DateContainer>
                     </ImageContainer>
                 )}
                 numColumns={3}
-                contentContainerStyle={{ paddingBottom: Dimensions.get('window').height*0.055 }} 
+                contentContainerStyle={{ paddingBottom: Dimensions.get('window').height*0.055 }}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.7} // 목록의 70% 지점에서 다음 페이지 로드
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
             />
             <FloatingButton
                 onPress={() => navigation.navigate('WearWriting')}

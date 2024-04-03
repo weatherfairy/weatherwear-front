@@ -3,11 +3,11 @@ import styled from 'styled-components/native';
 import {Dimensions, View, Text} from 'react-native';
 import { Slider } from "@miblanchard/react-native-slider";
 
-const modalHeight = Dimensions.get('window').height*0.6;
+const modalHeight = Dimensions.get('window').height*0.65;
 
 
 const TempFilterContainer = styled.View`
-    height: ${modalHeight-modalHeight/7-modalHeight/8}px;
+    height: ${(modalHeight-modalHeight/9-modalHeight/9)/7*6}px;
     flex-direction: column;
     align-items: stretch;
 `;
@@ -46,7 +46,7 @@ const TempFilter = ({ values, onValuesChange }) => {
     return (
         <TempFilterContainer>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: modalHeight / 17.5, paddingBottom: 10 }}>
+                <Text style={{ fontSize: modalHeight / 17.5, paddingBottom: 10, paddingTop: 20 }}>
                     {`${sliderValue[0]}°C ~ ${sliderValue[1]}°C`}
                 </Text>
             </View>

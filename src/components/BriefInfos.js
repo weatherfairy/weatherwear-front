@@ -164,10 +164,43 @@ const DateIndicator = styled.Text`
     color: ${({theme}) => theme.text};
     margin-bottom: ${fontSize*0.3}px;
 `;
+const getSkyIcon = (sky, isDayTime) => {
+    switch(sky) {
+        case 1:
+            return isDayTime 
+                ? require('../../assets/icons/color_weather/clear_day.png') 
+                : require('../../assets/icons/color_weather/clear_night.png');
+        case 4:
+            return isDayTime 
+                ? require('../../assets/icons/color_weather/cloudy_day.png') 
+                : require('../../assets/icons/color_weather/cloudy_night.png');
+        case 2:
+            return require('../../assets/icons/color_weather/rain.png');
+        case 3:
+            return require('../../assets/icons/color_weather/snow.png');
+        case 5:
+            return require('../../assets/icons/color_weather/overcast.png');
+        case 6:
+            return require('../../assets/icons/color_weather/sleet.png');
+        case 7:
+            return require('../../assets/icons/color_weather/windy.png');
+        default:
+            return isDayTime 
+                ? require('../../assets/icons/color_weather/clear_day.png') // 기본 낮 아이콘
+                : require('../../assets/icons/color_weather/clear_night.png'); // 기본 밤 아이콘
+    }
+};
 
-const BriefInfos = ({ data, navigation }) => {
-    
+const BriefInfos = ({ data, navigation, changeDate }) => {
     const [selectedIndicator, setSelectedIndicator] = useState(1);
+    const currentHour = new Date().getHours();
+    const isDayTime = currentHour >= 6 && currentHour < 18;
+
+    const handleDateChange = (index) => {
+        setSelectedIndicator(index);
+        const date = index === 0 ? 'yesterday' : index === 2 ? 'tomorrow' : 'today';
+        changeDate(date);
+    };
 
     return (
         <Container>
@@ -183,7 +216,7 @@ const BriefInfos = ({ data, navigation }) => {
                     </PrecipitationPercentCard>
                     <TemperatureCard>
                         <Temperature>{data.temp}°C</Temperature>
-                        <SkyImage source={require('../../assets/icons/color_weather/snow.png')} />
+                        <SkyImage source={getSkyIcon(data.sky, isDayTime)} />
                     </TemperatureCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
@@ -209,7 +242,7 @@ const BriefInfos = ({ data, navigation }) => {
                         <DateIndicator numberOfLines={1}>{label}</DateIndicator>
                         <IndicatorIcon
                             selected={selectedIndicator === index}
-                            onPress={() => setSelectedIndicator(index)}
+                            onPress={() => handleDateChange(index)}
                         />
                     </Indicator>
                 ))}
