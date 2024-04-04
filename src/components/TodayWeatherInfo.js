@@ -10,14 +10,15 @@ const Container = styled.View`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    height: ${screenHeight*0.35}px;
+    height: ${screenHeight*0.4}px;
     width: ${screenWidth}px;
 `;
 const LocationContainer = styled.View`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: -10px;
+    //margin-top: -10px;
+    padding-bottom: 12px;
 `;
 const LocationIcon = styled(Octicons).attrs(({theme}) => ({
     name: 'location',
@@ -33,24 +34,23 @@ const Location = styled.Text`
 const InfoCardContainer = styled.View`
     flex-direction: row;
     justify-content: space-around;
-    height: ${screenHeight*0.25}px;
-    padding-top: ${screenHeight*0.01}px;
-    padding-left: ${screenWidth*0.05}px;
-    padding-right: ${screenWidth*0.05}px;
+    height: ${screenHeight*0.3}px;
+    padding-left: ${screenWidth*0.01}px;
+    padding-right: ${screenWidth*0.01}px;
 `;
 const LeftCardsContainer = styled.View`
     flex-direction: column;
     justify-content: space-between;
-    width: ${screenWidth*0.2}px;
-    height: ${screenHeight*0.25}px;
+    width: ${screenWidth*0.24}px;
+    height: ${screenHeight*0.3}px;
 `;
 const PrecipitationPercentCard = styled.View`
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #FEFF99;
-    width: ${screenWidth*0.2}px;
-    height: ${screenHeight*0.12}px;
+    width: ${screenWidth*0.22}px;
+    height: ${screenHeight*0.14}px;
     border-radius: 15px;
 `;
 const PrecipitaionTitle = styled.Text`
@@ -68,8 +68,8 @@ const TemperatureCard = styled.View`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: ${screenWidth*0.45}px;
-    height: ${screenHeight*0.25}px;
+    width: ${screenWidth*0.4}px;
+    height: ${screenHeight*0.3}px;
     padding-top: ${screenHeight*0.015}px;
     padding-bottom: ${screenHeight*0.015}px;
 `;
@@ -88,8 +88,8 @@ const FinedustCard = styled.View`
     align-items: center;
     justify-content: center;
     background-color: #F8B99B;
-    width: ${screenWidth*0.2}px;
-    height: ${screenHeight*0.12}px;
+    width: ${screenWidth*0.22}px;
+    height: ${screenHeight*0.14}px;
     border-radius: 15px;
 `;
 const FinedustTitle = styled.Text`
@@ -104,10 +104,11 @@ const Finedust = styled.Text`
     color: #000;
 `;
 const WearCard = styled.TouchableOpacity`
+    justify-content: space-around;
     flex-direction: column;
     background-color: #C2C2FC;
-    width: ${screenWidth*0.2}px;
-    height: ${screenHeight*0.25}px;
+    width: ${screenWidth*0.23}px;
+    height: ${screenHeight*0.3}px;
     border-radius: 15px;
     elevation: 10;
     shadow-color: ${({theme}) => theme.text};
@@ -131,8 +132,8 @@ const WearTitle = styled.Text`
     line-height: ${fontSize*1.2}px;
 `;
 const ClothesImage = styled.Image`
-    width: ${fontSize*2.1}px;
-    height: ${fontSize*2.1}px;
+    width: ${fontSize*2.5}px;
+    height: ${fontSize*2.5}px;
 `;
 const ClothesText = styled.Text`
     font-size: ${fontSize*0.6}px;
@@ -141,7 +142,16 @@ const ClothesText = styled.Text`
     padding-top: 5px;
     padding-bottom: 8px;
 `;
-
+const GotoContainer = styled.View`
+    justify-content: center;
+    align-items: center;
+`;
+const GotoCloset = styled.Text`
+    font-size: ${fontSize*0.75}px;
+    font-family: GmarketSansTTFMedium;
+    color: #000;
+    padding-bottom: 5px;
+`;
 const getSkyIcon = (sky, isDayTime) => {
     switch(sky) {
         case 1:
@@ -168,17 +178,40 @@ const getSkyIcon = (sky, isDayTime) => {
                 : require('../../assets/icons/color_weather/clear_night.png'); // 기본 밤 아이콘
     }
 };
+const bottomData = {
+    1: { name: "기모하의", image: require('../../assets/icons/bottom/1.png') },
+    2: { name: "리넨하의", image: require('../../assets/icons/bottom/2.png') },
+    3: { name: "면바지", image: require('../../assets/icons/bottom/3.png') },
+    4: { name: "반바지", image: require('../../assets/icons/bottom/4.png') },
+    5: { name: "슬랙스", image: require('../../assets/icons/bottom/5.png') },
+    6: { name: "짧은치마", image: require('../../assets/icons/bottom/6.png') },
+    7: { name: "청바지", image: require('../../assets/icons/bottom/7.png') },
+}
+const topData = {
+    1: { name: "가죽자켓", image: require('../../assets/icons/top/1.png') },
+    2: { name: "기모상의", image: require('../../assets/icons/top/2.png') },
+    3: { name: "누빔옷", image: require('../../assets/icons/top/3.png') },
+    4: { name: "니트", image: require('../../assets/icons/top/4.png') },
+    5: { name: "롱슬리브", image: require('../../assets/icons/top/5.png') },
+    6: { name: "리넨의상", image: require('../../assets/icons/top/6.png') },
+    7: { name: "맨투맨", image: require('../../assets/icons/top/7.png') },
+    8: { name: "목도리", image: require('../../assets/icons/top/8.png') },
+    9: { name: "민소매", image: require('../../assets/icons/top/9.png') },
+    10: { name: "바시티자켓", image: require('../../assets/icons/top/10.png') },
+    11: { name: "반팔", image: require('../../assets/icons/top/11.png') },
+    12: { name: "블라우스", image: require('../../assets/icons/top/12.png') },
+    13: { name: "야상", image: require('../../assets/icons/top/13.png') },
+    14: { name: "얇은가디건", image: require('../../assets/icons/top/14.png') },
+    15: { name: "얇은니트", image: require('../../assets/icons/top/15.png') },
+    16: { name: "얇은셔츠", image: require('../../assets/icons/top/16.png') },
+    17: { name: "코트", image: require('../../assets/icons/top/17.png') },
+    18: { name: "트렌치코트", image: require('../../assets/icons/top/18.png') },
+    19: { name: "패딩", image: require('../../assets/icons/top/19.png') },
+}
 
-const TodayWeatherInfos = ({ data, navigation, changeDate }) => {
-    const [selectedIndicator, setSelectedIndicator] = useState(1);
+const TodayWeatherInfos = ({ data, navigation }) => {
     const currentHour = new Date().getHours();
     const isDayTime = currentHour >= 6 && currentHour < 18;
-
-    const handleDateChange = (index) => {
-        setSelectedIndicator(index);
-        const date = index === 0 ? 'yesterday' : index === 2 ? 'tomorrow' : 'today';
-        changeDate(date);
-    };
 
     return (
         <Container>
@@ -190,7 +223,7 @@ const TodayWeatherInfos = ({ data, navigation, changeDate }) => {
                 <LeftCardsContainer>
                     <PrecipitationPercentCard>
                         <PrecipitaionTitle>강수확률</PrecipitaionTitle>
-                        <PrecipitationPercent>{data.rain}</PrecipitationPercent>
+                        <PrecipitationPercent>{data.rain}%</PrecipitationPercent>
                     </PrecipitationPercentCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
@@ -209,11 +242,14 @@ const TodayWeatherInfos = ({ data, navigation, changeDate }) => {
                         <WearTitle>CLOSET</WearTitle>
                     </WearTitlecontainer>
                     <ClothesContainer>
-                        <ClothesImage source={require('../../assets/icons/clothes/top.png')} />
-                        <ClothesText>민소매</ClothesText>
-                        <ClothesImage source={require('../../assets/icons/clothes/bottom.png')} />
-                        <ClothesText>반바지</ClothesText>
+                        <ClothesImage source={topData[data.top].image} />
+                        <ClothesText>{topData[data.top].name}</ClothesText>
+                        <ClothesImage source={bottomData[data.bottom].image} />
+                        <ClothesText>{bottomData[data.bottom].name}</ClothesText>
                     </ClothesContainer>
+                    <GotoContainer>
+                        <GotoCloset>Click!</GotoCloset>
+                    </GotoContainer>
                 </WearCard>
             </InfoCardContainer>
         </Container>

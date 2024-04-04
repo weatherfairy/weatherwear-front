@@ -86,7 +86,7 @@ const dummyData = {
     "temp": 12.7,
     "rain": 70,
     "sky": 2,
-    "dust": 2,
+    "dust": '보통',
     "top": 1,
     "bottom": 3,
     
@@ -117,12 +117,10 @@ const ScrollContainer = styled.ScrollView`
 `;
 
 const WeatherMain = ({navigation}) => {
-    const [selectedDate, setSelectedDate] = useState('today');
     //const [weatherData, setWeatherData] = useState(errorData);
 
     //테스트용 더미 날씨데이터
-    const weatherData = selectedDate === 'yesterday' ? dummyData :
-                        selectedDate === 'tomorrow' ? dummyData : dummyData;
+    const weatherData = dummyData;
     
     /*
     useEffect(() => {
@@ -162,7 +160,7 @@ const WeatherMain = ({navigation}) => {
             </Container>*/
         <Container>
             <ScrollContainer>
-                <TodayWeatherInfos data={weatherData} navigation={navigation} changeDate={setSelectedDate}/>
+                <TodayWeatherInfos data={weatherData} navigation={navigation} />
                 <ThreeDays data={weatherData} />
                 <WeekForecast />
             </ScrollContainer>
