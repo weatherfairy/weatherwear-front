@@ -1,4 +1,4 @@
-import {Platform, StatusBar, Dimensions, TouchableOpacity} from 'react-native';
+import {Platform, StatusBar, Dimensions, TouchableOpacity, Image} from 'react-native';
 import styled from 'styled-components/native';
 import {theme} from '../themes/theme';
 import { FontAwesome } from '@expo/vector-icons';
@@ -14,8 +14,8 @@ const TitleContainer = styled.View`
     background-color: ${({backgroundColor}) => backgroundColor};
     //padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
     //padding-top: ${StatusBar.currentHeight}px;
-    padding-left: ${screenWidth*0.05}px;
-    padding-right: ${screenWidth*0.05}px;
+    padding-left: ${screenWidth*0.03}px;
+    padding-right: ${screenWidth*0.03}px;
     height: ${fontSize*1.7}px;
     width: ${screenWidth}px;
 `;
@@ -32,12 +32,24 @@ const Title = styled.Text`
 const TitleBar = ({navigation, backgroundColor, textColor}) => {
 
     return (
-        <TitleContainer backgroundColor={backgroundColor}>
+        /*<TitleContainer backgroundColor={backgroundColor}>
             <TouchableOpacity 
                 onPress={() => navigation.navigate('WeatherMain')}
                 style={{marginLeft: -20}}
             >
                 <Title textColor={textColor}>Weather Wear</Title>
+            </TouchableOpacity>
+            <UserCircle color={textColor} style={{marginRight: 10}}/>
+        </TitleContainer>*/
+        <TitleContainer backgroundColor={backgroundColor}>
+            <TouchableOpacity 
+                onPress={() => navigation.navigate('WeatherMain')}
+                style={{marginLeft: -20}}
+            >
+                <Image 
+                    source={require('../../assets/icons/Component8.png')} 
+                    //style={{width: screenWidth/2}}
+                />
             </TouchableOpacity>
             <UserCircle color={textColor} style={{marginRight: 10}}/>
         </TitleContainer>

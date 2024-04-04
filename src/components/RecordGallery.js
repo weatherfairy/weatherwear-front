@@ -6,11 +6,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 
 const data = [
-    {postNo: '1', date: '1/25', postImageUrl: require('../../assets/images/example.png')},
+    {postNo: '1', date: '1/25', imageUrl: require('../../assets/images/example.png')},
     {postNo: '2', date: '1/26'},
-    {postNo: '3',  date: '1/27', postImageUrl: require('../../assets/images/example.png')},
+    {postNo: '3',  date: '1/27', imageUrl: require('../../assets/images/example.png')},
     {postNo: '4',  date: '1/29'},
-    {postNo: '5',  date: '1/28', postImageUrl: require('../../assets/images/example.png')},
+    {postNo: '5',  date: '1/28', imageUrl: require('../../assets/images/example.png')},
     {postNo: '6', date: '1/30'},
     {postNo: '7',  date: '2/2'},
     {postNo: '8',  date: '2/4'},
@@ -99,55 +99,22 @@ const AddWritingIcon = styled(FontAwesome6).attrs(({theme}) => ({
     size: Dimensions.get('window').height/24,
     color: theme.wearText
 }))``;
-const RecordGallery = ({ navigation }) => {
+const RecordGallery = ({ navigation, filterParams }) => {
     const [imageData, setImageData] = useState([]);
     const [page, setPage] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    /*useEffect(() => {
-        const fetchImageData = async () => {
-            try {
-                const queryParams = new URLSearchParams({
-                    page: 0,
-                    size: 24
-                }).toString();
-                //const response = await fetch('http://223.194.158.167:8080/api/v1/closet/lists', {
-                //method: 'GET'
-                const response = await fetch(`http://15.165.61.76:8080/api/v1/closet/list?${queryParams}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-    
-                const jsonResponse = await response.json();
-                console.log('Response.content');
-                if (jsonResponse && jsonResponse.content) {
-                setImageData(jsonResponse.content);
-                console.log('ImageData set: ', jsonResponse.content);
-                }
-            } catch (error) {
-                console.error('Error fetching image data:', error);
-            }
-        };
-    
-        fetchImageData();
-}, []);*/
     useEffect(() => {
         fetchImageData();
-    }, []);
+    }, [filterParams]);
 
     const fetchImageData = async (newPage = page) => {
         if (!hasMore && newPage !== 0) return; // 더 이상 불러올 페이지가 없으면 요청하지 않음
         
         try {
-            const queryParams = new URLSearchParams({
-                page: newPage,
-                size: 24,
-            }).toString();
-
-            const response = await fetch(`http://15.165.61.76:8080/api/v1/closet/list?${queryParams}`, {
+            console.log(queryParams);
+            const response = await fetch(`http://223.194.158.97:8080/api/v1/closet/lists?${filterParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -155,16 +122,10 @@ const RecordGallery = ({ navigation }) => {
             });
 
             const jsonResponse = await response.json();
-            if (jsonResponse.content) {
-                if (newPage === 0) {
-                    setImageData(jsonResponse.contet)
-                } else {
-                    setImageData(prevData => [...prevData, ...jsonResponse.content]);
-                }
-                setHasMore(!jsonResponse.last); //마지막 페이지인지 확인
-                setPage(newPage); //현재 페이지 상태 업데이트
+            setImageData(jsonResponse)
+                //setHasMore(!jsonResponse.last); //마지막 페이지인지 확인
+                //setPage(newPage); //현재 페이지 상태 업데이트
                 //console.log(jsonResponse);
-            }
             console.log(jsonResponse);
         } catch (error) {
             console.error('Error fetching image data:', error);
@@ -188,9 +149,9 @@ const RecordGallery = ({ navigation }) => {
 
     const fetchDataFromServer = async (postNo) => {
         
-        try {
+        /*try {
             //const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
-            const response = await fetch('http://15.165.61.76:8080');
+            const response = await fetch(`http://223.194.158.97:8080/api/v1/closet/lists/${postNo}`);
             if (response.ok) {
                 const data = await response.json();
                 return data;
@@ -200,8 +161,8 @@ const RecordGallery = ({ navigation }) => {
         } catch (error) {
             Alert.alert("에러", error.message);
             return null;
-        }
-        /*
+        }*/
+        
         const mockData = {
             image1: 'https://picsum.photos/id/237/200/300',
             image2: 'https://picsum.photos/id/237/200/300',
@@ -213,7 +174,7 @@ const RecordGallery = ({ navigation }) => {
             maxTemp: 5,            
         };
         return mockData;
-        */
+        
     };
 
 
@@ -227,6 +188,7 @@ const RecordGallery = ({ navigation }) => {
             console.log("로드 성공");
             setModalContent({ ...dataFromServer, date: itemDate });
             setModalVisible(true);
+            console.log(modalContent);
         }
         if (!dataFromServer) {
             console.log("로드 실패");
@@ -286,13 +248,13 @@ const RecordGallery = ({ navigation }) => {
                 </View>
             </Modal>
             <FlatList
-                data={imageData}
+                data={data}
                 renderItem={({item}) => (
                     
                     <ImageContainer onPress={() => handleImagePress(item.postNo)}>
                         <Img 
-                            //source={{ uri: item.postImageUrl }} 
-                            source={item.postImageUrl}
+                            //source={{ uri: item.imageUrl }}
+                            source={item.imageUrl}
                         />
                         <DateContainer><DateText>{item.date}</DateText></DateContainer>
                     </ImageContainer>

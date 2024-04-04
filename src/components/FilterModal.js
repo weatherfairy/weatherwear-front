@@ -120,7 +120,7 @@ const weatherOptions = [
     {korName: '바람', engName: 'windy'}
 ];
 
-const FilterModal = ({isVisible, onClose, activeFilterType}) => {
+const FilterModal = ({isVisible, onClose, activeFilterType, onApply}) => {
     const [tempValues, setTempValues] = React.useState({ min: -50, max: 50 });
     const [selectedOptions, setSelectedOptions] = React.useState({
         weather: weatherOptions.reduce((acc, option) => ({ ...acc, [option.engName]: true }), {}),
@@ -159,6 +159,41 @@ const FilterModal = ({isVisible, onClose, activeFilterType}) => {
             default:
                 return null;
         }
+    };
+
+    const applyFilters = () => {
+        // 기온 필터 파라미터
+        const tempParams = `min=${tempValues.min}&max=${tempValues.max}`;
+    
+        // 날씨 필터 파라미터
+        const weatherParams = Object.entries(selectedOptions.weather)
+            .filter(([key, value]) => value)
+            .map(([key]) => `sky=${weatherOptions.findIndex(option => option.engName === key)}`)
+            .join('&');
+    
+        // 날짜 필터 파라미터
+        const dateParams = Object.entries(selectedOptions.date)
+            .filter(([key, value]) => value)
+            .map(([key]) => `month=${monthOptions.find(option => option.engName === key).korName.replace('월', '')}`)
+            .join('&');
+    
+        // 만족도 필터 파라미터
+        const satisfyParams = Object.entries(selectedOptions.satisfy)
+            .filter(([key, value]) => value)
+            .map(([key]) => `emoji=${satisfyOptions.findIndex(option => option.engName === key)}`)
+            .join('&');
+    
+        // 전체 URL 파라미터 조합
+        const allParams = [tempParams, weatherParams, dateParams, satisfyParams].filter(param => param).join('&');
+    
+        // URL 생성
+        const apiUrl = `http://223.194.158.97:8080/api/v1/closet/lists?${allParams}`;
+    
+        console.log('API URL:', apiUrl); // 실제 요청 대신 콘솔에 출력
+        // 실제 네트워크 요청을 여기서 실행하세요. 예: fetch(apiUrl)...
+
+        onApply(apiUrl);
+        onClose();
     };
 
     return (
@@ -203,7 +238,9 @@ const FilterModal = ({isVisible, onClose, activeFilterType}) => {
                     </FilterContainer>
                     {renderActiveFilter()}
                     <ApplyButtonContainer>
-                        <ApplyButton><ApplyText>적용하기</ApplyText></ApplyButton>
+                        <ApplyButton onPress={applyFilters}>
+                            <ApplyText>적용하기</ApplyText>
+                        </ApplyButton>
                     </ApplyButtonContainer>
                 </ModalContainer>
             </ModalBackScreen>

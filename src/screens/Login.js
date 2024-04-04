@@ -33,6 +33,13 @@ const AppTitle = styled.Text`
     font-family: GmarketSansTTFBold;
     font-size: ${screenWidth/8}px;
 `;
+const TitleLogo = styled.Image`
+    width: ${screenWidth*0.7}px;
+    height: ${screenHeight/8}px;
+    position: absolute;
+    left: ${screenWidth/7}px;
+    zIndex: 1;
+`;
 const AppTitleImage = styled.Image`
     width: ${screenWidth/3}px;
     height: ${screenWidth/3}px;
@@ -67,11 +74,7 @@ const Login = () => {
     return (
         <Container>
             <AppTitleContainer>
-                <TextContainer>
-                    <AppTitle>Weather</AppTitle>
-                    <AppTitle>Wear</AppTitle>
-                </TextContainer>
-                <AppTitleImage source={require('../../assets/icons/color_weather/cloudy_night.png')} />
+                <TitleLogo source={require('../../assets/icons/appLogoBlack.png')} />
             </AppTitleContainer>
             <LoginBtn>
                 <CahtIcon/>

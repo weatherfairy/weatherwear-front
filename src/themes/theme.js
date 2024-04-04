@@ -8,7 +8,13 @@ const Colors = {
     wear_highlight: '#3165f6',
     grey: '#dadada',
     day_opacity: '#B0D8FF',
-    night_opacity: '#1A394E'
+    night_opacity: '#1A394E',
+    day_yesterday: '#A9C8FE',
+    day_today: '#B0D7FF',
+    day_tomorrow: '#C0CEED',
+    night_yesterday: '#3D556D',
+    night_today: '#1D445D',
+    night_tomorrow: '#505A62'
 };
 
 export const theme = {
@@ -30,7 +36,11 @@ export const dayTheme = {
     wearBackground: Colors.white,
     wearText: Colors.black,
     wearHighlight: Colors.wear_highlight,
-    grey: Colors.grey
+    grey: Colors.grey,
+
+    yesterdayBox: Colors.day_yesterday,
+    todayBox: Colors.day_today,
+    tomorrowBox: Colors.day_tomorrow,
 }
 
 export const nightTheme = {
@@ -45,5 +55,9 @@ export const nightTheme = {
     wearBackground: Colors.white,
     wearText: Colors.black,
     wearHighlight: Colors.wear_highlight,
-    grey: Colors.grey
+    grey: Colors.grey,
+
+    yesterdayBox: Colors.night_yesterday,
+    todayBox: Colors.night_today,
+    tomorrowBox: Colors.night_tomorrow,
 }

@@ -50,7 +50,7 @@ const FilterName = styled.Text`
     font-family: GmarketSansTTFLight;
 `;
 
-const FilterBar = () => {
+const FilterBar = ({ onApplyFilter }) => {
     
     const [isModalVisible, setModalVisible] = useState(false);
     const [activeFilterType, setActiveFilterType] = useState('temp');
@@ -91,6 +91,7 @@ const FilterBar = () => {
             <FilterModal 
                 isVisible={isModalVisible} 
                 onClose={closeModal} 
+                onApply={onApplyFilter}
                 activeFilterType={activeFilterType}
             />
         </>

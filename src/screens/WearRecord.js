@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { FilterBar, RecordGallery } from '../components';
 
@@ -6,10 +7,16 @@ const Container = styled.SafeAreaView`
 `;
 
 const WearRecord = ({ navigation }) => {
+    const [filterParams, setFilterParams] = useState("");
+
+    const applyFilter = (params) => {
+        setFilterParams(params);
+    };
+
     return (
         <Container>
-                <FilterBar />
-                <RecordGallery navigation={navigation} />
+                <FilterBar onApplyFilter={applyFilter} />
+                <RecordGallery navigation={navigation} filterParams={filterParams} />
         </Container>
     )
 }

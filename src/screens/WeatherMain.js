@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import * as SplashScreen from 'expo-splash-screen';
-import { BriefInfos, ShortForecast, WeekForecast }from '../components';
+import { BriefInfos, ShortForecast, WeekForecast, TodayWeatherInfos, ThreeDays }from '../components';
 
 const yesterday_data = {
     temp : 1,
@@ -82,6 +82,29 @@ const errorData = {
     max_temp: new Array(11).fill(0)
 };
 
+const dummyData = {
+    "temp": 12.7,
+    "rain": 70,
+    "sky": 2,
+    "dust": 2,
+    "top": 1,
+    "bottom": 3,
+    
+    // 슬라이더에 보여지는 데이터
+    "temp_array_today": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky_array_today": [1, 1, 1, 2, 2, 2, 3, 3],
+    
+    "temp_array_yesterday": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky_array_yesterday": [1, 1, 1, 2, 2, 2, 3, 3],
+    
+    "temp_array_tomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky_array_tomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
+    
+    //주간 날씨에 보여지는 데이터
+    "min_temp": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "max_temp": [30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20],
+    "weekly_rain": [10, 20, 30, 40, 50, 60, 70, 80, 90, 80, 70]
+}
 SplashScreen.preventAutoHideAsync();
 
 const Container = styled.SafeAreaView`
@@ -98,8 +121,8 @@ const WeatherMain = ({navigation}) => {
     //const [weatherData, setWeatherData] = useState(errorData);
 
     //테스트용 더미 날씨데이터
-    const weatherData = selectedDate === 'yesterday' ? yesterday_data :
-                        selectedDate === 'tomorrow' ? tomorrow_data : today_data;
+    const weatherData = selectedDate === 'yesterday' ? dummyData :
+                        selectedDate === 'tomorrow' ? dummyData : dummyData;
     
     /*
     useEffect(() => {
@@ -130,13 +153,20 @@ const WeatherMain = ({navigation}) => {
 }, [selectedDate]);
 */
     return (
-            <Container>
+            /*<Container>
                 <ScrollContainer>
                     <BriefInfos data={weatherData} navigation={navigation} changeDate={setSelectedDate}/>
                     <ShortForecast data={weatherData} />
                     <WeekForecast />
                 </ScrollContainer>
-            </Container>
+            </Container>*/
+        <Container>
+            <ScrollContainer>
+                <TodayWeatherInfos data={weatherData} navigation={navigation} changeDate={setSelectedDate}/>
+                <ThreeDays data={weatherData} />
+                <WeekForecast />
+            </ScrollContainer>
+        </Container>
     );
 }
 

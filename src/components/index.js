@@ -6,6 +6,10 @@ import FilterBar from './FilterBar';
 import RecordGallery from './RecordGallery';
 import RecommendPost from './RecommendPost';
 import FilterModal from './FilterModal';
+import TodayWeatherInfos from './TodayWeatherInfo';
+import ThreeDays from './ThreeDays';
 
 export { BriefInfos, ShortForecast, TitleBar, WeekForecast, 
-        FilterBar, RecordGallery, RecommendPost, FilterModal};
+        FilterBar, RecordGallery, RecommendPost, FilterModal,
+        TodayWeatherInfos, ThreeDays
+};
