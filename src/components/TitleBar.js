@@ -2,6 +2,8 @@ import {Platform, StatusBar, Dimensions, TouchableOpacity, Image} from 'react-na
 import styled from 'styled-components/native';
 import {theme} from '../themes/theme';
 import { FontAwesome } from '@expo/vector-icons';
+import UserOutModal from './UserOutModal';
+import {useState} from 'react';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -30,6 +32,10 @@ const Title = styled.Text`
 `;
 
 const TitleBar = ({navigation, backgroundColor, textColor}) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
+    }
 
     return (
         /*<TitleContainer backgroundColor={backgroundColor}>
@@ -41,18 +47,23 @@ const TitleBar = ({navigation, backgroundColor, textColor}) => {
             </TouchableOpacity>
             <UserCircle color={textColor} style={{marginRight: 10}}/>
         </TitleContainer>*/
-        <TitleContainer backgroundColor={backgroundColor}>
-            <TouchableOpacity 
-                onPress={() => navigation.navigate('WeatherMain')}
-                style={{marginLeft: -20}}
-            >
-                <Image 
-                    source={require('../../assets/icons/Component8.png')} 
-                    //style={{width: screenWidth/2}}
-                />
-            </TouchableOpacity>
-            <UserCircle color={textColor} style={{marginRight: 10}}/>
-        </TitleContainer>
+        <>
+            <TitleContainer backgroundColor={backgroundColor}>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('WeatherMain')}
+                    style={{marginLeft: -20}}
+                >
+                    <Image 
+                        source={require('../../assets/icons/titleLogoNight.png')} 
+                        //style={{width: screenWidth/2}}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleModal}>
+                    <UserCircle color={textColor} style={{marginRight: 10}}/>
+                </TouchableOpacity>
+            </TitleContainer>
+            {isModalVisible && <UserOutModal isVisible={isModalVisible} onClose={toggleModal} />}
+        </>
     );
 }
 

@@ -86,9 +86,9 @@ const dummyData = {
     "temp": 12.7,
     "rain": 70,
     "sky": 2,
-    "dust": '보통',
-    "top": 1,
-    "bottom": 3,
+    "dust": 1,
+    "top": 4,
+    "bottom": 2,
     
     // 슬라이더에 보여지는 데이터
     "temp_array_today": [18, 17, 19, 20, 21, 22, 23, 24],

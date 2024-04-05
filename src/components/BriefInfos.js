@@ -229,9 +229,9 @@ const BriefInfos = ({ data, navigation, changeDate }) => {
                 >
                     <WearTitle>{"My\nCloset"}</WearTitle>
                     <ClothesContainer>
-                        <ClothesImage source={require('../../assets/icons/clothes/top.png')} />
+                        <ClothesImage source={require('../../assets/icons/top/1.png')} />
                         <ClothesText>민소매</ClothesText>
-                        <ClothesImage source={require('../../assets/icons/clothes/bottom.png')} />
+                        <ClothesImage source={require('../../assets/icons/bottom/1.png')} />
                         <ClothesText>반바지</ClothesText>
                     </ClothesContainer>
                 </WearCard>

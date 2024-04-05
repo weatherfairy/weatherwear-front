@@ -179,34 +179,39 @@ const getSkyIcon = (sky, isDayTime) => {
     }
 };
 const bottomData = {
-    1: { name: "기모하의", image: require('../../assets/icons/bottom/1.png') },
-    2: { name: "리넨하의", image: require('../../assets/icons/bottom/2.png') },
-    3: { name: "면바지", image: require('../../assets/icons/bottom/3.png') },
-    4: { name: "반바지", image: require('../../assets/icons/bottom/4.png') },
-    5: { name: "슬랙스", image: require('../../assets/icons/bottom/5.png') },
-    6: { name: "짧은치마", image: require('../../assets/icons/bottom/6.png') },
-    7: { name: "청바지", image: require('../../assets/icons/bottom/7.png') },
+    0: { name: "기모하의", image: require('../../assets/icons/bottom/1.png') },
+    1: { name: "리넨하의", image: require('../../assets/icons/bottom/2.png') },
+    2: { name: "면바지", image: require('../../assets/icons/bottom/3.png') },
+    3: { name: "반바지", image: require('../../assets/icons/bottom/4.png') },
+    4: { name: "슬랙스", image: require('../../assets/icons/bottom/5.png') },
+    5: { name: "짧은치마", image: require('../../assets/icons/bottom/6.png') },
+    6: { name: "청바지", image: require('../../assets/icons/bottom/7.png') },
 }
 const topData = {
-    1: { name: "가죽자켓", image: require('../../assets/icons/top/1.png') },
-    2: { name: "기모상의", image: require('../../assets/icons/top/2.png') },
-    3: { name: "누빔옷", image: require('../../assets/icons/top/3.png') },
-    4: { name: "니트", image: require('../../assets/icons/top/4.png') },
-    5: { name: "롱슬리브", image: require('../../assets/icons/top/5.png') },
-    6: { name: "리넨의상", image: require('../../assets/icons/top/6.png') },
-    7: { name: "맨투맨", image: require('../../assets/icons/top/7.png') },
-    8: { name: "목도리", image: require('../../assets/icons/top/8.png') },
-    9: { name: "민소매", image: require('../../assets/icons/top/9.png') },
-    10: { name: "바시티자켓", image: require('../../assets/icons/top/10.png') },
-    11: { name: "반팔", image: require('../../assets/icons/top/11.png') },
-    12: { name: "블라우스", image: require('../../assets/icons/top/12.png') },
-    13: { name: "야상", image: require('../../assets/icons/top/13.png') },
-    14: { name: "얇은가디건", image: require('../../assets/icons/top/14.png') },
-    15: { name: "얇은니트", image: require('../../assets/icons/top/15.png') },
-    16: { name: "얇은셔츠", image: require('../../assets/icons/top/16.png') },
-    17: { name: "코트", image: require('../../assets/icons/top/17.png') },
-    18: { name: "트렌치코트", image: require('../../assets/icons/top/18.png') },
-    19: { name: "패딩", image: require('../../assets/icons/top/19.png') },
+    0: { name: "가죽자켓", image: require('../../assets/icons/top/1.png') },
+    1: { name: "기모상의", image: require('../../assets/icons/top/2.png') },
+    2: { name: "누빔옷", image: require('../../assets/icons/top/3.png') },
+    3: { name: "니트", image: require('../../assets/icons/top/4.png') },
+    4: { name: "롱슬리브", image: require('../../assets/icons/top/5.png') },
+    5: { name: "리넨의상", image: require('../../assets/icons/top/6.png') },
+    6: { name: "맨투맨", image: require('../../assets/icons/top/7.png') },
+    7: { name: "목도리", image: require('../../assets/icons/top/8.png') },
+    8: { name: "민소매", image: require('../../assets/icons/top/9.png') },
+    9: { name: "바시티자켓", image: require('../../assets/icons/top/10.png') },
+    10: { name: "반팔", image: require('../../assets/icons/top/11.png') },
+    11: { name: "블라우스", image: require('../../assets/icons/top/12.png') },
+    12: { name: "야상", image: require('../../assets/icons/top/13.png') },
+    13: { name: "얇은가디건", image: require('../../assets/icons/top/14.png') },
+    14: { name: "얇은니트", image: require('../../assets/icons/top/15.png') },
+    15: { name: "얇은셔츠", image: require('../../assets/icons/top/16.png') },
+    16: { name: "코트", image: require('../../assets/icons/top/17.png') },
+    17: { name: "트렌치코트", image: require('../../assets/icons/top/18.png') },
+    18: { name: "패딩", image: require('../../assets/icons/top/19.png') },
+}
+const dustData = {
+    0: '나쁨',
+    1: '보통',
+    2: '좋음'
 }
 
 const TodayWeatherInfos = ({ data, navigation }) => {
@@ -227,7 +232,7 @@ const TodayWeatherInfos = ({ data, navigation }) => {
                     </PrecipitationPercentCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
-                        <Finedust>{data.dust}</Finedust>
+                        <Finedust>{dustData[data.dust]}</Finedust>
                     </FinedustCard>
                 </LeftCardsContainer>
                 <TemperatureCard>

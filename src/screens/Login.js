@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { View, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import KakaoLogins from '@react-native-seoul/kakao-login';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -58,7 +59,7 @@ const LoginBtn = styled.TouchableOpacity`
     flex-direction: row;
     margin-bottom: ${screenHeight/5}px;
 `;
-const CahtIcon = styled(Ionicons).attrs(() => ({
+const ChatIcon = styled(Ionicons).attrs(() => ({
     name: 'chatbubble-sharp',
     size: screenWidth/20,
     color: '#000'
@@ -70,14 +71,29 @@ const LoginText = styled.Text`
     font-family: GmarketSansTTFMedium;
     font-size: ${screenWidth/20}px;
 `;
+
+// 로그인 버튼을 눌렀을 때 실행될 함수
+const kakaoLogin = async () => {
+    try {
+        const result = await KakaoLogins.login();
+        alert(`Welcome, ${result.id}`);
+    } catch (err) {
+        if (err.code === 'E_CANCELLED_OPERATION') {
+            alert('Login cancelled');
+        } else {
+            alert(`Login Failed: ${err.message}`);
+        }
+    }
+};
+
 const Login = () => {
     return (
         <Container>
             <AppTitleContainer>
-                <TitleLogo source={require('../../assets/icons/appLogoBlack.png')} />
+                <TitleLogo source={require('../../assets/icons/appLogoDay.png')} />
             </AppTitleContainer>
-            <LoginBtn>
-                <CahtIcon/>
+            <LoginBtn onPress={kakaoLogin}>
+                <ChatIcon/>
                 <LoginText>카카오톡으로 로그인하기</LoginText>
             </LoginBtn>
         </Container>
