@@ -35,3 +35,6 @@ yarn-error.*
 *.tsbuildinfo
 
 node_modules
+
+# 환경변수
+.env

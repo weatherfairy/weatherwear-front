@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {Dimensions, Modal, TouchableOpacity} from 'react-native';
+import KakaoLogins from '@react-native-seoul/kakao-login';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -31,6 +32,15 @@ const OptionText = styled.Text`
     color: ${({theme}) => theme.wearText};
     font-family: GmarketSansTTFMedium;
 `;
+const kakaoLogout = async () => {
+    try {
+        const result = await KakaoLogins.logout();
+        console.log(result);
+        onClose();
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const UserOutModal = ({ isVisible, onClose }) => {
     return (
@@ -46,7 +56,7 @@ const UserOutModal = ({ isVisible, onClose }) => {
                 style={{flex: 1}} //이값이 없으면 모달 밖의 화면을 터치해도 모달이 사라지지 않음
             >
                 <ModalContainer>
-                    <SelectContainer>
+                    <SelectContainer onPress={kakaoLogout}>
                         <OptionText>로그아웃</OptionText>
                     </SelectContainer>
                     <SelectContainer>

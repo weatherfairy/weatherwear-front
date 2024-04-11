@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import {WeatherMain, WearWriting} from '../screens';
+import {WeatherMain, WearWriting, Login} from '../screens';
 import Wear from './Wear';
 import {TitleBar} from '../components';
 import {useContext} from 'react';
@@ -23,6 +23,14 @@ const Main = () => {
                 headerBackTitleVisible: false
             }}
         >
+            {/* <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                    headerbackVisible: false, 
+                    headerShown: false
+                }}
+            /> */}
             <Stack.Screen 
                 name="WeatherMain" 
                 component={WeatherMain} 
@@ -48,6 +56,7 @@ const Main = () => {
                             navigation={navigation} 
                             backgroundColor={theme.wearBackground}
                             textColor={theme.wearText}
+                            page="WearMain"
                         />
                     ),
                     headerStyle: {
@@ -77,6 +86,14 @@ const Main = () => {
                         color={tintColor}
                         onPress={onPress}
                     />)
+                }}
+            />
+            <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                    headerbackVisible: false, 
+                    headerShown: false
                 }}
             />
         </Stack.Navigator>

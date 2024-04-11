@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import * as SplashScreen from 'expo-splash-screen';
-import { BriefInfos, ShortForecast, WeekForecast, TodayWeatherInfos, ThreeDays }from '../components';
+import { BriefInfos, ShortForecast, WeekForecast, TodayWeatherInfos, ThreeDays, ThreeDaysScroll }from '../components';
 
 const yesterday_data = {
     temp : 1,
@@ -99,6 +99,9 @@ const dummyData = {
     
     "temp_array_tomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
     "sky_array_tomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
+
+    "temp_array_aftertomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky_array_aftertomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
     
     //주간 날씨에 보여지는 데이터
     "min_temp": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],

@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { View, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import KakaoLogins from '@react-native-seoul/kakao-login';
+import Config from "react-native-config";
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -72,21 +73,36 @@ const LoginText = styled.Text`
     font-size: ${screenWidth/20}px;
 `;
 
-// 로그인 버튼을 눌렀을 때 실행될 함수
-const kakaoLogin = async () => {
-    try {
-        const result = await KakaoLogins.login();
-        alert(`Welcome, ${result.id}`);
-    } catch (err) {
-        if (err.code === 'E_CANCELLED_OPERATION') {
-            alert('Login cancelled');
-        } else {
-            alert(`Login Failed: ${err.message}`);
-        }
-    }
-};
+const Login = ({navigation}) => {
+    // 로그인 버튼을 눌렀을 때 실행될 함수
+    const kakaoLogin = async () => {
+        try {
+            const result = await KakaoLogins.login();
+            const kakaoLoginKey = Config.REACT_APP_KAKAO_API_KEY;
 
-const Login = () => {
+            const response = await fetch(`${kakaoLoginKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({accessToken: result.accessToken}),
+            });
+
+            if (response.status === 200) {
+                navigation.navigate('Login');
+            } else {
+                console.error('토큰을 받지 못했습니다.');
+            }
+            alert(`Welcome, ${result.id}`);
+        } catch (err) {
+            if (err.code === 'E_CANCELLED_OPERATION') {
+                alert('Login cancelled');
+            } else {
+                alert(`Login Failed: ${err.message}`);
+            }
+        }
+    };
+
     return (
         <Container>
             <AppTitleContainer>

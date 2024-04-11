@@ -10,7 +10,7 @@ const Container = styled.View`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    height: ${screenHeight*0.4}px;
+    height: ${screenHeight*0.38}px;
     width: ${screenWidth}px;
 `;
 const LocationContainer = styled.View`
@@ -34,13 +34,14 @@ const Location = styled.Text`
 const InfoCardContainer = styled.View`
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
     height: ${screenHeight*0.3}px;
     padding-left: ${screenWidth*0.01}px;
     padding-right: ${screenWidth*0.01}px;
 `;
 const LeftCardsContainer = styled.View`
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     width: ${screenWidth*0.24}px;
     height: ${screenHeight*0.3}px;
 `;
@@ -50,17 +51,18 @@ const PrecipitationPercentCard = styled.View`
     justify-content: center;
     background-color: #FEFF99;
     width: ${screenWidth*0.22}px;
-    height: ${screenHeight*0.14}px;
+    height: ${screenHeight*0.13}px;
     border-radius: 15px;
+    margin-bottom: ${screenHeight*0.01}px;
 `;
 const PrecipitaionTitle = styled.Text`
-    font-size: ${fontSize*0.9}px;
+    font-size: ${fontSize*0.7}px;
     font-family: GmarketSansTTFLight;
     color: #000;
     padding-bottom: 7px;
 `;
 const PrecipitationPercent = styled.Text`
-    font-size: ${fontSize*1.2}px;
+    font-size: ${fontSize*1.1}px;
     font-family: GmarketSansTTFMedium;
     color: #000;
 `;
@@ -89,17 +91,17 @@ const FinedustCard = styled.View`
     justify-content: center;
     background-color: #F8B99B;
     width: ${screenWidth*0.22}px;
-    height: ${screenHeight*0.14}px;
+    height: ${screenHeight*0.13}px;
     border-radius: 15px;
 `;
 const FinedustTitle = styled.Text`
-    font-size: ${fontSize*0.9}px;
+    font-size: ${fontSize*0.7}px;
     font-family: GmarketSansTTFLight;
     color: #000;
     padding-bottom: 7px;
 `;
 const Finedust = styled.Text`
-    font-size: ${fontSize*1.2}px;
+    font-size: ${fontSize*1.1}px;
     font-family: GmarketSansTTFMedium;
     color: #000;
 `;
@@ -108,7 +110,7 @@ const WearCard = styled.TouchableOpacity`
     flex-direction: column;
     background-color: #C2C2FC;
     width: ${screenWidth*0.23}px;
-    height: ${screenHeight*0.3}px;
+    height: ${screenHeight*0.27}px;
     border-radius: 15px;
     elevation: 10;
     shadow-color: ${({theme}) => theme.text};
@@ -124,7 +126,7 @@ const WearTitlecontainer = styled.View`
     align-items: center;
 `;
 const WearTitle = styled.Text`
-    font-size: ${fontSize*0.75}px;
+    font-size: ${fontSize*0.67}px;
     font-family: GmarketSansTTFMedium;
     color: #000;
     padding-top: 10px;

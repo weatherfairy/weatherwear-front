@@ -5,22 +5,27 @@ import React from 'react';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
-const fontSize = screenWidth/25;
+const fontSize = screenWidth/30;
 
-const ShortForecastContainer = styled.ScrollView.attrs(() => ({
-    horizontal: true,
-    showsHorizontalScrollIndicator: true
-}))`
-    //flex-direction: column;
-    //background-color: ${({theme}) => theme.forecastContainer};
-    height: ${screenHeight*0.45}px;
-    //opacity: 0.8;
+// const ShortForecastContainer = styled.ScrollView.attrs(() => ({
+//     horizontal: true,
+//     showsHorizontalScrollIndicator: true
+// }))`
+//     //flex-direction: column;
+//     //background-color: ${({theme}) => theme.forecastContainer};
+//     height: ${screenHeight*0.48}px;
+//     //opacity: 0.8;
+//     margin-bottom: ${screenHeight*0.05}px;
+// `;
+const ShortForecastContainer = styled.View`
+    height: ${screenHeight*0.48}px;
     margin-bottom: ${screenHeight*0.05}px;
 `;
 const Container = styled.View`
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    height: ${screenHeight*0.45}px;
+    height: ${screenHeight*0.48}px;
 `;
 const HourContainer = styled.View`
     flex-direction: row;
@@ -35,45 +40,62 @@ const HourBox = styled.View`
 const HourTextContainer = styled.View`
     align-items: center;
     height: ${screenHeight*0.03}px;
-    width: ${screenWidth/4.5}px;
+    width: ${screenWidth/9}px;
     padding-bottom: 7px;
 `;
 const YesterdayContainer = styled.View`
     flex-direction: row;
-    height: ${screenHeight*0.12}px;
+    height: ${screenHeight*0.1}px;
     align-items: center;
     margin-bottom: ${screenHeight*0.01}px;
 `;
 const YesterdayBox = styled.View`
     flex-direction: row;
-    height: ${screenHeight*0.12}px;
+    height: ${screenHeight*0.1}px;
     background-color: ${({theme}) => theme.yesterdayBox};
+    width: ${screenWidth*0.95}px;
     border-radius: 10px;
     align-items: center;
 `;
 const TodayContainer = styled.View`
     flex-direction: row;
-    height: ${screenHeight*0.12}px;
+    height: ${screenHeight*0.1}px;
     align-items: center;
     margin-bottom: ${screenHeight*0.01}px;
 `;
 const TodayBox = styled.View`
     flex-direction: row;
-    height: ${screenHeight*0.12}px;
+    height: ${screenHeight*0.1}px;
     background-color: ${({theme}) => theme.todayBox};
+    width: ${screenWidth*0.95}px;
     border-radius: 10px;
     align-items: center;
 `;
 const TomorrowContainer = styled.View`
     flex-direction: row;
-    height: ${screenHeight*0.12}px;
+    height: ${screenHeight*0.1}px;
     align-items: center;
     margin-bottom: ${screenHeight*0.01}px;
 `;
 const TomorrowBox = styled.View`
     flex-direction: row;
-    height: ${screenHeight*0.12}px;
+    height: ${screenHeight*0.1}px;
     background-color: ${({theme}) => theme.tomorrowBox};
+    width: ${screenWidth*0.95}px;
+    border-radius: 10px;
+    align-items: center;
+`;
+const AfterTomorrowContainer = styled.View`
+    flex-direction: row;
+    height: ${screenHeight*0.1}px;
+    align-items: center;
+    margin-bottom: ${screenHeight*0.01}px;
+`;
+const AfterTomorrowBox = styled.View`
+    flex-direction: row;
+    height: ${screenHeight*0.1}px;
+    background-color: ${({theme}) => theme.aftertomorrowBox};
+    width: ${screenWidth*0.95}px;
     border-radius: 10px;
     align-items: center;
 `;
@@ -86,18 +108,18 @@ const OneHourContainer = styled.View`
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    height: ${screenHeight*0.12}px;
-    width: ${screenWidth/4.5}px;
+    height: ${screenHeight*0.1}px;
+    width: ${screenWidth/9}px;
     padding-bottom: 7px;
 `;
 const SkyInnerContainer = styled.View`
     justify-content: center;
     align-items: center;
-    height: ${screenHeight*0.12/3*2}px;
+    height: ${screenHeight*0.1/3*2}px;
 `;
 const TempInnerContainer = styled.View`
     justify-content: center;
-    height: ${screenHeight*0.12/3}px;
+    height: ${screenHeight*0.1/3}px;
 `;
 const Hour = styled.Text`
     font-size: ${fontSize}px;
@@ -148,8 +170,8 @@ const ThreeDays = ({data}) => {
             <Container>
                 <HourContainer>
                     <HourBox>
-                        <DateText style={{opacity:0}}>시간</DateText>
-                        {['오전 3시', '오전 6시', '오전 9시', '오후 12시', '오후 3시', '오후 6시', '오후 9시', '오전 12시'].map((label, index) => (
+                        <DateText>시각</DateText>
+                        {['03', '06', '09', '12', '15', '18', '21', '24'].map((label, index) => (
                             <HourTextContainer key={label}>
                                 <Hour>{label}</Hour>
                             </HourTextContainer>
@@ -167,7 +189,7 @@ const ThreeDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky_array_yesterday[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°C</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </YesterdayBox>
@@ -183,7 +205,7 @@ const ThreeDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky_array_today[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°C</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </TodayBox>
@@ -199,11 +221,27 @@ const ThreeDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky_array_tomorrow[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°C</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </TomorrowBox>
                 </TomorrowContainer>
+                <AfterTomorrowContainer>
+                    <AfterTomorrowBox>
+                        <DateText>모레</DateText>
+                        {data.temp_array_aftertomorrow.map((temp, index) => (
+                            <OneHourContainer key={index}>
+                                <SkyInnerContainer>
+                                    <Sky 
+                                        key={index}
+                                        source={getWeatherIconPath(data.sky_array_aftertomorrow[index], isDayTime)} 
+                                    />
+                                </SkyInnerContainer>
+                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
+                            </OneHourContainer>
+                        ))}
+                    </AfterTomorrowBox>
+                </AfterTomorrowContainer>
             </Container>
         </ShortForecastContainer>
     );

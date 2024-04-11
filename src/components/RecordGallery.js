@@ -113,14 +113,14 @@ const RecordGallery = ({ navigation, filterParams }) => {
         if (!hasMore && newPage !== 0) return; // 더 이상 불러올 페이지가 없으면 요청하지 않음
         
         try {
-            console.log(queryParams);
-            const response = await fetch(`http://223.194.158.97:8080/api/v1/closet/lists?${filterParams}`, {
+            //console.log(queryParams);
+            const response = await fetch(`http://223.194.159.11:8080/api/v1/closet/lists?${filterParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-
+            console.log(filterParams);
             const jsonResponse = await response.json();
             setImageData(jsonResponse)
                 //setHasMore(!jsonResponse.last); //마지막 페이지인지 확인
@@ -149,9 +149,9 @@ const RecordGallery = ({ navigation, filterParams }) => {
 
     const fetchDataFromServer = async (postNo) => {
         
-        /*try {
+        try {
             //const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
-            const response = await fetch(`http://223.194.158.97:8080/api/v1/closet/lists/${postNo}`);
+            const response = await fetch(`http://223.194.159.11:8080/api/v1/closet/lists/${postNo}`);
             if (response.ok) {
                 const data = await response.json();
                 return data;
@@ -161,19 +161,19 @@ const RecordGallery = ({ navigation, filterParams }) => {
         } catch (error) {
             Alert.alert("에러", error.message);
             return null;
-        }*/
+        }
         
-        const mockData = {
-            image1: 'https://picsum.photos/id/237/200/300',
-            image2: 'https://picsum.photos/id/237/200/300',
-            image3: 'https://picsum.photos/id/237/200/300',
-            emoji: 1, 
-            review: "오늘의 코멘트는요..뭘로 할까요,, 모르겠어요!!! 우리 캡스톤은 5/31일 발표예요ㅎ-ㅎ",
-            clothesText: "티셔츠, 청바지, 운동화",
-            minTemp: -5,
-            maxTemp: 5,            
-        };
-        return mockData;
+        // const mockData = {
+        //     image1: 'https://picsum.photos/id/237/200/300',
+        //     image2: 'https://picsum.photos/id/237/200/300',
+        //     image3: 'https://picsum.photos/id/237/200/300',
+        //     emoji: 1, 
+        //     review: "오늘의 코멘트는요..뭘로 할까요,, 모르겠어요!!! 우리 캡스톤은 5/31일 발표예요ㅎ-ㅎ",
+        //     clothesText: "티셔츠, 청바지, 운동화",
+        //     minTemp: -5,
+        //     maxTemp: 5,            
+        // };
+        // return mockData;
         
     };
 
@@ -248,13 +248,13 @@ const RecordGallery = ({ navigation, filterParams }) => {
                 </View>
             </Modal>
             <FlatList
-                data={data}
+                data={imageData}
                 renderItem={({item}) => (
                     
                     <ImageContainer onPress={() => handleImagePress(item.postNo)}>
                         <Img 
-                            //source={{ uri: item.imageUrl }}
-                            source={item.imageUrl}
+                            source={{ uri: item.imageUrl }}
+                            //source={item.imageUrl}
                         />
                         <DateContainer><DateText>{item.date}</DateText></DateContainer>
                     </ImageContainer>

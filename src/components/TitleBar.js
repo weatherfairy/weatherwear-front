@@ -31,11 +31,20 @@ const Title = styled.Text`
     color: ${({textColor}) => textColor};
 `;
 
-const TitleBar = ({navigation, backgroundColor, textColor}) => {
+const TitleBar = ({navigation, backgroundColor, textColor, page}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const toggleModal = () => {
         setIsModalVisible(!isModalVisible);
     }
+
+    const currentHour = new Date().getHours();
+    const isDay = currentHour >= 6 && currentHour < 18;
+
+    const logoImage = page === 'WearMain' 
+        ? require('../../assets/icons/titleLogoDay.png') 
+        : isDay 
+            ? require('../../assets/icons/titleLogoDay.png') 
+            : require('../../assets/icons/titleLogoNight.png');
 
     return (
         /*<TitleContainer backgroundColor={backgroundColor}>
@@ -54,7 +63,7 @@ const TitleBar = ({navigation, backgroundColor, textColor}) => {
                     style={{marginLeft: -20}}
                 >
                     <Image 
-                        source={require('../../assets/icons/titleLogoNight.png')} 
+                    source={logoImage} 
                         //style={{width: screenWidth/2}}
                     />
                 </TouchableOpacity>

@@ -9,8 +9,9 @@ import FilterModal from './FilterModal';
 import TodayWeatherInfos from './TodayWeatherInfo';
 import ThreeDays from './ThreeDays';
 import UserOutModal from './UserOutModal';
+import ThreeDaysScroll from './ThreeDaysScroll';
 
 export { BriefInfos, ShortForecast, TitleBar, WeekForecast, 
         FilterBar, RecordGallery, RecommendPost, FilterModal,
-        TodayWeatherInfos, ThreeDays, UserOutModal
+        TodayWeatherInfos, ThreeDays, UserOutModal, ThreeDaysScroll
 };

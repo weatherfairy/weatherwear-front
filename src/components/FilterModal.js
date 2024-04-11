@@ -187,7 +187,7 @@ const FilterModal = ({isVisible, onClose, activeFilterType, onApply}) => {
         const allParams = [tempParams, weatherParams, dateParams, satisfyParams].filter(param => param).join('&');
     
         // URL 생성
-        const apiUrl = `http://223.194.158.97:8080/api/v1/closet/lists?${allParams}`;
+        const apiUrl = allParams;
     
         console.log('API URL:', apiUrl); // 실제 요청 대신 콘솔에 출력
         // 실제 네트워크 요청을 여기서 실행하세요. 예: fetch(apiUrl)...

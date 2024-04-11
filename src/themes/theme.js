@@ -12,9 +12,11 @@ const Colors = {
     day_yesterday: '#A9C8FE',
     day_today: '#B0D7FF',
     day_tomorrow: '#C0CEED',
+    day_aftertomorrow: '#ECF1E0',
     night_yesterday: '#3D556D',
     night_today: '#1D445D',
-    night_tomorrow: '#505A62'
+    night_tomorrow: '#505A62',
+    night_afettomorrow: '#60757A'
 };
 
 export const theme = {
@@ -41,6 +43,7 @@ export const dayTheme = {
     yesterdayBox: Colors.day_yesterday,
     todayBox: Colors.day_today,
     tomorrowBox: Colors.day_tomorrow,
+    aftertomorrowBox: Colors.day_aftertomorrow
 }
 
 export const nightTheme = {
@@ -60,4 +63,5 @@ export const nightTheme = {
     yesterdayBox: Colors.night_yesterday,
     todayBox: Colors.night_today,
     tomorrowBox: Colors.night_tomorrow,
+    aftertomorrowBox: Colors.night_afettomorrow
 }
