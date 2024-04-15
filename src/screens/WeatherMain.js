@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import * as SplashScreen from 'expo-splash-screen';
-import { BriefInfos, ShortForecast, WeekForecast, TodayWeatherInfos, ThreeDays, ThreeDaysScroll }from '../components';
+import { BriefInfos, ShortForecast, WeekForecast, TodayWeatherInfo, ThreeDays, ThreeDaysScroll, Location }from '../components';
 
 const yesterday_data = {
     temp : 1,
@@ -22,50 +22,6 @@ const yesterday_data = {
     ],
     max_temp : [
         6, 3, 4, 4, 3, 1, 1, 7, 9, 4, 5 
-    ]
-};
-
-const today_data = {
-    temp : -1,
-    rain: '60%',
-    sky: 1,
-    dust: '나쁨',
-    top: 2,
-    bottom: 2,
-    temp_array: [
-        -1, 0, -1, -3, -2, -2, -4, -1, 0, 0, 1, 1, 
-        2, 2, 1, 0, 1, -1, -2, -2, -3, -4, -4, -4
-    ],
-    sky_array: [
-        1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
-    ],
-    min_temp : [
-        -3, -4, 0, -2, -5, -4, 1, 3, 1, 0, 1
-    ],
-    max_temp : [
-        3, 2, 4, 3, 1, 1, 7, 9, 4, 5, 6 
-    ]
-};
-
-const tomorrow_data = {
-    temp : 2,
-    rain: '30%',
-    sky: 1,
-    dust: '보통',
-    top: 3,
-    bottom: 3,
-    temp_array: [
-        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 
-        2, 3, 4, 3, 3, 2, 2, 2, 1, 0, 0, 0
-    ],
-    sky_array: [
-        1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
-    ],
-    min_temp : [
-        -4, 0, -2, -5, -4, 1, 3, 1, 0, 1, 0
-    ],
-    max_temp : [
-        2, 4, 3, 1, 1, 7, 9, 4, 5, 6, 5 
     ]
 };
 
@@ -124,6 +80,13 @@ const WeatherMain = ({navigation}) => {
 
     //테스트용 더미 날씨데이터
     const weatherData = dummyData;
+
+    const [showLocationModal, setShowLocationModal] = useState(false);
+    const [selectedRegion, setSelectedRegion] = useState('서울특별시 성북구');
+
+    const toggleLocationModal = () => {
+        setShowLocationModal(!showLocationModal);
+    }
     
     /*
     useEffect(() => {
@@ -163,7 +126,13 @@ const WeatherMain = ({navigation}) => {
             </Container>*/
         <Container>
             <ScrollContainer>
-                <TodayWeatherInfos data={weatherData} navigation={navigation} />
+                <TodayWeatherInfo 
+                    data={weatherData} 
+                    navigation={navigation} 
+                    setModal={toggleLocationModal}
+                    selectedRegion={selectedRegion}
+                />
+                {showLocationModal && <Location onClose={toggleLocationModal} onFinish={setSelectedRegion}/>}
                 <ThreeDays data={weatherData} />
                 <WeekForecast />
             </ScrollContainer>

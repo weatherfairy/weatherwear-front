@@ -4,5 +4,4 @@ import WearRecord from './WearRecord';
 import WearWriting from './WearWriting';
 import Login from './Login';
 
-export { WeatherMain, WearRecommend, WearRecord, 
-    WearWriting, Login };
+export { WeatherMain, WearRecommend, WearRecord, WearWriting, Login };

@@ -5,7 +5,8 @@ import {ThemeProvider} from 'styled-components/native';
 import {dayTheme, nightTheme} from './src/themes/theme';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import Login from './src/screens/Login';
+import {Login} from './src/screens';
+import {Location} from './src/components'
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -69,6 +70,7 @@ const App = () => {
       <StatusBar style="auto" />
     </ThemeProvider>
     //<Login/>
+    //<Location/>
   )
 };
 

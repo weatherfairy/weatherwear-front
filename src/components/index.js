@@ -6,12 +6,13 @@ import FilterBar from './FilterBar';
 import RecordGallery from './RecordGallery';
 import RecommendPost from './RecommendPost';
 import FilterModal from './FilterModal';
-import TodayWeatherInfos from './TodayWeatherInfo';
+import TodayWeatherInfo from './TodayWeatherInfo';
 import ThreeDays from './ThreeDays';
 import UserOutModal from './UserOutModal';
 import ThreeDaysScroll from './ThreeDaysScroll';
+import Location from './Location';
 
 export { BriefInfos, ShortForecast, TitleBar, WeekForecast, 
         FilterBar, RecordGallery, RecommendPost, FilterModal,
-        TodayWeatherInfos, ThreeDays, UserOutModal, ThreeDaysScroll
+        TodayWeatherInfo, ThreeDays, UserOutModal, ThreeDaysScroll, Location
 };

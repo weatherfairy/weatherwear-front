@@ -13,6 +13,13 @@ const Container = styled.View`
     height: ${screenHeight*0.38}px;
     width: ${screenWidth}px;
 `;
+const LocationButton = styled.TouchableOpacity`
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    //margin-top: -10px;
+    padding-bottom: 12px;
+`;
 const LocationContainer = styled.View`
     flex-direction: row;
     justify-content: center;
@@ -50,7 +57,7 @@ const PrecipitationPercentCard = styled.View`
     align-items: center;
     justify-content: center;
     background-color: #FEFF99;
-    width: ${screenWidth*0.22}px;
+    width: ${screenWidth*0.225}px;
     height: ${screenHeight*0.13}px;
     border-radius: 15px;
     margin-bottom: ${screenHeight*0.01}px;
@@ -90,7 +97,7 @@ const FinedustCard = styled.View`
     align-items: center;
     justify-content: center;
     background-color: #F8B99B;
-    width: ${screenWidth*0.22}px;
+    width: ${screenWidth*0.225}px;
     height: ${screenHeight*0.13}px;
     border-radius: 15px;
 `;
@@ -216,16 +223,16 @@ const dustData = {
     2: '좋음'
 }
 
-const TodayWeatherInfos = ({ data, navigation }) => {
+const TodayWeatherInfo = ({ data, navigation, setModal, selectedRegion }) => {
     const currentHour = new Date().getHours();
     const isDayTime = currentHour >= 6 && currentHour < 18;
 
     return (
         <Container>
-            <LocationContainer>
+            <LocationButton onPress={setModal}>
                 <LocationIcon />
-                <Location>성북구 삼성동</Location>
-            </LocationContainer>
+                <Location>{selectedRegion}</Location>
+            </LocationButton>
             <InfoCardContainer>
                 <LeftCardsContainer>
                     <PrecipitationPercentCard>
@@ -263,4 +270,4 @@ const TodayWeatherInfos = ({ data, navigation }) => {
     );
 };
 
-export default TodayWeatherInfos;
+export default TodayWeatherInfo;
