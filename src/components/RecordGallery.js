@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
-import {Dimensions, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
+import {Dimensions,ScrollView, FlatList, Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
-import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
+import DetailModal from './DetailModal'; 
+
 
 const data = [
     {postNo: '1', date: '1/25', imageUrl: require('../../assets/images/example.png')},
@@ -99,6 +100,7 @@ const AddWritingIcon = styled(FontAwesome6).attrs(({theme}) => ({
     size: Dimensions.get('window').height/24,
     color: theme.wearText
 }))``;
+
 const RecordGallery = ({ navigation, filterParams }) => {
     const [imageData, setImageData] = useState([]);
     const [page, setPage] = useState(0);
@@ -113,14 +115,13 @@ const RecordGallery = ({ navigation, filterParams }) => {
         if (!hasMore && newPage !== 0) return; // 더 이상 불러올 페이지가 없으면 요청하지 않음
         
         try {
-            //console.log(queryParams);
-            const response = await fetch(`http://223.194.159.11:8080/api/v1/closet/lists?${filterParams}`, {
+            const response = await fetch(`http://223.194.158.97:8080/api/v1/closet/lists?${filterParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-            console.log(filterParams);
+
             const jsonResponse = await response.json();
             setImageData(jsonResponse)
                 //setHasMore(!jsonResponse.last); //마지막 페이지인지 확인
@@ -144,14 +145,15 @@ const RecordGallery = ({ navigation, filterParams }) => {
         }
     }
 
+    //상세보기 모달창
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);//모달에 표시할 내용
 
     const fetchDataFromServer = async (postNo) => {
         
-        try {
+        /*try {
             //const response = await fetch(`http://223.194.157.73:8080/api/v1/closet/lists/1`);
-            const response = await fetch(`http://223.194.159.11:8080/api/v1/closet/lists/${postNo}`);
+            const response = await fetch(`http://223.194.158.97:8080/api/v1/closet/lists/${postNo}`);
             if (response.ok) {
                 const data = await response.json();
                 return data;
@@ -161,32 +163,31 @@ const RecordGallery = ({ navigation, filterParams }) => {
         } catch (error) {
             Alert.alert("에러", error.message);
             return null;
-        }
+        }*/
         
-        // const mockData = {
-        //     image1: 'https://picsum.photos/id/237/200/300',
-        //     image2: 'https://picsum.photos/id/237/200/300',
-        //     image3: 'https://picsum.photos/id/237/200/300',
-        //     emoji: 1, 
-        //     review: "오늘의 코멘트는요..뭘로 할까요,, 모르겠어요!!! 우리 캡스톤은 5/31일 발표예요ㅎ-ㅎ",
-        //     clothesText: "티셔츠, 청바지, 운동화",
-        //     minTemp: -5,
-        //     maxTemp: 5,            
-        // };
-        // return mockData;
+        const mockData = {
+            image1: 'https://picsum.photos/id/237/200/300',
+            image2: 'https://picsum.photos/id/237/200/300',
+            image3: 'https://picsum.photos/id/237/200/300',
+            emoji: 1, 
+            review: "오늘의 코멘트는요..뭘로 할까요,, 모르겠어요!!! 우리 캡스톤은 5/31일 발표예요ㅎ-ㅎ",
+            clothesText: "티셔츠, 청바지, 운동화",
+            minTemp: -5,
+            maxTemp: 5,            
+        };
+        return mockData;
         
     };
 
 
     // 선택된 postNo로 서버로부터 데이터 가져오기.
     const handleImagePress = async (postNo) => {
-        console.log("눌림");
         // postNo를 이용해 date를 찾기
         const itemDate = data.find(item => item.postNo === postNo)?.date;
         const dataFromServer = await fetchDataFromServer(postNo);
         if (dataFromServer) {
             console.log("로드 성공");
-            setModalContent({ ...dataFromServer, date: itemDate });
+            setModalContent({ ...dataFromServer, date: itemDate,postNo });
             setModalVisible(true);
             console.log(modalContent);
         }
@@ -197,64 +198,14 @@ const RecordGallery = ({ navigation, filterParams }) => {
 
     return (
         <Container>
-            <Modal animationType="slide"
-                transparent={true}//모달 투명도
-                visible={modalVisible}
-                onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setModalVisible(!modalVisible);
-            }}>
-
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <View style ={styles.buttonClose}>  
-                            <Pressable
-                                style={styles.buttonClose}
-                                onPress={() => setModalVisible(!modalVisible)}>
-                                <Text style={styles.buttonClose}>X</Text>
-                            </Pressable>
-                        </View>
-                        <ModalContainer>
-                            <View style = {styles.images}>
-                                <ImagesContainer horizental= {true} showsHorizontalScrollIndicator={true}   >
-                                    <Image source={{uri: modalContent?.image1}} style={{width: '100%', height: '100%'}} />
-                                    <Image source={{uri: modalContent?.image2}} style={{width: '100%', height: '100%'}} />
-                                    <Image source={{uri: modalContent?.image3}} style={{width: '100%', height: '100%'}} />
-                                </ImagesContainer>
-                            </View>
-                            <InfoContainer>
-                                <View style = {[styles.parallel, styles.strech]}>
-                                    <Text style = {styles.boldText}> {modalContent?.date}</Text>
-                                    <Text style = {styles.mediumText}>{modalContent?.minTemp}°C~{modalContent?.maxTemp}°C</Text>
-                                </View>
-                                <View style = {styles.parallel}>
-                                    <Text style = {styles.mediumText}> {modalContent?.clothesText}</Text>
-                                    <EmojiComponent emoji = {modalContent?.emoji}/>
-                                </View>
-                                <View style = {styles.margin}>
-                                    <Text style = {styles.lightText}> {modalContent?.review}</Text>
-                                </View>
-                            </InfoContainer>
-                        </ModalContainer>
-                        <ButtonContainer>
-                                <IconButton onPress={() => console.log('Edit pressed')}>
-                                    <EditIcon/>
-                                </IconButton>
-                                <IconButton onPress={() => console.log('Delete pressed')}>
-                                    <DeleteIcon/>
-                                </IconButton>
-                        </ButtonContainer>
-                    </View>
-                </View>
-            </Modal>
             <FlatList
-                data={imageData}
+                data={data}
                 renderItem={({item}) => (
                     
                     <ImageContainer onPress={() => handleImagePress(item.postNo)}>
                         <Img 
-                            source={{ uri: item.imageUrl }}
-                            //source={item.imageUrl}
+                            //source={{ uri: item.imageUrl }}
+                            source={item.imageUrl}
                         />
                         <DateContainer><DateText>{item.date}</DateText></DateContainer>
                     </ImageContainer>
@@ -266,6 +217,11 @@ const RecordGallery = ({ navigation, filterParams }) => {
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
             />
+            <DetailModal 
+                visible={modalVisible} 
+                modalContent={modalContent}
+                onClose={() => setModalVisible(false)} 
+            />
             <FloatingButton
                 onPress={() => navigation.navigate('WearWriting')}
             >
@@ -274,146 +230,5 @@ const RecordGallery = ({ navigation, filterParams }) => {
         </Container>
     )
 }
-
-
-const ModalContainer = styled.View`
-    width: ScreenWidth* 0.75; 
-`;
-
-const ImagesContainer = styled.ScrollView`
-    flex-direction: row;
-    align-self: center;
-`;
-
-const InfoContainer = styled.View`
-    margin-top: 10px;
-    margin-left: 3px;
-    width: 90%;
-    height: 25%;
-`;
-
-//이모지
-function getEmojiSource(emoji) {
-    switch (emoji) {
-        case 1:
-            return require('../../assets/icons/best.png');
-        case 2:
-            return require('../../assets/icons/good.png');
-        case 3:
-            return require('../../assets/icons/bad.png');
-        default: null;
-    }
-}
-
-const EmojiComponent = ({ emoji }) => {
-    return (
-        <Image
-            style={styles.emoji}
-            source={getEmojiSource(emoji)}
-        />
-    );
-}
-
-const ButtonContainer = styled.View`
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    flex-direction: row;
-`;
-
-const IconButton = styled.TouchableOpacity`
-    align-items: center;
-    justify-content: center;
-    height: ${ScreenHeight*0.06}px;
-    width: ${ScreenHeight*0.06}px;
-`;
-const EditIcon = styled(MaterialIcons).attrs(({theme}) => ({
-    name: 'edit',
-    size: ScreenHeight*0.04,
-    color: theme.wearText
-}))``;
-const DeleteIcon = styled(FontAwesome6).attrs(({theme}) => ({
-    name: 'trash-alt',
-    size: ScreenHeight*0.04,
-    color: theme.wearText
-}))``;
-
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        alignItems: 'center',
-        marginTop: 0
-    },
-
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 15,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 15
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        width: ScreenWidth*0.85,
-        height: ScreenHeight*0.7
-    },
-
-    buttonClose: {
-        alignSelf: 'flex-end',
-        marginRight: -7,
-        marginTop: -10,
-        marginBottom: 5,
-        fontSize: ScreenHeight*0.03,
-        fontWeight: '600',
-    },
-
-    images:{
-        width: ScreenWidth* 0.75,
-        height: ScreenHeight* 0.4,
-    },
-
-    boldText:{
-        fontSize: ScreenHeight*0.03,
-        fontWeight: '700',
-    },
-    mediumText:{
-        fontSize: ScreenHeight*0.03,
-        fontWeight: '400',
-    },
-    lightText:{
-        fontSize: ScreenHeight*0.02,
-        fontWeight: '300',
-        marginLeft: '1%',
-    },
-
-    margin:{
-        marginTop : 10,
-    },
-    parallel:{
-        flexDirection: 'row',
-        alignItems: 'center', 
-        marginBottom: 5, 
-    },
-    strech:{
-        flexDirection: 'row',
-        alignItems: 'center', 
-        marginBottom: 5, 
-        width: ScreenWidth * 0.75,
-        justifyContent: 'space-between',
-    },
-
-    emoji: {
-        width: 25, 
-        height: 25,
-        marginLeft: 6,
-    },
-});
 
 export default RecordGallery;
