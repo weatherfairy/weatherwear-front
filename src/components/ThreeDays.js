@@ -181,12 +181,12 @@ const ThreeDays = ({data}) => {
                 <YesterdayContainer>
                     <YesterdayBox>
                         <DateText>어제</DateText>
-                        {data.temp_array_yesterday.map((temp, index) => (
+                        {data.temp2.map((temp, index) => (
                             <OneHourContainer key={index}>
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky_array_yesterday[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky2[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
@@ -197,12 +197,12 @@ const ThreeDays = ({data}) => {
                 <TodayContainer>
                     <TodayBox>
                         <DateText>오늘</DateText>
-                        {data.temp_array_today.map((temp, index) => (
+                        {data.temp1.map((temp, index) => (
                             <OneHourContainer key={index}>
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky_array_today[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky1[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
@@ -213,12 +213,12 @@ const ThreeDays = ({data}) => {
                 <TomorrowContainer>
                     <TomorrowBox>
                         <DateText>내일</DateText>
-                        {data.temp_array_tomorrow.map((temp, index) => (
+                        {data.temp3.map((temp, index) => (
                             <OneHourContainer key={index}>
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky_array_tomorrow[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky3[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
@@ -229,12 +229,12 @@ const ThreeDays = ({data}) => {
                 <AfterTomorrowContainer>
                     <AfterTomorrowBox>
                         <DateText>모레</DateText>
-                        {data.temp_array_aftertomorrow.map((temp, index) => (
+                        {data.temp4.map((temp, index) => (
                             <OneHourContainer key={index}>
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky_array_aftertomorrow[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky4[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>

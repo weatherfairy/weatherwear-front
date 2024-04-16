@@ -42,23 +42,23 @@ const dummyData = {
     "temp": 12.7,
     "rain": 70,
     "sky": 2,
-    "dust": 1,
+    "wind": 1,
     "top": 4,
     "bottom": 2,
     
     // 슬라이더에 보여지는 데이터
-    "temp_array_today": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_today": [1, 1, 1, 2, 2, 2, 3, 3],
+    "temp1": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky1": [1, 1, 1, 2, 2, 2, 3, 3],
     
-    "temp_array_yesterday": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_yesterday": [1, 1, 1, 2, 2, 2, 3, 3],
+    "temp2": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky2": [1, 1, 1, 2, 2, 2, 3, 3],
     
-    "temp_array_tomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_tomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
+    "temp3": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky3": [1, 1, 1, 2, 2, 2, 3, 3],
 
-    "temp_array_aftertomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_aftertomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
-    
+    "temp4": [18, 17, 19, 20, 21, 22, 23, 24],
+    "sky4": [1, 1, 1, 2, 2, 2, 3, 3],
+
     //주간 날씨에 보여지는 데이터
     "min_temp": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     "max_temp": [30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20],
@@ -88,11 +88,12 @@ const WeatherMain = ({navigation}) => {
         setShowLocationModal(!showLocationModal);
     }
     
-    /*
+    
     useEffect(() => {
         const fetchWeatherData = async() => {
             try {
-                const response = await fetch(`http://223.194.153.26:8080/api/v1/weathers/${selectedDate}`, {
+                const locationParameter = selectedRegion.replace(/\s/g, '');
+                const response = await fetch(`http://223.194.156.18:8080/api/v1/weathers?location=${locationParameter}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -102,20 +103,19 @@ const WeatherMain = ({navigation}) => {
                 const jsonResponse = await response.json();
                 console.log('Response.content');
                 if (jsonResponse && jsonResponse.content) {
-                    setWeatherData(jsonResponse.content);
+                    //setWeatherData(jsonResponse.content);
                     console.log('WeatherData set: ', jsonResponse.content);
                 } else {
-                    setWeatherData(errorData);
+                    //setWeatherData(errorData);
                 }
             } catch (error) {
                 console.error('Error fetching weather data:', error);
-                setWeatherData(errorData);
+                //setWeatherData(errorData);
             }
         };
-
         fetchWeatherData();
-}, [selectedDate]);
-*/
+    }, [selectedRegion]);
+
     return (
             /*<Container>
                 <ScrollContainer>

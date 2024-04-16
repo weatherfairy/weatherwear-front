@@ -241,7 +241,7 @@ const TodayWeatherInfo = ({ data, navigation, setModal, selectedRegion }) => {
                     </PrecipitationPercentCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
-                        <Finedust>{dustData[data.dust]}</Finedust>
+                        <Finedust>{dustData[data.wind]}</Finedust>
                     </FinedustCard>
                 </LeftCardsContainer>
                 <TemperatureCard>
