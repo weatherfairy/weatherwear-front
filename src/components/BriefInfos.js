@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import styled from 'styled-components/native';
-import {useFonts} from 'expo-font';
 import {Dimensions} from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 
@@ -17,7 +16,6 @@ const LocationContainer = styled.View`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    //padding-top: ${screenHeight/30}px;
 `;
 const LocationIcon = styled(Octicons).attrs(({theme}) => ({
     name: 'location',
@@ -105,7 +103,6 @@ const Finedust = styled.Text`
 `;
 const WearCard = styled.TouchableOpacity`
     flex-direction: column;
-    //justify-content: center;
     background-color: #C2C2FC;
     width: ${screenWidth*0.35}px;
     height: ${screenHeight*0.4}px;
@@ -167,16 +164,38 @@ const DateIndicator = styled.Text`
     color: ${({theme}) => theme.text};
     margin-bottom: ${fontSize*0.3}px;
 `;
+const getSkyIcon = (sky, isDayTime) => {
+    switch(sky) {
+        case 8:
+            return isDayTime 
+                ? require('../../assets/icons/color_weather/clear_day.png') 
+                : require('../../assets/icons/color_weather/clear_night.png');
+        case 2:
+            return require('../../assets/icons/color_weather/thunderstorm.png');
+        case 3:
+            return require('../../assets/icons/color_weather/rain.png');
+        case 5:
+            return require('../../assets/icons/color_weather/rain.png');
+        case 6:
+            return require('../../assets/icons/color_weather/snow.png');
+        case 7:
+            return require('../../assets/icons/color_weather/overcast.png');
+        default:
+            return isDayTime 
+                ? require('../../assets/icons/color_weather/clear_day.png') // 기본 낮 아이콘
+                : require('../../assets/icons/color_weather/clear_night.png'); // 기본 밤 아이콘
+    }
+};
 
-const BriefInfos = ({navigation}) => {
-    const [fontsLoaded] = useFonts({
-        "GmarketSansTTFMedium": require("../../assets/fonts/GmarketSansTTFMedium.ttf"),
-        "GmarketSansTTFLight": require("../../assets/fonts/GmarketSansTTFLight.ttf")
-    });
+const BriefInfos = ({ data, navigation, changeDate }) => {
     const [selectedIndicator, setSelectedIndicator] = useState(1);
+    const currentHour = new Date().getHours();
+    const isDayTime = currentHour >= 6 && currentHour < 18;
 
-    if(!fontsLoaded) {
-        return null;
+    const handleDateChange = (index) => {
+        setSelectedIndicator(index);
+        const date = index === 0 ? 'yesterday' : index === 2 ? 'tomorrow' : 'today';
+        changeDate(date);
     };
 
     return (
@@ -189,15 +208,15 @@ const BriefInfos = ({navigation}) => {
                 <WeatherCardsContainer>
                     <PrecipitationPercentCard>
                         <PrecipitaionTitle>강수확률</PrecipitaionTitle>
-                        <PrecipitationPercent>70%</PrecipitationPercent>
+                        <PrecipitationPercent>{data.rain}</PrecipitationPercent>
                     </PrecipitationPercentCard>
                     <TemperatureCard>
-                        <Temperature>12°C</Temperature>
-                        <SkyImage source={require('../../assets/images/color_weather/snow.png')} />
+                        <Temperature>{data.temp}°C</Temperature>
+                        <SkyImage source={getSkyIcon(data.sky, isDayTime)} />
                     </TemperatureCard>
                     <FinedustCard>
                         <FinedustTitle>미세먼지</FinedustTitle>
-                        <Finedust>나쁨</Finedust>
+                        <Finedust>{data.dust}</Finedust>
                     </FinedustCard>
                 </WeatherCardsContainer>
                 <WearCard 
@@ -206,9 +225,9 @@ const BriefInfos = ({navigation}) => {
                 >
                     <WearTitle>{"My\nCloset"}</WearTitle>
                     <ClothesContainer>
-                        <ClothesImage source={require('../../assets/images/clothes/top.png')} />
+                        <ClothesImage source={require('../../assets/icons/top/1.png')} />
                         <ClothesText>민소매</ClothesText>
-                        <ClothesImage source={require('../../assets/images/clothes/bottom.png')} />
+                        <ClothesImage source={require('../../assets/icons/bottom/1.png')} />
                         <ClothesText>반바지</ClothesText>
                     </ClothesContainer>
                 </WearCard>
@@ -219,22 +238,10 @@ const BriefInfos = ({navigation}) => {
                         <DateIndicator numberOfLines={1}>{label}</DateIndicator>
                         <IndicatorIcon
                             selected={selectedIndicator === index}
-                            onPress={() => setSelectedIndicator(index)}
+                            onPress={() => handleDateChange(index)}
                         />
                     </Indicator>
                 ))}
-                {/*<Indicator>
-                    <DateIndicator>yesterday</DateIndicator>
-                    <IndicatorIcon />
-                </Indicator>
-                <Indicator>
-                    <DateIndicator>today</DateIndicator>
-                    <IndicatorIcon />
-                </Indicator>
-                <Indicator>
-                    <DateIndicator>tomorrow</DateIndicator>
-                    <IndicatorIcon />
-                </Indicator>*/}
             </IndicatorContainer>
         </Container>
     );
