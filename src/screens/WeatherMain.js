@@ -17,26 +17,12 @@ const errorData = {
 };
 
 const dummyData = {
-    "temp": 12.7,
-    "rain": 70,
+    "temp": '12.7',
+    "rain": '70',
     "wind": '12.45464',
     "sky": 2,
-    "dust": 1,
     "top": 4,
     "bottom": 2,
-    
-    // 어제 데이터
-    "temp_array_today": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_today": [1, 1, 1, 2, 2, 2, 3, 3],
-    
-    "temp_array_yesterday": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_yesterday": [1, 1, 1, 2, 2, 2, 3, 3],
-    
-    "temp_array_tomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_tomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
-
-    "temp_array_aftertomorrow": [18, 17, 19, 20, 21, 22, 23, 24],
-    "sky_array_aftertomorrow": [1, 1, 1, 2, 2, 2, 3, 3],
 
     //어제 데이터
     "temp1": ['10.1', '12.5', '11.0', '15.7', '17.9', '13.02', '14.0', '19.72'],
@@ -78,9 +64,10 @@ const ScrollContainer = styled.ScrollView`
 
 const WeatherMain = ({navigation}) => {
     //const [weatherData, setWeatherData] = useState();
+    const [testData, setTestData] = useState(null);
 
     //테스트용 더미 날씨데이터
-    const weatherData = dummyData;
+    const weatherData = testData;
     
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState('서울특별시 성북구');
@@ -91,32 +78,38 @@ const WeatherMain = ({navigation}) => {
         setShowLocationModal(!showLocationModal);
     }
 
-    // useEffect(() => {
-    //     const fetchWeatherData = async() => {
-    //         try {
-    //             const locationParameter = `location=${selectedRegion.replace(/\s/g, '')}`;
-    //             const response = await fetch(`http://15.165.61.76:8080/api/v1/weathers?${locationParameter}`, {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 }
-    //             });
+    useEffect(() => {
+        const fetchWeatherData = async() => {
+            try {
+                const locationParameter = `location=${selectedRegion.replace(/\s/g, '')}`;
+                const url = `http://15.165.61.76:8080/api/v1/weathers?${locationParameter}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
 
-    //             const jsonResponse = await response.json();
-    //             console.log('Response.content: ', jsonResponse);
-    //             if (jsonResponse && jsonResponse.content) {
-    //                 setWeatherData(jsonResponse.content);
-    //                 console.log('WeatherData set: ', jsonResponse.content);
-    //             } else {
-    //                 setWeatherData(errorData);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching weather data:', error);
-    //             setWeatherData(errorData);
-    //         }
-    //     };
-    //     fetchWeatherData();
-    // }, [selectedRegion]);
+                const jsonResponse = await response.json();
+                console.log('url: ', url);
+                console.log('response: ', jsonResponse);
+                console.log('rain: ', jsonResponse.rain);
+                if (response.ok) {
+                    //setWeatherData(jsonResponse.content);
+                    setTestData(jsonResponse);
+                    console.log('WeatherData set: ', jsonResponse);
+                } else {
+                    //setWeatherData(errorData);
+                    setTestData(jsonResponse);
+                }
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                //setWeatherData(errorData);
+                setTestData(jsonResponse);
+            }
+        };
+        fetchWeatherData();
+    }, [selectedRegion]);
 
     return (
             /*<Container>

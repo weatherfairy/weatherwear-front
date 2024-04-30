@@ -190,7 +190,7 @@ const bottomData = {
     3: { name: "반바지", image: require('../../assets/icons/bottom/4.png') },
     4: { name: "슬랙스", image: require('../../assets/icons/bottom/5.png') },
     5: { name: "짧은치마", image: require('../../assets/icons/bottom/6.png') },
-    6: { name: "청바지", image: require('../../assets/icons/bottom/7.png') },
+    10: { name: "청바지", image: require('../../assets/icons/bottom/7.png') },
 }
 const topData = {
     0: { name: "가죽자켓", image: require('../../assets/icons/top/1.png') },
@@ -211,7 +211,7 @@ const topData = {
     15: { name: "얇은셔츠", image: require('../../assets/icons/top/16.png') },
     16: { name: "코트", image: require('../../assets/icons/top/17.png') },
     17: { name: "트렌치코트", image: require('../../assets/icons/top/18.png') },
-    18: { name: "패딩", image: require('../../assets/icons/top/19.png') },
+    19: { name: "패딩", image: require('../../assets/icons/top/19.png') },
 }
 
 const TodayWeatherInfos = ({ data, navigation, setModal, selectedRegion }) => {
