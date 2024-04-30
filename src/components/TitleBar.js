@@ -1,8 +1,9 @@
-import {Platform, StatusBar, Dimensions, TouchableOpacity} from 'react-native';
+import {Platform, StatusBar, Dimensions, TouchableOpacity, Image} from 'react-native';
 import styled from 'styled-components/native';
 import {theme} from '../themes/theme';
-import {useFonts} from 'expo-font';
 import { FontAwesome } from '@expo/vector-icons';
+import UserOutModal from './UserOutModal';
+import {useState} from 'react';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -13,11 +14,11 @@ const TitleContainer = styled.View`
     justify-content: space-between;
     align-items: center;
     background-color: ${({backgroundColor}) => backgroundColor};
-    padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
+    //padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight*1.2 : 0}px;
     //padding-top: ${StatusBar.currentHeight}px;
-    padding-left: ${screenWidth*0.05}px;
-    padding-right: ${screenWidth*0.05}px;
-    height: ${fontSize*1.7 + StatusBar.currentHeight}px;
+    padding-left: ${screenWidth*0.03}px;
+    padding-right: ${screenWidth*0.03}px;
+    height: ${fontSize*1.7}px;
     width: ${screenWidth}px;
 `;
 const UserCircle = styled(FontAwesome).attrs(() => ({
@@ -30,17 +31,23 @@ const Title = styled.Text`
     color: ${({textColor}) => textColor};
 `;
 
-const TitleBar = ({navigation, backgroundColor, textColor}) => {
-    const [fontsLoaded] = useFonts({
-        "GmarketSansTTFBold": require("../../assets/fonts/GmarketSansTTFBold.ttf")
-    });
+const TitleBar = ({navigation, backgroundColor, textColor, page}) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
+    }
 
-    if(!fontsLoaded) {
-        return null;
-    };
+    const currentHour = new Date().getHours();
+    const isDay = currentHour >= 6 && currentHour < 18;
+
+    const logoImage = page === 'WearMain' 
+        ? require('../../assets/icons/titleLogoDay.png') 
+        : isDay 
+            ? require('../../assets/icons/titleLogoDay.png') 
+            : require('../../assets/icons/titleLogoNight.png');
 
     return (
-        <TitleContainer backgroundColor={backgroundColor}>
+        /*<TitleContainer backgroundColor={backgroundColor}>
             <TouchableOpacity 
                 onPress={() => navigation.navigate('WeatherMain')}
                 style={{marginLeft: -20}}
@@ -48,7 +55,24 @@ const TitleBar = ({navigation, backgroundColor, textColor}) => {
                 <Title textColor={textColor}>Weather Wear</Title>
             </TouchableOpacity>
             <UserCircle color={textColor} style={{marginRight: 10}}/>
-        </TitleContainer>
+        </TitleContainer>*/
+        <>
+            <TitleContainer backgroundColor={backgroundColor}>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('WeatherMain')}
+                    style={{marginLeft: -20}}
+                >
+                    <Image 
+                    source={logoImage} 
+                        //style={{width: screenWidth/2}}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleModal}>
+                    <UserCircle color={textColor} style={{marginRight: 10}}/>
+                </TouchableOpacity>
+            </TitleContainer>
+            {isModalVisible && <UserOutModal isVisible={isModalVisible} onClose={toggleModal} />}
+        </>
     );
 }
 
