@@ -82,7 +82,7 @@ const ShortForecast = ({data}) => {
                             source={getWeatherIconPath(data.sky_array[index], isDayTime)} 
                         />
                     </InnerContainer>
-                    <InnerContainer><Temperature>{temp}°C</Temperature></InnerContainer>
+                    <InnerContainer><Temperature>{`${parseFloat(temp).toFixed(1)}°C`}</Temperature></InnerContainer>
                 </OneHourContainer>
             ))}
         </ShortForecastContainer>

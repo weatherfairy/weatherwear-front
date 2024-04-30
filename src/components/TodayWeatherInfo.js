@@ -92,7 +92,7 @@ const SkyImage = styled.Image`
     width: ${fontSize*5}px;
     height: ${fontSize*5}px;
 `;
-const FinedustCard = styled.View`
+const WindCard = styled.View`
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -101,16 +101,17 @@ const FinedustCard = styled.View`
     height: ${screenHeight*0.13}px;
     border-radius: 15px;
 `;
-const FinedustTitle = styled.Text`
+const WindTitle = styled.Text`
     font-size: ${fontSize*0.7}px;
     font-family: GmarketSansTTFLight;
     color: #000;
     padding-bottom: 7px;
 `;
-const Finedust = styled.Text`
+const Wind = styled.Text`
     font-size: ${fontSize*1.1}px;
     font-family: GmarketSansTTFMedium;
     color: #000;
+    padding-bottom: 7px;
 `;
 const WearCard = styled.TouchableOpacity`
     justify-content: space-around;
@@ -211,7 +212,8 @@ const topData = {
     15: { name: "얇은셔츠", image: require('../../assets/icons/top/16.png') },
     16: { name: "코트", image: require('../../assets/icons/top/17.png') },
     17: { name: "트렌치코트", image: require('../../assets/icons/top/18.png') },
-    19: { name: "패딩", image: require('../../assets/icons/top/19.png') },
+    18: { name: "패딩", image: require('../../assets/icons/top/19.png') },
+    19: { name: "블라우스", image: require('../../assets/icons/top/12.png') },
 }
 
 const TodayWeatherInfos = ({ data, navigation, setModal, selectedRegion }) => {
@@ -227,17 +229,18 @@ const TodayWeatherInfos = ({ data, navigation, setModal, selectedRegion }) => {
             <InfoCardContainer>
                 <LeftCardsContainer>
                     <PrecipitationPercentCard>
-                        <PrecipitaionTitle>강수확률</PrecipitaionTitle>
-                        <PrecipitationPercent>{data.rain}%</PrecipitationPercent>
+                        <PrecipitaionTitle>강수확률 %</PrecipitaionTitle>
+                        <PrecipitationPercent>{data.rain}</PrecipitationPercent>
                     </PrecipitationPercentCard>
-                    <FinedustCard>
-                        <FinedustTitle>풍속</FinedustTitle>
-                        <Finedust>{data.wind}m/s</Finedust>
-                    </FinedustCard>
+                    <WindCard>
+                        <WindTitle>풍속 m/s</WindTitle>
+                        <Wind>{data.wind}</Wind>
+                        
+                    </WindCard>
                 </LeftCardsContainer>
                 <TemperatureCard>
                     <SkyImage source={getSkyIcon(data.sky, isDayTime)} />
-                    <Temperature>{data.temp}°C</Temperature>
+                    <Temperature>{`${parseFloat(data.temp).toFixed(1)}°C`}</Temperature>
                 </TemperatureCard>
                 <WearCard 
                     style={{shadow: { width:1, height: 2 }}}

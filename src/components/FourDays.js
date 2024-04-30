@@ -177,7 +177,7 @@ const FourDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky1[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{`${parseFloat(temp).toFixed(1)}°`}</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </YesterdayBox>
@@ -193,7 +193,7 @@ const FourDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky2[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{`${parseFloat(temp).toFixed(1)}°`}</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </TodayBox>
@@ -209,7 +209,7 @@ const FourDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky3[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{`${parseFloat(temp).toFixed(1)}°`}</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </TomorrowBox>
@@ -225,7 +225,7 @@ const FourDays = ({data}) => {
                                         source={getWeatherIconPath(data.sky4[index], isDayTime)} 
                                     />
                                 </SkyInnerContainer>
-                                <TempInnerContainer><Temperature>{temp}°</Temperature></TempInnerContainer>
+                                <TempInnerContainer><Temperature>{`${parseFloat(temp).toFixed(1)}°`}</Temperature></TempInnerContainer>
                             </OneHourContainer>
                         ))}
                     </AfterTomorrowBox>
