@@ -1,33 +1,13 @@
 import styled from 'styled-components/native';
 import {Dimensions, FlatList} from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import React, {useEffect, useState} from 'react';
 
-const data = [
-    {id: '1', value: '1', date: '1/25'},
-    {id: '2', value: '2', date: '1/26'},
-    {id: '3', value: '3', date: '1/27'},
-    {id: '4', value: '4', date: '1/29'},
-    {id: '5', value: '5', date: '1/28'},
-    {id: '6', value: '6', date: '1/30'},
-    {id: '7', value: '7', date: '2/2'},
-    {id: '8', value: '8', date: '2/4'},
-    {id: '9', value: '9', date: '2/1'},
-    {id: '10', value: '10', date: '2/5'},
-    {id: '1', value: '1', date: '1/25'},
-    {id: '2', value: '2', date: '1/26'},
-    {id: '3', value: '3', date: '1/27'},
-    {id: '4', value: '4', date: '1/29'},
-    {id: '5', value: '5', date: '1/28'},
-    {id: '6', value: '6', date: '1/30'},
-    {id: '7', value: '7', date: '2/2'},
-    {id: '8', value: '8', date: '2/4'},
-    {id: '9', value: '9', date: '2/1'},
-    {id: '10', value: '10', date: '2/5'},
-    {id: '1', value: '1', date: '1/25'}
-];
 const Container = styled.View`
-    background-color: ${({theme}) => theme.background};
+    flex: 1;
+    background-color: ${({theme}) => theme.wearBackground};
 `;
-const ImageContainer = styled.View`
+const ImageContainer = styled.TouchableOpacity`
     position: relative;
     width: ${Dimensions.get('window').width/3}px;
     height: ${Dimensions.get('window').height/4.5}px;
@@ -35,13 +15,17 @@ const ImageContainer = styled.View`
     border-width: 1px;
     border-color: ${({theme}) => theme.wearBackground};
 `;
+const Img = styled.Image`
+    width: 100%;
+    height: 100%;
+`;
 const DateContainer = styled.View`
     position: absolute;
     bottom: 3px;
     right: 3px;
     justify-content: center;
     align-items: center;
-    width: ${Dimensions.get('window').width/12}px;
+    width: ${Dimensions.get('window').width/6}px;
     height: ${Dimensions.get('window').height/60}px;
     background-color: ${({theme}) => theme.wearText};
     border-radius: ${Dimensions.get('window').height/120}px;
@@ -50,19 +34,82 @@ const DateText = styled.Text`
     color: ${({theme}) => theme.wearBackground};
     font-size: ${Dimensions.get('window').height/70}px;
 `;
+const FloatingButton = styled.TouchableOpacity`
+    width: ${Dimensions.get('window').height/16}px;
+    height: ${Dimensions.get('window').height/16}px;
+    background-color: ${({theme}) => theme.wearBackground};
+    border-radius: ${Dimensions.get('window').height/32}px;
+    position: absolute;
+    bottom: ${Dimensions.get('window').height*0.025}px;
+    right: ${Dimensions.get('window').height*0.02}px;
+    justify-content: center;
+    align-items: center;
+    elevation: 15;
+    shadow-color: ${({theme}) => theme.wearText};
+    shadow-opacity: 0.3;
+    shadow-radius: 3px;
+`;
+const AddWritingIcon = styled(MaterialIcons).attrs(({theme}) => ({
+    name: 'add',
+    size: Dimensions.get('window').height/24,
+    color: theme.wearText
+}))``;
 
-const RecordGallery = (props) => {
+const RecordGallery = ({ navigation, filterParams }) => {
+    const [imageData, setImageData] = useState([]);
+
+    useEffect(() => {
+        fetchImageData();
+    }, [filterParams]);
+
+    const fetchImageData = async () => {
+        try {
+            const url = `http://15.165.61.76:8080/api/v1/closet/lists?${filterParams}`
+            const response = await fetch(`http://15.165.61.76:8080/api/v1/closet/lists?${filterParams}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const jsonResponse = await response.json();
+            setImageData(jsonResponse);
+                //setHasMore(!jsonResponse.last); //마지막 페이지인지 확인
+                //setPage(newPage); //현재 페이지 상태 업데이트
+                //console.log(jsonResponse);
+            console.log('url: ', url);
+            console.log(jsonResponse);
+        } catch (error) {
+            console.error('Error fetching image data:', error);
+        }
+    };
+
+    // 날짜 포맷 변경 함수
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear().toString().slice(2); // 년도의 마지막 두 자리
+        const month = date.getMonth() + 1; // 월 (0부터 시작하므로 +1)
+        const day = date.getDate(); // 일
+        return `${year}/${month}/${day}`;
+    };
+
     return (
         <Container>
             <FlatList
-                data={data}
+                data={imageData}
                 renderItem={({item}) => (
                     <ImageContainer>
-                        <DateContainer><DateText>{item.date}</DateText></DateContainer>
+                        <Img source={{ uri: item.imageUrl }}/>
+                        <DateContainer><DateText>{formatDate(item.date)}</DateText></DateContainer>
                     </ImageContainer>
                 )}
                 numColumns={3}
-                contentContainerStyle={{ paddingBottom: 45 }} />
+                contentContainerStyle={{ paddingBottom: 5 }} />
+            <FloatingButton
+                onPress={() => navigation.navigate('WearWriting')}
+            >
+                <AddWritingIcon/>
+            </FloatingButton>
         </Container>
     )
 }

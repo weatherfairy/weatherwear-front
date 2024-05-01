@@ -111,13 +111,12 @@ const satisfyOptions = [
     {korName: '불만족', engName: 'bad'}
 ];
 const weatherOptions = [
-    {korName: '맑음', engName: 'clear'},
-    {korName: '흐림', engName: 'cloudy'},
-    {korName: '구름많음', engName: 'overcast'},
-    {korName: '비', engName: 'rain'},
-    {korName: '비_눈', engName: 'sleet'},
-    {korName: '눈', engName: 'snow'},
-    {korName: '바람', engName: 'windy'}
+    {korName: '뇌우', engName: 'thuderstorm', keyNum: 2},
+    {korName: '이슬비', engName: 'drizzle', keyNum: 3},
+    {korName: '비', engName: 'rain', keyNum: 5},
+    {korName: '눈', engName: 'snow', keyNum: 6},
+    {korName: '흐림', engName: 'overcast', keyNum: 7},
+    {korName: '맑음', engName: 'clear', keyNum: 8},
 ];
 
 const FilterModal = ({isVisible, onClose, activeFilterType, onApply}) => {
@@ -168,7 +167,10 @@ const FilterModal = ({isVisible, onClose, activeFilterType, onApply}) => {
         // 날씨 필터 파라미터
         const weatherParams = Object.entries(selectedOptions.weather)
             .filter(([key, value]) => value)
-            .map(([key]) => `sky=${weatherOptions.findIndex(option => option.engName === key)}`)
+            .map(([key]) => {
+                const option = weatherOptions.find(option => option.engName === key);
+                return `sky=${option.keyNum}`;
+            })
             .join('&');
     
         // 날짜 필터 파라미터
