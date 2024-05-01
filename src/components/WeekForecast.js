@@ -84,31 +84,33 @@ const WeatherIcon = ({ weatherType }) => {
     rain: require('../../assets/icons/color_weather/rain.png'),
     snow: require('../../assets/icons/color_weather/snow.png'),
     overcast: require('../../assets/icons/color_weather/overcast.png'),
-    clear: require('../../assets/icons/color_weather/clear_day.png'),
+    clear_day: require('../../assets/icons/color_weather/clear_day.png'),
+    clear_night: require('../../assets/icons/color_weather/clear_night.png'),
     default: require('../../assets/icons/default.png'),
   };
+  
 
   return <Image source={iconMap[weatherType]} style={{ width: 40, height: 40 }} />;
 };
 
-const weatherTypeFromCode = (code) => {
+const weatherTypeFromCode = (code, time) => {
   switch (code) {
     case 2:
       return 'thunderstorm';
     case 3:
-      return 'rain';
     case 5:
       return 'rain';
     case 6:
-      return 'snow'; 
+      return 'snow';
     case 7:
       return 'overcast';
     case 8:
-      return 'clear';//맑음-낮/ 맑음-밤 clear_night
+      return time === 'am' ? 'clear_day' : 'clear_night';
     default:
       return 'default';
   }
 };
+
 
 const generateDates = () => {
   const dates = [];
@@ -143,7 +145,7 @@ const WeekForecast = ({ forecastData }) => {
     <WeekForecastContainer>
       <TitleContainer>
       <FlexContainer>
-        <StyledText size={fontSize * 1.4}>주간예보</StyledText>
+        <StyledText size={fontSize * 1.3}>주간예보</StyledText>
       </FlexContainer>
       <FlexContainer>
       </FlexContainer>
@@ -168,7 +170,7 @@ const WeekForecast = ({ forecastData }) => {
               <StyledText size={fontSize}>{`${parseInt(forecastData.weeklyRainDay[index])}%`}</StyledText>
             </PrecipitationContainer>
             <WeatherIconContainer>
-              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyDay[index])} />
+              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyDay[index],'am')} />
             </WeatherIconContainer>
           </WeatherInfoContainer>
 
@@ -178,7 +180,7 @@ const WeekForecast = ({ forecastData }) => {
               <StyledText size={fontSize}>{`${parseInt(forecastData.weeklyRainNight[index])}%`}</StyledText>
             </PrecipitationContainer>
             <WeatherIconContainer>
-              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyNight[index])} />
+              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyNight[index],'pm')} />
             </WeatherIconContainer>
           </WeatherInfoContainer>
 
