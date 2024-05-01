@@ -115,7 +115,7 @@ const weatherTypeFromCode = (code, time) => {
 const generateDates = () => {
   const dates = [];
   const today = new Date();
-  today.setDate(today.getDate() - 1);
+  today.setDate(today.getDate());
   const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
   for (let i = 0; i < 8; i++) {
     const newDate = new Date(today);
