@@ -51,7 +51,10 @@ const Wear = ({ navigation }) => {
                 <Tab.Navigator
                     screenOptions={{
                         tabBarActiveTintColor: theme.wearHighlight,
-                        tabBarInactiveTintColor: theme.wearText
+                        tabBarInactiveTintColor: theme.wearText,
+                        tabBarStyle: { 
+                            backgroundColor: theme.wearBackground
+                        }
                     }}
                 >
                     <Tab.Screen

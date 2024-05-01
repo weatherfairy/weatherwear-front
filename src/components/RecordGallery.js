@@ -3,32 +3,9 @@ import {Dimensions, FlatList} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import React, {useEffect, useState} from 'react';
 
-const data = [
-    {id: '1', value: '1', date: '1/25'},
-    {id: '2', value: '2', date: '1/26'},
-    {id: '3', value: '3', date: '1/27'},
-    {id: '4', value: '4', date: '1/29'},
-    {id: '5', value: '5', date: '1/28'},
-    {id: '6', value: '6', date: '1/30'},
-    {id: '7', value: '7', date: '2/2'},
-    {id: '8', value: '8', date: '2/4'},
-    {id: '9', value: '9', date: '2/1'},
-    {id: '10', value: '10', date: '2/5'},
-    {id: '1', value: '1', date: '1/25'},
-    {id: '2', value: '2', date: '1/26'},
-    {id: '3', value: '3', date: '1/27'},
-    {id: '4', value: '4', date: '1/29'},
-    {id: '5', value: '5', date: '1/28'},
-    {id: '6', value: '6', date: '1/30'},
-    {id: '7', value: '7', date: '2/2'},
-    {id: '8', value: '8', date: '2/4'},
-    {id: '9', value: '9', date: '2/1'},
-    {id: '10', value: '10', date: '2/5'},
-    {id: '1', value: '1', date: '1/25'}
-];
 const Container = styled.View`
     flex: 1;
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.wearBackground};
 `;
 const ImageContainer = styled.TouchableOpacity`
     position: relative;
@@ -48,7 +25,7 @@ const DateContainer = styled.View`
     right: 3px;
     justify-content: center;
     align-items: center;
-    width: ${Dimensions.get('window').width/12}px;
+    width: ${Dimensions.get('window').width/6}px;
     height: ${Dimensions.get('window').height/60}px;
     background-color: ${({theme}) => theme.wearText};
     border-radius: ${Dimensions.get('window').height/120}px;
@@ -107,6 +84,15 @@ const RecordGallery = ({ navigation, filterParams }) => {
         }
     };
 
+    // 날짜 포맷 변경 함수
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear().toString().slice(2); // 년도의 마지막 두 자리
+        const month = date.getMonth() + 1; // 월 (0부터 시작하므로 +1)
+        const day = date.getDate(); // 일
+        return `${year}/${month}/${day}`;
+    };
+
     return (
         <Container>
             <FlatList
@@ -114,7 +100,7 @@ const RecordGallery = ({ navigation, filterParams }) => {
                 renderItem={({item}) => (
                     <ImageContainer>
                         <Img source={{ uri: item.imageUrl }}/>
-                        <DateContainer><DateText>{item.date}</DateText></DateContainer>
+                        <DateContainer><DateText>{formatDate(item.date)}</DateText></DateContainer>
                     </ImageContainer>
                 )}
                 numColumns={3}

@@ -4,6 +4,7 @@ import { FilterBar, RecordGallery } from '../components';
 
 const Container = styled.SafeAreaView`
     flex: 1;
+    background-color: ${({theme}) => theme.wearBackground};
 `;
 
 const WearRecord = ({ navigation }) => {
