@@ -66,7 +66,8 @@ const TemperatureContainer = styled.View`
 `;
 
 const PrecipitationContainer = styled.View`
-  margin-right: 8px; 
+  margin-right: 20px; 
+  align-items: center;
 `;
 
 const WeatherIconContainer = styled.View`
@@ -150,7 +151,6 @@ const WeekForecast = ({ forecastData }) => {
       <FlexContainer>
       </FlexContainer>
       <FlexContainer>
-        <StyledText size={fontSize * 0.8}>강수확률(%)</StyledText>
       </FlexContainer>
       <FlexContainer>
         <StyledText size={fontSize}>최저/최고</StyledText>
@@ -164,19 +164,10 @@ const WeekForecast = ({ forecastData }) => {
             <StyledText size={fontSize * 1.2}>{date.fullDate}</StyledText>
           </DateContainer>
 
-          <WeatherInfoContainer>
-            <PrecipitationContainer>
-              <StyledText size={fontSize * 0.8}>오전</StyledText>
-              <StyledText size={fontSize}>{`${parseInt(forecastData.weeklyRainDay[index])}%`}</StyledText>
-            </PrecipitationContainer>
-            <WeatherIconContainer>
-              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyDay[index],'am')} />
-            </WeatherIconContainer>
-          </WeatherInfoContainer>
 
           <WeatherInfoContainer>
             <PrecipitationContainer>
-              <StyledText size={fontSize * 0.8}>오후</StyledText>
+              <StyledText size={fontSize * 0.8}>강수확률</StyledText>
               <StyledText size={fontSize}>{`${parseInt(forecastData.weeklyRainNight[index])}%`}</StyledText>
             </PrecipitationContainer>
             <WeatherIconContainer>
