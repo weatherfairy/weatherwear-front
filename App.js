@@ -5,6 +5,7 @@ import {ThemeProvider} from 'styled-components/native';
 import {dayTheme, nightTheme} from './src/themes/theme';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import AuthProvider from './src/contexts/Auth';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -64,10 +65,11 @@ const App = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <Navigation />
-      <StatusBar style="auto" />
+      <AuthProvider>
+        <Navigation />
+        <StatusBar style="auto" />
+      </AuthProvider>
     </ThemeProvider>
-    //<Login/>
   )
 };
 

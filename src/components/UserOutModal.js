@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
-import {Dimensions, Modal, TouchableOpacity} from 'react-native';
+import {Dimensions, Modal, TouchableOpacity, Alert} from 'react-native';
+import React, { useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../contexts/Auth';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -33,6 +36,31 @@ const OptionText = styled.Text`
 `;
 
 const UserOutModal = ({ isVisible, onClose }) => {
+    const {setUserToken} = useContext(AuthContext);
+
+    const handleLogout = async () => {
+        Alert.alert(
+            "로그아웃",
+            "정말 로그아웃 하시겠습니까?",
+            [
+                {
+                    text: "취소",
+                    onPress: () => {console.log("로그아웃 취소")},
+                    style: "cancel"
+                },
+                {
+                    text: "확인",
+                    onPress: async () => {
+                        await AsyncStorage.removeItem('userToken');
+                        setUserToken(null);
+                    }
+                }
+            ],
+            {cancelable: false}
+        );
+        
+    };
+
     return (
         <Modal
             visible={isVisible}
@@ -46,7 +74,7 @@ const UserOutModal = ({ isVisible, onClose }) => {
                 style={{flex: 1}} //이값이 없으면 모달 밖의 화면을 터치해도 모달이 사라지지 않음
             >
                 <ModalContainer>
-                    <SelectContainer>
+                    <SelectContainer onPress={handleLogout}>
                         <OptionText>로그아웃</OptionText>
                     </SelectContainer>
                     <SelectContainer>

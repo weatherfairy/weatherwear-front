@@ -1,10 +1,15 @@
 import { NavigationContainer } from '@react-navigation/native';
 import Main from './Main';
+import Sign from './Sign';
+import React, {useContext} from 'react';
+import {AuthContext, AuthProvider} from '../contexts/Auth';
 
 const Navigation = () => {
+    const {userToken} = useContext(AuthContext);
+
     return (
         <NavigationContainer>
-            <Main />
+            {userToken ? <Main /> : <Sign />}
         </NavigationContainer>
     )
 }
