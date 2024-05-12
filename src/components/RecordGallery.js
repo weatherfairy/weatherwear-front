@@ -103,17 +103,18 @@ const RecordGallery = ({ navigation, filterParams }) => {
 
     const fetchDataFromServer = async (postNo) => {
         try {
-            const url = `http://15.165.61.76:8080/api/v1/closet/lists?${postNo}`
+            const url = `http://15.165.61.76:8080/api/v1/closet/lists/${postNo}`
             const userToken = await AsyncStorage.getItem('userToken');
             const response = await fetch(url,{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': userToken
+                    'Authorization': userToken
                 },
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log("url: ", url);
                 console.log("어떤 데이터? ",data);
                 return data;
             } else {
@@ -128,11 +129,12 @@ const RecordGallery = ({ navigation, filterParams }) => {
 
 
     const handleImagePress = async (postNo, date) => {
-        const dataFromServer = await fetchDataFromServer(postNo);        
-        console.log("눌림");
+        const dataFromServer = await fetchDataFromServer(postNo);    
+        console.log("게시글 번호: ", postNo);    
+        //console.log("눌림");
         if (dataFromServer) {
             console.log("로드 성공");
-            setModalContent({ ...dataFromServer, date,postNo });
+            setModalContent({ ...dataFromServer, date, postNo });
             setModalVisible(true);
             //console.log(modalContent);
         }
