@@ -9,19 +9,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 
-const handleDelete = async (postNo,onClose) => {
+const handleDelete = async (postNo,onClose,onDeleteSuccess) => {
     try {
         console.log("게시물 삭제 시도:", postNo);
+        const userToken = await AsyncStorage.getItem('userToken');
         const response = await fetch('http://15.165.61.76:8080/api/v1/closet/'+postNo, {  
-            method: 'POST',
+            method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': userToken
             },
             body: JSON.stringify({ postNo })
         });
         if (response.ok) {
-            const data = await response.status;
-            console.log('삭제 응답:', data);
+            console.log('삭제 응답:', response.status);
+            if (onDeleteSuccess) {
+                onDeleteSuccess(postNo);
+            };
             onClose();
         } else {
             console.log('게시물 삭제 실패:', response.status);
@@ -31,19 +35,16 @@ const handleDelete = async (postNo,onClose) => {
     }
 };
 
-  
 
-
-const DetailModal = ({ visible,modalContent, onClose }) => (
-  <Modal
+const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess }) => (
+    <Modal
     animationType="slide"
     transparent={true}//모달 투명도
     visible={visible}
     onRequestClose={onClose}
     >
-
-    <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
+        <View style={styles.centeredView}>
+            <View style={styles.modalView}>
                         <View style ={styles.buttonClose}>  
                             <Pressable
                                 style={styles.buttonClose}
@@ -80,13 +81,13 @@ const DetailModal = ({ visible,modalContent, onClose }) => (
                                 <IconButton onPress={() => console.log('Edit pressed')}>
                                     <EditIcon/>
                                 </IconButton>
-                                <IconButton onPress={() => handleDelete(modalContent?.postNo,onClose)}>
+                                <IconButton onPress={() => handleDelete(modalContent?.postNo, onClose, onDeleteSuccess)}>
                                     <DeleteIcon/>
                                 </IconButton>
                         </ButtonContainer>
-                    </View>
-                </View>
-            </Modal>
+            </View>
+        </View>
+    </Modal>
 );
 
 

@@ -144,6 +144,11 @@ const RecordGallery = ({ navigation, filterParams }) => {
     };
 
 
+    const removePostFromGallery = async (postNo) => {
+        const newImageData = imageData.filter(item => item.postNo !== postNo);
+        setImageData(newImageData);
+    };
+
     return (
         <Container>
             <FlatList
@@ -161,6 +166,7 @@ const RecordGallery = ({ navigation, filterParams }) => {
                 visible={modalVisible} 
                 modalContent={modalContent}
                 onClose={() => setModalVisible(false)} 
+                onDeleteSuccess={removePostFromGallery}
             />
             <FloatingButton
                 onPress={() => navigation.navigate('WearWriting')}
