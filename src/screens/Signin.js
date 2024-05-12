@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { View, Image, Dimensions, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {AuthContext} from '../contexts/Auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -117,6 +118,7 @@ const Signin = ({navigation}) => {
             if(result.token) {
                 console.log("로그인 성공! 토큰: ", result.token);
                 setUserToken(result.token);
+                await AsyncStorage.setItem('userToken', result.token);
             } else {
                 console.log("로그인 실패:", result);
                 Alert.alert("로그인 실패", "이메일 또는 비밀번호를 확인해주세요.");

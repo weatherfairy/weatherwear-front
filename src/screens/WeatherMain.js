@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { WeekForecast, TodayWeatherInfos, FourDays, Location }from '../components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const errorData = {
     temp: 0,
@@ -78,6 +79,16 @@ const WeatherMain = ({navigation}) => {
     const toggleLocationModal = () => {
         setShowLocationModal(!showLocationModal);
     }
+
+    const saveRegionToStorage = async (region) => {
+        try {
+            await AsyncStorage.setItem('location', region);
+            setSelectedRegion(region);  // Update state after successful storage
+            console.log('Region saved:', region);
+        } catch (error) {
+            console.error('Failed to save the region:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchWeatherData = async() => {
@@ -164,7 +175,7 @@ const WeatherMain = ({navigation}) => {
                 {showLocationModal && (
                     <Location 
                         onClose={toggleLocationModal} 
-                        onFinish={setSelectedRegion}
+                        onFinish={saveRegionToStorage}
                         selectedMainRegion={selectedMainRegion}
                         setSelectedMainRegion={setSelectedMainRegion}
                         selectedSubRegion={selectedSubRegion}

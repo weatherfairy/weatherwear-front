@@ -125,33 +125,65 @@ const Temperature = styled.Text`
     font-family: GmarketSansTTFMedium;
     color: ${({theme}) => theme.text};
 `;
-const getWeatherIconPath = (sky, isDayTime) => {
-    if (isDayTime) {
-        switch(sky) {
-            case 2: return require('../../assets/icons/black_weather/thunderstorm.png');
-            case 3: return require('../../assets/icons/black_weather/rain.png');
-            case 5: return require('../../assets/icons/black_weather/rain.png');
-            case 6: return require('../../assets/icons/black_weather/snow.png');
-            case 7: return require('../../assets/icons/black_weather/overcast.png');
-            case 8: return require('../../assets/icons/black_weather/clear_day.png');
-            default: return require('../../assets/icons/black_weather/clear_day.png');
-        }
-    } else {
-        switch(sky) {
-            case 2: return require('../../assets/icons/white_weather/thunderstorm.png');
-            case 3: return require('../../assets/icons/white_weather/rain.png');
-            case 5: return require('../../assets/icons/white_weather/rain.png');
-            case 6: return require('../../assets/icons/white_weather/snow.png');
-            case 7: return require('../../assets/icons/white_weather/overcast.png');
-            case 8: return require('../../assets/icons/white_weather/clear_night.png');
-            default: return require('../../assets/icons/white_weather/clear_night.png');
-        }
+const icons = {
+    black_weather: {
+        thunderstorm: require('../../assets/icons/black_weather/thunderstorm.png'),
+        rain: require('../../assets/icons/black_weather/rain.png'),
+        snow: require('../../assets/icons/black_weather/snow.png'),
+        overcast: require('../../assets/icons/black_weather/overcast.png'),
+        clear_day: require('../../assets/icons/black_weather/clear_day.png'),
+        clear_night: require('../../assets/icons/black_weather/clear_night.png')
+    },
+    white_weather: {
+        thunderstorm: require('../../assets/icons/white_weather/thunderstorm.png'),
+        rain: require('../../assets/icons/white_weather/rain.png'),
+        snow: require('../../assets/icons/white_weather/snow.png'),
+        overcast: require('../../assets/icons/white_weather/overcast.png'),
+        clear_day: require('../../assets/icons/white_weather/clear_day.png'),
+        clear_night: require('../../assets/icons/white_weather/clear_night.png')
     }
+};
+const getWeatherIconPath = (sky, index) => {
+    // 현재 시간에 따른 낮/밤 결정
+    const currentHour = new Date().getHours();
+    const isDayTime = currentHour >= 6 && currentHour < 18;
+    const folder = isDayTime ? 'black_weather' : 'white_weather';
+
+    // 인덱스에 따른 낮/밤 이미지 결정
+    let iconName;
+    if (index >= 0 && index <= 3) {
+        iconName = 'clear_day';  // 낮 시간 (index 0~3)
+    } else {
+        iconName = 'clear_night'; // 밤 시간 (index 4~7)
+    }
+
+    // 스카이 값에 따른 이미지 선택 (추가 상황에 따라 수정 가능)
+    switch(sky) {
+        case 2:
+            iconName = 'thunderstorm';
+            break;
+        case 3:
+        case 5:
+            iconName = 'rain';
+            break;
+        case 6:
+            iconName = 'snow';
+            break;
+        case 7:
+            iconName = 'overcast';
+            break;
+        case 8:
+            // 기본적으로는 index에 따라 낮/밤 이미지 사용
+            break;
+        default:
+            iconName = isDayTime ? 'clear_day' : 'clear_night';
+    }
+
+    return icons[folder][iconName];
 };
 
 const FourDays = ({data}) => {
     const currentHour = new Date().getHours();
-    const isDayTime = currentHour >=6 && currentHour < 18;
 
     return (
         <ShortForecastContainer>
@@ -174,7 +206,7 @@ const FourDays = ({data}) => {
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky1[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky1[index], index)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{`${parseInt(temp)}°`}</Temperature></TempInnerContainer>
@@ -190,7 +222,7 @@ const FourDays = ({data}) => {
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky2[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky2[index], index)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{`${parseInt(temp)}°`}</Temperature></TempInnerContainer>
@@ -206,7 +238,7 @@ const FourDays = ({data}) => {
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky3[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky3[index], index)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{`${parseInt(temp)}°`}</Temperature></TempInnerContainer>
@@ -222,7 +254,7 @@ const FourDays = ({data}) => {
                                 <SkyInnerContainer>
                                     <Sky 
                                         key={index}
-                                        source={getWeatherIconPath(data.sky4[index], isDayTime)} 
+                                        source={getWeatherIconPath(data.sky4[index], index)} 
                                     />
                                 </SkyInnerContainer>
                                 <TempInnerContainer><Temperature>{`${parseInt(temp)}°`}</Temperature></TempInnerContainer>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 import RecommendPost from '../components/RecommendPost';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -62,20 +63,42 @@ const WearRecommend = () => {
     //server연결
     const [recommendations, setRecommendations] = useState([]);
 
-    useEffect(()=>{
-        //데이터 불러오기
-        const fetchRecommendations = async ()=>{
-            try{
-                const response = await fetch('http://15.165.61.76:8080/api/v1/closet/recommend?location=서울특별시성북구');
+    // useEffect(()=>{
+    //     //데이터 불러오기
+    //     const fetchRecommendations = async ()=>{
+    //         try{
+    //             const response = await fetch('http://15.165.61.76:8080/api/v1/closet/recommend?location=서울특별시성북구');
+    //             const data = await response.json();
+    //             setRecommendations(data);
+    //             console.log(data);
+    //         }catch(error){
+    //             console.error('추천 데이터 fetch실패', error);
+    //         }
+    //     };
+    //     fetchRecommendations();
+    // },[]);
+
+    useEffect(() => {
+        const fetchRecommendations = async () => {
+            try {
+                const storedLocation = await AsyncStorage.getItem('location');
+                const userToken = await AsyncStorage.getItem('userToken');
+                const locationParameter = storedLocation ? storedLocation.replace(/\s/g, '') : '서울특별시성북구';
+                const response = await fetch(`http://15.165.61.76:8080/api/v1/closet/recommend?location=${locationParameter}`, {
+                    headers: {
+                        //'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoid2VhdGhlcndlYXIuY29tIiwiaWF0IjoxNzE1NTAzNjAwLCJleHAiOjE3MjA2ODc2MDB9.7gTAYx0L4WhEL9f-XwzjBoPr115JLaUN2Xgcqp04Op8'
+                        'Authorization': userToken
+                    }
+                });
                 const data = await response.json();
                 setRecommendations(data);
                 console.log(data);
-            }catch(error){
+            } catch (error) {
                 console.error('추천 데이터 fetch실패', error);
             }
         };
         fetchRecommendations();
-    },[]);
+    }, []);
 
     return (
         <ScreenContainer>
