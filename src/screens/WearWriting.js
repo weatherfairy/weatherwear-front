@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
-import { TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
-
+import { Image,TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get('window');
 
-const AddPicture = styled.View`
+
+const AddPicture = styled.TouchableOpacity`
   background-color: lightgray;
   margin-top: ${ScreenHeight * 0.09}px;
   width: ${ScreenWidth * 0.3}px;
@@ -14,6 +15,7 @@ const AddPicture = styled.View`
   align-self: center;
   border-radius: 10px;
   justify-content: center;
+  align-items: center;
 `;
 
 const TodayInfoContainer = styled.View`
@@ -56,40 +58,32 @@ const handleSatisfactionClick = (option)=>{
     setSatisfaction(option);
 };
 
-const selectPhotoTapped = () => {
-    const options = {
-      title: '사진 선택',
-      cancelButtonTitle: '취소',
-      takePhotoButtonTitle: '카메라로 촬영하기',
-      chooseFromLibraryButtonTitle: '갤러리에서 선택하기',
-      quality: 1.0,
-      maxWidth: 500,
-      maxHeight: 500,
-      storageOptions: {
-        skipBackup: true,
-      },
-    };
-    ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
-  
-        if (response.didCancel) {
-          console.log('User cancelled photo picker');
-        } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-        } else {
-          const source = { uri: response.uri };
-  
-          // You can also display the image using data:
-          // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-  
-          setPhoto(source);
-        }
-      });
-    };
+const selectPhotoTapped = async () => {
+   // 권한 요청
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+        alert('사진 라이브러리 접근 권한이 필요합니다.');
+        return;
+    }
 
+    // 이미지 선택
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
 
+    console.log('Response = ', result);
+
+    //선택했다면
+    if (!result.cancelled) {
+      console.log("Image URI:", result.uri);
+      setPhoto(result.uri);
+  }
+  
+    
+};
 
 
 const handleSaveClick = async()=>{
@@ -112,16 +106,25 @@ const handleSaveClick = async()=>{
     formData.append('emoji','1');
     formData.append('sky','1');
     // formData.append('image', {
-    //   uri: 'https://picsum.photos/200/300', //나중에 실제 이미지로 변경
     //   type: 'image/jpeg',
     //   name: 'photo.jpeg'
     // });
+    if (photo) {
+      const localUri = photo;
+      const filename = localUri.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+
+      // `photo`는 `uri`로부터 만든 blob 또는 다른 데이터 객체가 될 수 있습니다.
+      formData.append('image', { uri: localUri, name: filename, type });
+      console.log(filename);
+  }
 
 
     try {
         // Axios를 사용하여 FormData와 함께 POST 요청 보내기
         const response = await axios.post(
-            'http://15.165.61.76:8080/api/v1/closet',
+            'http://223.194.159.105/api/v1/closet',
             formData,
             {
               headers: {
@@ -147,10 +150,13 @@ const handleSaveClick = async()=>{
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={{flex: 1}}>
+       <AddPicture onPress={selectPhotoTapped}>
+                {photo ? (
+                    <Image source={{ uri: photo }} style={{ width: 200, height: 200, borderRadius: 10 }} />
+                ) : (<Text style={styles.centered}>+</Text>)}
+        </AddPicture>
     <View style={{flex: 1}}>
-    <AddPicture>
-        <Text style = {styles.centered}>+</Text>
-    </AddPicture> 
+
         <TodayInfoContainer>
          <Text style = {styles.lightText}>{date}</Text>
          <Text style = {[styles.boldText, styles.margin]}>-6°C~3°C</Text>
