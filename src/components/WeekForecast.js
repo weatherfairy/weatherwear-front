@@ -9,7 +9,6 @@ const WeekForecastContainer = styled.View`
   align-items: center;
   border-bottom-color: ${({ theme }) => theme.Forecast};  
   width: 100%;
-  //height: ${screenHeight};
   background-color: ${({theme}) => theme.forecastContainer};
 `;
 

@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import {Dimensions} from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+//import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {useState} from 'react';
 import FilterModal from './FilterModal';
 
@@ -30,11 +32,11 @@ const FilterButton = styled.TouchableOpacity`
     align-items: center;
     justify-content: center;
 `;
-const FilterIcon = styled(FontAwesome5).attrs(({theme}) => ({
-    name: 'sliders-h',
+const FilterIcon = styled(FontAwesome).attrs(({theme}) => ({
+    name: 'sliders',
     size: screenHeight*0.03
 }))`
-    color: ${({theme}) => theme.wearText};
+    //color: ${({theme}) => theme.wearText};
 `;
 const NameContainer = styled.View`
     background-color: ${({theme}) => theme.wearBackground};
