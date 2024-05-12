@@ -20,17 +20,16 @@
     "expo-app-loading": "^2.1.1",
     "expo-font": "~12.0.4",
     "expo-image-picker": "~15.0.4",
-
     "expo-splash-screen": "~0.27.4",
     "expo-status-bar": "~1.12.1",
     "metro-config": "^0.80.6",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-axios": "^2.0.6",
+    "react-dom": "^18.2.0",
     "react-native": "0.74.1",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-
     "react-native-page-indicator": "^2.2.1",
     "react-native-tab-view": "^3.5.2",
     "styled-components": "^6.1.8"
