@@ -62,25 +62,25 @@ const UserOutModal = ({ isVisible, onClose }) => {
     };
 
     const handleDeleteAccount = async () => {
-        //const token = await AsyncStorage.getItem('userToken');
-        //console.log("Retrieved token:", token);
         console.log("userToken: ", userToken);
         if(userToken) {
             try{
-                const response = await fetch('http://15.165.61.76:8080/api/v1/member', {
+                const response = await fetch('http://15.165.61.76:8080/member/login', {
                     method: 'DELETE',
                     headers: {
                         'Authorization': userToken,
                     },
                 });
-                const result = await response.json();
-                if(response.ok) {
+                //const result = await response.json();
+                const responseData = await response.text();
+
+                if(responseData === "SUCCESS") {
                     console.log("회원탈퇴 성공");
                     Alert.alert("회원탈퇴 성공", "그동안 WeatherWear를 이용해주셔서 감사했습니다.\n언제든 다시 찾아오시길 기다리겠습니다.");
                     await AsyncStorage.removeItem('userToken');
                     setUserToken(null);
                 } else {
-                    console.log("회원탈퇴 실패: ", result);
+                    console.log("회원탈퇴 실패(response data): ", responseData);
                     Alert.alert("회원탈퇴 실패", "문제가 발생했습니다. 다시 시도하시기 바랍니다.");
                 }
             } catch (error) {
