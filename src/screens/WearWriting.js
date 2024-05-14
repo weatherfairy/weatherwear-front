@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
 import { TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 
 const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get('window');
 
-const AddPicture = styled.View`
+const AddPicture = styled.TouchableOpacity`
   background-color: lightgray;
   margin-top: ${ScreenHeight * 0.09}px;
   width: ${ScreenWidth * 0.3}px;
@@ -13,6 +15,7 @@ const AddPicture = styled.View`
   align-self: center;
   border-radius: 10px;
   justify-content: center;
+  align-items: center;
 `;
 const TodayInfoContainer = styled.View`
     align-items: center;
@@ -38,11 +41,13 @@ const ReviewText = styled.TextInput`
 `;
 
 const WearWriting = ({route, navigation}) => {
-  const today = new Date();
-  //const todayDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
-  const defaultDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-
-  const {date=defaultDate, minTemp, maxTemp, clothesText, review, emoji, postNo} = route.params || {};
+  const [date, setDate] = useState('');
+  const [minTemp, setMinTemp] = useState('');
+  const [maxTemp, setMaxTemp] = useState('');
+  const [clothesText, setClothesText] = useState('');
+  const [review, setReview] = useState('');
+  const [satisfaction, setSatisfaction] = useState(null);
+  const [photos, setPhotos] = useState([null, null, null]);
 
   const formatDate = (dateString) => {
     if (!dateString) return null;
@@ -50,16 +55,36 @@ const WearWriting = ({route, navigation}) => {
     return `${year}년 ${month}월 ${day}일`;
   };
 
-  const formattedDate = formatDate(date); 
+  useEffect(() => {
+    const loadData = async () => {
+      const storedMinTemp = await AsyncStorage.getItem('minTemp');
+      const storedMaxTemp = await AsyncStorage.getItem('maxTemp');
+      const today = new Date();
+      const defaultdDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
 
-  const [clothes, setClothes] = React.useState(clothesText || '');
-  const [reviewText, setReviewText] = React.useState(review || '');
-  const [satisfaction, setSatisfaction] = useState(emoji || null);
-  const [photo, setPhoto] = useState(null);
+      setDate(formatDate(route.params?.date) || formatDate(defaultdDate));
+      setMinTemp(route.params?.minTemp || storedMinTemp || '');
+      setMaxTemp(route.params?.maxTemp || storedMaxTemp || '');
+      setClothesText(route.params?.clothesText || '');
+      setReview(route.params?.review || '');
+      setSatisfaction(route.params?.emoji || null);
+    };
+
+    loadData();
+  }, []);
 
   const handleSatisfactionClick = (option)=>{
       setSatisfaction(option);
   };
+
+  useEffect(() => {
+    const fetchTemperature = async () => {
+      const minTemperature = await AsyncStorage.getItem('minTemp');
+      const maxTemperature = await AsyncStorage.getItem('maxTemp');
+    };
+
+    fetchTemperature();
+  }, []);
 
   const selectPhotoTapped = () => {
     const options = {
@@ -89,7 +114,7 @@ const WearWriting = ({route, navigation}) => {
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-        setPhoto(source);
+        setPhotos(source);
       }
     });
   };
@@ -97,7 +122,7 @@ const WearWriting = ({route, navigation}) => {
 
   const handleSaveClick = async()=>{
 
-    if(!clothes || !reviewText){
+    if(!clothesText || !review){
         Alert.alert('모든 필드를 입력해주세요');
         return;
     }
@@ -149,29 +174,29 @@ const WearWriting = ({route, navigation}) => {
         <Text style = {styles.centered}>+</Text>
     </AddPicture> 
         <TodayInfoContainer>
-          <Text style = {styles.lightText}>{formattedDate}</Text>
-          <Text style = {[styles.boldText, styles.margin]}>-6°C~3°C</Text>
+          <Text style = {styles.lightText}>{date}</Text>
+          <Text style = {[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
         </TodayInfoContainer>
         <ClothesText
             maxLength={40}
             textAlignVertical='top'
             multiline = {true}
-            onChangeText = {setClothes}
-            value = {clothes}
+            onChangeText = {setClothesText}
+            value = {clothesText}
             placeholder = "ex) 코트, 청바지, 니트" 
         />
         <ReviewText
             maxLength={50}
             textAlignVertical='top'
             multiline={true}
-            onChangeText = {setReviewText}
-            value = {reviewText}
+            onChangeText = {setReview}
+            value = {review}
             placeholder = "ex) 코트 입어서 추웠던 날" 
         />
         <SatisfactionContainer>
-            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(3)} name = "만족" style = {{backgroundColor:'#D0F0C0',marginRight: 8}} selected={satisfaction===3}/>
-            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(2)} name = "보통" style = {{backgroundColor:'#FFDB58', marginRight: 8}} selected={satisfaction===2}/>
-            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(1)} name = "불만족" style = {{backgroundColor:'#FC6C85'}} selected={satisfaction===1}/>
+            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(0)} name = "만족" style = {{backgroundColor:'#D0F0C0',marginRight: 8}} selected={satisfaction===0}/>
+            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(1)} name = "보통" style = {{backgroundColor:'#FFDB58', marginRight: 8}} selected={satisfaction===1}/>
+            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(2)} name = "불만족" style = {{backgroundColor:'#FC6C85'}} selected={satisfaction===2}/>
         </SatisfactionContainer>
         </View>
         <View style={{marginBottom: 30}}>
