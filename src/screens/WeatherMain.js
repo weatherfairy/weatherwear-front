@@ -63,6 +63,16 @@ const ScrollContainer = styled.ScrollView`
     flex-direction: column;
 `;
 
+const saveTemperatureData = async(minTemp, maxTemp, skyIcon) =>{
+    try{
+        await AsyncStorage.setItem('minTemp' ,JSON.stringify(minTemp));
+        await AsyncStorage.setItem('maxTemp', JSON.stringify(maxTemp));
+        await AsyncStorage.setItem('skyIcon', JSON.stringify(skyIcon));
+    }catch(error){
+        console.error("failed to save Today-WeatherData", error);
+    }
+};
+
 const WeatherMain = ({navigation}) => {
     //const [weatherData, setWeatherData] = useState();
     const [testData, setTestData] = useState(dummyData);
@@ -143,6 +153,13 @@ const WeatherMain = ({navigation}) => {
                     //setWeatherData(jsonResponse.content);
                     setTestData(jsonResponse);
                     console.log('WeatherData set: ', jsonResponse);
+
+                    //글작성페이지에 보낼 데이터 추출/저장
+                    const minTemp = parseInt(jsonResponse.minTemp[0]);
+                    const maxTemp = parseInt(jsonResponse.maxTemp[0]);
+                    const skyIcon = jsonResponse.weeklySkyDay[0];
+                    saveTemperatureData(minTemp, maxTemp, skyIcon);
+                    //console.log(minTemp);
                 } else {
                     //setWeatherData(errorData);
                     setTestData(jsonResponse);
