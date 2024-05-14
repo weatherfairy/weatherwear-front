@@ -61,6 +61,7 @@ const WearWriting = ({route, navigation}) => {
       const storedMaxTemp = await AsyncStorage.getItem('maxTemp');
       const today = new Date();
       const defaultdDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+      const images = route.params?.images || [null, null, null];
 
       setDate(formatDate(route.params?.date) || formatDate(defaultdDate));
       setMinTemp(route.params?.minTemp || storedMinTemp || '');
@@ -68,23 +69,21 @@ const WearWriting = ({route, navigation}) => {
       setClothesText(route.params?.clothesText || '');
       setReview(route.params?.review || '');
       setSatisfaction(route.params?.emoji || null);
+      setPhotos(images);
     };
 
     loadData();
   }, []);
 
   const handleSatisfactionClick = (option)=>{
-      setSatisfaction(option);
+    console.log(`Selected satisfaction level before setting state: ${option}`); // 상태 설정 전 로그
+    setSatisfaction(option);
+    console.log(`Selected satisfaction level after setting state: ${satisfaction}`); // 상태 설정 후 로그
   };
 
   useEffect(() => {
-    const fetchTemperature = async () => {
-      const minTemperature = await AsyncStorage.getItem('minTemp');
-      const maxTemperature = await AsyncStorage.getItem('maxTemp');
-    };
-
-    fetchTemperature();
-  }, []);
+    console.log(`Satisfaction updated to: ${satisfaction}`);
+  }, [satisfaction]);
 
   const selectPhotoTapped = async (index) => {
     // 권한 요청
@@ -114,12 +113,12 @@ const WearWriting = ({route, navigation}) => {
   };
 
   const handleSaveClick = async()=>{
-
+    console.log(`Saving with satisfaction: ${satisfaction}`);
     if(!clothesText || !review || photos.some(photo => photo === null)){
         Alert.alert('모든 필드를 입력해주세요');
         return;
     }
-    if(!satisfaction){
+    if(satisfaction === null || satisfaction === undefined){
         Alert.alert('만족도를 선택해주세요');
         return;
     }

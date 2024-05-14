@@ -88,7 +88,8 @@ const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess, navigati
                                         clothesText: modalContent.clothesText,
                                         review: modalContent.review,
                                         emoji: modalContent.emoji,
-                                        postNo: modalContent.postNo
+                                        postNo: modalContent.postNo,
+                                        images: [modalContent.image1, modalContent.image2, modalContent.image3]
                                     });
                                 }}>
                                     <EditIcon/>
