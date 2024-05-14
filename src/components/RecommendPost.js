@@ -78,11 +78,11 @@ const getSkyIcon = (sky) => {
 
 const getSatisfactionIcon = (emoji) => {
     switch (emoji) {
-        case 1:
+        case 0:
             return require('../../assets/icons/bad.png');
-        case 2:
+        case 1:
             return require('../../assets/icons/good.png');
-        case 3:
+        case 2:
             return require('../../assets/icons/best.png');
         default:
             return null; 

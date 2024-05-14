@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 import RecommendPost from '../components/RecommendPost';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -13,6 +14,22 @@ const ScrollContainer = styled.ScrollView`
     flex: 1;
     flex-direction: column;
 `;
+
+const loadWeatherData = async () => {
+    try {
+      const minTemp = await AsyncStorage.getItem('minTemperature');
+      const maxTemp = await AsyncStorage.getItem('maxTemperature');
+      const skyIcon = await AsyncStorage.getItem('skyIcon'); // skyIcon 불러오기
+      return {
+        min: minTemp !== null ? JSON.parse(minTemp) : 0,
+        max: maxTemp !== null ? JSON.parse(maxTemp) : 0,
+        sky: skyIcon !== null ? JSON.parse(skyIcon) : 0 // 기본값 설정
+      };
+    } catch (error) {
+      // 에러 처리
+      console.error("Failed to load data", error);
+    }
+  };
 
 const WearRecommend = () => {
     // dummy data test
@@ -62,21 +79,24 @@ const WearRecommend = () => {
     //server연결
     const [recommendations, setRecommendations] = useState([]);
 
-    useEffect(()=>{
-        //데이터 불러오기
-        const fetchRecommendations = async ()=>{
-            try{
-                const response = await fetch('http://15.165.61.76:8080/api/v1/closet/recommend?location=서울특별시성북구');
+    useEffect(() => {
+        const fetchRecommendations = async () => {
+            try {
+                const response = await fetch('http://15.165.61.76:8080/api/v1/closet/recommend?location=서울특별시성북구', {
+                    headers: {
+                        'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoid2VhdGhlcndlYXIuY29tIiwiaWF0IjoxNzE1NTAzNjAwLCJleHAiOjE3MjA2ODc2MDB9.7gTAYx0L4WhEL9f-XwzjBoPr115JLaUN2Xgcqp04Op8'
+                    }
+                });
                 const data = await response.json();
                 setRecommendations(data);
                 console.log(data);
-            }catch(error){
+            } catch (error) {
                 console.error('추천 데이터 fetch실패', error);
             }
         };
         fetchRecommendations();
-    },[]);
-
+    }, []);
+    
     return (
         <ScreenContainer>
             <ScrollContainer contentContainerStyle={{ paddingBottom: screenHeight*0.1,}}>

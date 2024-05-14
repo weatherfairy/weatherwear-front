@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, Alert, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-import axios from 'axios';
-import { Image,TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get('window');
 
@@ -17,6 +21,7 @@ const AddPicture = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
 `;
+
 
 const TodayInfoContainer = styled.View`
     align-items: center;
@@ -44,21 +49,45 @@ const ReviewText = styled.TextInput`
   font-size: 20px;
 `;
 
+const RowContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 20px;
+  width: 100%;
+`;
 
-const WearWriting = () => {
+
+const WearWriting = ({navigation}) => {
 
 //렌더링
 
 const [clothes, inputClothes] = React.useState('');
 const [review, inputReview] = React.useState('');
 const [satisfaction, setSatisfaction] = useState(null);
-const [photo, setPhoto] = useState(null);
+const [photos, setPhotos] = useState([null, null, null]);
+
+const [minTemp, setMinTemp] = useState(null); 
+const [maxTemp, setMaxTemp] = useState(null);  
+
+useEffect(() => {
+    const fetchTemperature = async () => {
+        const minTemperature = await AsyncStorage.getItem('minTemp');
+        const maxTemperature = await AsyncStorage.getItem('maxTemp');
+        setMinTemp(minTemperature);
+        setMaxTemp(maxTemperature);
+        
+    };
+
+    fetchTemperature();
+  }, []);
+
+
 
 const handleSatisfactionClick = (option)=>{
     setSatisfaction(option);
 };
 
-const selectPhotoTapped = async () => {
+const selectPhotoTapped = async (index) => {
    // 권한 요청
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -71,75 +100,85 @@ const selectPhotoTapped = async () => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 1,
+        quality: 0.5,
     });
 
-    console.log('Response = ', result);
+    if (!result.cancelled && result.assets && result.assets.length > 0) {
+        const uri = result.assets[0].uri;
 
-    //선택했다면
-    if (!result.cancelled) {
-      console.log("Image URI:", result.uri);
-      setPhoto(result.uri);
-  }
-  
-    
-};
+        // 파일 크기 계산
+        const fileInfo = await FileSystem.getInfoAsync(uri);
+        const fileSize = fileInfo.size; // 바이트 단위
+        const fileSizeInMB = fileSize / 1024; // KB 단위로 변환
 
+    console.log(`File size: ${fileSizeInMB} KB`);
+
+        setPhotos(currentPhotos => {
+          const newPhotos = [...currentPhotos];
+          newPhotos[index] = uri;
+          return newPhotos;
+        });
+    }
+    };
 
 const handleSaveClick = async()=>{
 
-    if(!clothes || !review){
+    if (!clothes || !review || photos.some(photo => photo === null)) {
         Alert.alert('모든 필드를 입력해주세요');
         return;
     }
-    if(!satisfaction){
+    if (!satisfaction) {
         Alert.alert('만족도를 선택해주세요');
         return;
     }
 
+
+    const skyIcon = await AsyncStorage.getItem('skyIcon');
     // FormData 객체 생성
     const formData = new FormData();
-    formData.append('min', '20');
-    formData.append('max', '30.0');
-    formData.append('clothes' ,'맨투맨');
-    formData.append('review', 'hihi');
-    formData.append('emoji','1');
-    formData.append('sky','1');
+
+    formData.append('min', minTemp.toString());
+    formData.append('max', maxTemp.toString());
+    formData.append('clothes' ,clothes);
+    formData.append('review', review);
+    formData.append('emoji',satisfaction);
+    formData.append('sky',skyIcon);
     // formData.append('image', {
     //   type: 'image/jpeg',
     //   name: 'photo.jpeg'
     // });
-    if (photo) {
-      const localUri = photo;
-      const filename = localUri.split('/').pop();
-      const match = /\.(\w+)$/.exec(filename);
-      const type = match ? `image/${match[1]}` : `image`;
-
-      // `photo`는 `uri`로부터 만든 blob 또는 다른 데이터 객체가 될 수 있습니다.
-      formData.append('image', { uri: localUri, name: filename, type });
-      console.log(filename);
-  }
-
-
+    photos.forEach((photo, index) => {
+        if (photo) {
+            const uri = photo;
+            const filename = uri.split('/').pop();
+            const match = /\.(\w+)$/.exec(filename);
+            const type = match ? `image/${match[1]}` : `image`;
+            formData.append(`image${index + 1}`, { uri, name: filename, type });
+        }
+    });
     try {
-        // Axios를 사용하여 FormData와 함께 POST 요청 보내기
         const response = await axios.post(
-            'http://223.194.159.105/api/v1/closet',
+            'http://15.165.61.76:8080/api/v1/closet',
             formData,
             {
-              headers: {
-                'Content-Type': 'multipart/formdata',
-              },
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoid2VhdGhlcndlYXIuY29tIiwiaWF0IjoxNzE1NTAzNjAwLCJleHAiOjE3MjA2ODc2MDB9.7gTAYx0L4WhEL9f-XwzjBoPr115JLaUN2Xgcqp04Op8'
+                
+                },
             },
-          );
+        );
         
-        console.log(response.data); // 응답 데이터
-        Alert.alert('성공', '데이터가 성공적으로 전송되었습니다.');
+        Alert.alert('성공', '데이터가 성공적으로 전송되었습니다.', [
+            { text: 'OK', onPress: () => navigation.navigate('Wear') }
+          ]);
     } catch (error) {
-        console.error(error); // 에러
+        console.error(error);
         Alert.alert('오류', '데이터 전송 중 오류가 발생했습니다.');
     }
+
 };
+
 
 
     const today = new Date();
@@ -150,16 +189,22 @@ const handleSaveClick = async()=>{
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={{flex: 1}}>
-       <AddPicture onPress={selectPhotoTapped}>
-                {photo ? (
-                    <Image source={{ uri: photo }} style={{ width: 200, height: 200, borderRadius: 10 }} />
-                ) : (<Text style={styles.centered}>+</Text>)}
-        </AddPicture>
-    <View style={{flex: 1}}>
 
+    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20, width: '100%' }}>
+          {photos.map((photo, index) => (
+            <AddPicture key={index} onPress={() => selectPhotoTapped(index)}>
+              {photo ? (
+                <Image source={{ uri: photo }} style={{ width: ScreenWidth * 0.3, height: ScreenWidth * 0.3, borderRadius: 10 }} />
+              ) : (
+                <Text style={styles.centered}>+</Text>
+              )}
+            </AddPicture>
+          ))}
+        </View>
+    <View style={{flex: 1}}>
         <TodayInfoContainer>
          <Text style = {styles.lightText}>{date}</Text>
-         <Text style = {[styles.boldText, styles.margin]}>-6°C~3°C</Text>
+         <Text style = {[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
         </TodayInfoContainer>
         <ClothesText
             maxLength={40}
@@ -177,15 +222,19 @@ const handleSaveClick = async()=>{
             value = {review}
             placeholder = "ex) 코트 입어서 추웠던 날" 
         />
+        
         <SatisfactionContainer>
             <SatisfactionButton onPress = {()=>  handleSatisfactionClick(3)} name = "만족" style = {{backgroundColor:'#D0F0C0',marginRight: 8}} selected={satisfaction===3}/>
             <SatisfactionButton onPress = {()=>  handleSatisfactionClick(2)} name = "보통" style = {{backgroundColor:'#FFDB58', marginRight: 8}} selected={satisfaction===2}/>
             <SatisfactionButton onPress = {()=>  handleSatisfactionClick(1)} name = "불만족" style = {{backgroundColor:'#FC6C85'}} selected={satisfaction===1}/>
         </SatisfactionContainer>
+        
         </View>
-        <View style={{marginBottom: 30}}>
-            <SaveButton onPress={handleSaveClick} name="저장"/>
-        </View>
+            <View style={{marginBottom: 30}}>
+                <SaveButton onPress={handleSaveClick} name="저장"/>
+            </View>
+
+            
         </View>
     </TouchableWithoutFeedback>
     );

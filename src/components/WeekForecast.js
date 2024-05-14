@@ -168,10 +168,10 @@ const WeekForecast = ({ forecastData }) => {
           <WeatherInfoContainer>
             <PrecipitationContainer>
               <StyledText size={fontSize * 0.8}>강수확률</StyledText>
-              <StyledText size={fontSize}>{`${parseInt(forecastData.weeklyRainNight[index])}%`}</StyledText>
+              <StyledText size={fontSize}>{`${parseInt(forecastData.weeklyRainDay[index])}%`}</StyledText>
             </PrecipitationContainer>
             <WeatherIconContainer>
-              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyNight[index],'pm')} />
+              <WeatherIcon weatherType={weatherTypeFromCode(forecastData.weeklySkyDay[index],'pm')} />
             </WeatherIconContainer>
           </WeatherInfoContainer>
 
