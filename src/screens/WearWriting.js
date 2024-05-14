@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
-import { TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
+import { TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -86,43 +86,36 @@ const WearWriting = ({route, navigation}) => {
     fetchTemperature();
   }, []);
 
-  const selectPhotoTapped = () => {
-    const options = {
-      title: '사진 선택',
-      cancelButtonTitle: '취소',
-      takePhotoButtonTitle: '카메라로 촬영하기',
-      chooseFromLibraryButtonTitle: '갤러리에서 선택하기',
-      quality: 1.0,
-      maxWidth: 500,
-      maxHeight: 500,
-      storageOptions: {
-        skipBackup: true,
-      },
-    };
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-  
-      if (response.didCancel) {
-        console.log('User cancelled photo picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = { uri: response.uri };
-  
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+  const selectPhotoTapped = async (index) => {
+    // 권한 요청
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('사진 라이브러리 접근 권한이 필요합니다.');
+      return;
+    }
 
-        setPhotos(source);
-      }
+    // 이미지 선택
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
     });
-  };
 
+    if (!result.cancelled && result.assets && result.assets.length > 0) {
+      const uri = result.assets[0].uri;
+
+      setPhotos(currentPhotos => {
+        const newPhotos = [...currentPhotos];
+        newPhotos[index] = uri;
+        return newPhotos;
+      });
+    }
+  };
 
   const handleSaveClick = async()=>{
 
-    if(!clothesText || !review){
+    if(!clothesText || !review || photos.some(photo => photo === null)){
         Alert.alert('모든 필드를 입력해주세요');
         return;
     }
@@ -131,29 +124,39 @@ const WearWriting = ({route, navigation}) => {
         return;
     }
 
+    const skyIcon = await AsyncStorage.getItem('skyIcon');
+
     // FormData 객체 생성
     const formData = new FormData();
-    formData.append('min', '20');
-    formData.append('max', '30.0');
-    formData.append('clothes' ,'맨투맨');
-    formData.append('review', 'hihi');
-    formData.append('emoji','1');
-    formData.append('sky','1');
-    // formData.append('image', {
-    //   uri: 'https://picsum.photos/200/300', //나중에 실제 이미지로 변경
-    //   type: 'image/jpeg',
-    //   name: 'photo.jpeg'
-    // });
+
+    formData.append('min', minTemp.toString());
+    formData.append('max', maxTemp.toString());
+    formData.append('clothes' ,clothesText);
+    formData.append('review', review);
+    formData.append('emoji',satisfaction);
+    formData.append('sky',skyIcon);
+    photos.forEach((photo, index) => {
+        if (photo) {
+            const uri = photo;
+            const filename = uri.split('/').pop();
+            const match = /\.(\w+)$/.exec(filename);
+            const type = match ? `image/${match[1]}` : `image`;
+            formData.append(`image${index + 1}`, { uri, name: filename, type });
+        }
+    });
+
 
 
     try {
         // Axios를 사용하여 FormData와 함께 POST 요청 보내기
+        const userToken = await AsyncStorage.getItem('userToken');
         const response = await axios.post(
             'http://15.165.61.76:8080/api/v1/closet',
             formData,
             {
               headers: {
                 'Content-Type': 'multipart/formdata',
+                'Authorization': userToken,
               },
             },
           );
@@ -168,41 +171,50 @@ const WearWriting = ({route, navigation}) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <View style={{flex: 1}}>
-    <View style={{flex: 1}}>
-    <AddPicture>
-        <Text style = {styles.centered}>+</Text>
-    </AddPicture> 
-        <TodayInfoContainer>
-          <Text style = {styles.lightText}>{date}</Text>
-          <Text style = {[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
-        </TodayInfoContainer>
-        <ClothesText
-            maxLength={40}
-            textAlignVertical='top'
-            multiline = {true}
-            onChangeText = {setClothesText}
-            value = {clothesText}
-            placeholder = "ex) 코트, 청바지, 니트" 
-        />
-        <ReviewText
-            maxLength={50}
-            textAlignVertical='top'
-            multiline={true}
-            onChangeText = {setReview}
-            value = {review}
-            placeholder = "ex) 코트 입어서 추웠던 날" 
-        />
-        <SatisfactionContainer>
-            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(0)} name = "만족" style = {{backgroundColor:'#D0F0C0',marginRight: 8}} selected={satisfaction===0}/>
-            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(1)} name = "보통" style = {{backgroundColor:'#FFDB58', marginRight: 8}} selected={satisfaction===1}/>
-            <SatisfactionButton onPress = {()=>  handleSatisfactionClick(2)} name = "불만족" style = {{backgroundColor:'#FC6C85'}} selected={satisfaction===2}/>
-        </SatisfactionContainer>
+      <View style={{flex: 1}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20, width: '100%' }}>
+            {photos.map((photo, index) => (
+              <AddPicture key={index} onPress={() => selectPhotoTapped(index)}>
+                {photo ? (
+                  <Image source={{ uri: photo }} style={{ width: ScreenWidth * 0.3, height: ScreenWidth * 0.3, borderRadius: 10 }} />
+                ) : (
+                  <Text style={styles.centered}>+</Text>
+                )}
+              </AddPicture>
+            ))}
+        </View>
+        <View style={{flex: 1}}>
+            <TodayInfoContainer>
+              <Text style = {styles.lightText}>{date}</Text>
+              <Text style = {[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
+            </TodayInfoContainer>
+            <ClothesText
+                maxLength={40}
+                textAlignVertical='top'
+                multiline = {true}
+                onChangeText = {setClothesText}
+                value = {clothesText}
+                placeholder = "ex) 코트, 청바지, 니트" 
+            />
+            <ReviewText
+                maxLength={50}
+                textAlignVertical='top'
+                multiline={true}
+                onChangeText = {setReview}
+                value = {review}
+                placeholder = "ex) 코트 입어서 추웠던 날" 
+            />
+            
+            <SatisfactionContainer>
+                <SatisfactionButton onPress = {()=>  handleSatisfactionClick(0)} name = "만족" style = {{backgroundColor:'#D0F0C0',marginRight: 8}} selected={satisfaction===0}/>
+                <SatisfactionButton onPress = {()=>  handleSatisfactionClick(1)} name = "보통" style = {{backgroundColor:'#FFDB58', marginRight: 8}} selected={satisfaction===1}/>
+                <SatisfactionButton onPress = {()=>  handleSatisfactionClick(2)} name = "불만족" style = {{backgroundColor:'#FC6C85'}} selected={satisfaction===2}/>
+            </SatisfactionContainer>
         </View>
         <View style={{marginBottom: 30}}>
-            <SaveButton onPress={handleSaveClick} name="저장"/>
+          <SaveButton onPress={handleSaveClick} name="저장"/>
         </View>
-        </View>
+      </View>
     </TouchableWithoutFeedback>
     );
 };

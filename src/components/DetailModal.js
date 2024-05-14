@@ -104,11 +104,9 @@ const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess, navigati
 
 
 
-
 const ModalContainer = styled.View`
     width: ${ScreenWidth* 0.75}px; 
 `;
-
 const InfoContainer = styled.View`
     //background-color: pink;
     margin-top: ${ScreenHeight/93}px;
@@ -116,7 +114,6 @@ const InfoContainer = styled.View`
     width: 90%;
     height: 25%;
 `;
-
 //이모지
 function getEmojiSource(emoji) {
     switch (emoji) {
@@ -146,7 +143,6 @@ const ButtonContainer = styled.View`
     right: ${ScreenHeight/186}px;
     flex-direction: row;
 `;
-
 const IconButton = styled.TouchableOpacity`
     align-items: center;
     justify-content: center;
