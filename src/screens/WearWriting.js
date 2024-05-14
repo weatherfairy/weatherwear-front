@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import axios from 'axios';
 import { TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
 
-
 const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get('window');
 
 const AddPicture = styled.View`
@@ -15,23 +14,19 @@ const AddPicture = styled.View`
   border-radius: 10px;
   justify-content: center;
 `;
-
 const TodayInfoContainer = styled.View`
     align-items: center;
     margin-top: ${ScreenHeight * 0.04}px;
 `;
-
 const ClothesText = styled.TextInput`
   background-color: lightgray;
   margin-top: ${ScreenHeight * 0.03}px;
   width: ${ScreenWidth * 0.7}px;
   height: ${ScreenHeight * 0.06}px;
- 
   border-radius: 5px;
   align-self: center;
   font-size: 20px;
 `;
-
 const ReviewText = styled.TextInput`
   background-color: lightgray;
   margin-top: ${ScreenHeight * 0.03}px;
@@ -42,21 +37,31 @@ const ReviewText = styled.TextInput`
   font-size: 20px;
 `;
 
+const WearWriting = ({route, navigation}) => {
+  const today = new Date();
+  //const todayDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+  const defaultDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
 
-const WearWriting = () => {
+  const {date=defaultDate, minTemp, maxTemp, clothesText, review, emoji, postNo} = route.params || {};
 
-//렌더링
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    const [year, month, day] = dateString.split('-');
+    return `${year}년 ${month}월 ${day}일`;
+  };
 
-const [clothes, inputClothes] = React.useState('');
-const [review, inputReview] = React.useState('');
-const [satisfaction, setSatisfaction] = useState(null);
-const [photo, setPhoto] = useState(null);
+  const formattedDate = formatDate(date); 
 
-const handleSatisfactionClick = (option)=>{
-    setSatisfaction(option);
-};
+  const [clothes, setClothes] = React.useState(clothesText || '');
+  const [reviewText, setReviewText] = React.useState(review || '');
+  const [satisfaction, setSatisfaction] = useState(emoji || null);
+  const [photo, setPhoto] = useState(null);
 
-const selectPhotoTapped = () => {
+  const handleSatisfactionClick = (option)=>{
+      setSatisfaction(option);
+  };
+
+  const selectPhotoTapped = () => {
     const options = {
       title: '사진 선택',
       cancelButtonTitle: '취소',
@@ -70,31 +75,29 @@ const selectPhotoTapped = () => {
       },
     };
     ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
+      console.log('Response = ', response);
   
-        if (response.didCancel) {
-          console.log('User cancelled photo picker');
-        } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-        } else {
-          const source = { uri: response.uri };
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.uri };
   
-          // You can also display the image using data:
-          // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-  
-          setPhoto(source);
-        }
-      });
-    };
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        setPhoto(source);
+      }
+    });
+  };
 
 
+  const handleSaveClick = async()=>{
 
-
-const handleSaveClick = async()=>{
-
-    if(!clothes || !review){
+    if(!clothes || !reviewText){
         Alert.alert('모든 필드를 입력해주세요');
         return;
     }
@@ -136,13 +139,7 @@ const handleSaveClick = async()=>{
         console.error(error); // 에러
         Alert.alert('오류', '데이터 전송 중 오류가 발생했습니다.');
     }
-};
-
-
-    const today = new Date();
-    const date = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
-
-
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -152,14 +149,14 @@ const handleSaveClick = async()=>{
         <Text style = {styles.centered}>+</Text>
     </AddPicture> 
         <TodayInfoContainer>
-         <Text style = {styles.lightText}>{date}</Text>
-         <Text style = {[styles.boldText, styles.margin]}>-6°C~3°C</Text>
+          <Text style = {styles.lightText}>{formattedDate}</Text>
+          <Text style = {[styles.boldText, styles.margin]}>-6°C~3°C</Text>
         </TodayInfoContainer>
         <ClothesText
             maxLength={40}
             textAlignVertical='top'
             multiline = {true}
-            onChangeText = {inputClothes}
+            onChangeText = {setClothes}
             value = {clothes}
             placeholder = "ex) 코트, 청바지, 니트" 
         />
@@ -167,8 +164,8 @@ const handleSaveClick = async()=>{
             maxLength={50}
             textAlignVertical='top'
             multiline={true}
-            onChangeText = {inputReview}
-            value = {review}
+            onChangeText = {setReviewText}
+            value = {reviewText}
             placeholder = "ex) 코트 입어서 추웠던 날" 
         />
         <SatisfactionContainer>

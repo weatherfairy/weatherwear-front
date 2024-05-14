@@ -36,7 +36,7 @@ const handleDelete = async (postNo,onClose,onDeleteSuccess) => {
 };
 
 
-const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess }) => (
+const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess, navigation }) => (
     <Modal
     animationType="slide"
     transparent={true}//모달 투명도
@@ -78,7 +78,19 @@ const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess }) => (
                             </InfoContainer>
                         </ModalContainer>
                         <ButtonContainer>
-                                <IconButton onPress={() => console.log('Edit pressed')}>
+                                <IconButton onPress={() => {
+                                    console.log('Edit pressed');
+                                    onClose();
+                                    navigation.navigate('WearWriting', {
+                                        date: modalContent.date,
+                                        minTemp: modalContent.minTemp,
+                                        maxTemp: modalContent.maxTemp,
+                                        clothesText: modalContent.clothesText,
+                                        review: modalContent.review,
+                                        emoji: modalContent.emoji,
+                                        postNo: modalContent.postNo
+                                    });
+                                }}>
                                     <EditIcon/>
                                 </IconButton>
                                 <IconButton onPress={() => handleDelete(modalContent?.postNo, onClose, onDeleteSuccess)}>

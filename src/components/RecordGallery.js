@@ -115,7 +115,7 @@ const RecordGallery = ({ navigation, filterParams }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("url: ", url);
-                console.log("어떤 데이터? ",data);
+                //console.log("어떤 데이터? ",data);
                 return data;
             } else {
                 throw new Error('서버로부터 응답을 받는 데 실패했습니다.');
@@ -131,12 +131,11 @@ const RecordGallery = ({ navigation, filterParams }) => {
     const handleImagePress = async (postNo, date) => {
         const dataFromServer = await fetchDataFromServer(postNo);    
         console.log("게시글 번호: ", postNo);    
-        //console.log("눌림");
+        
         if (dataFromServer) {
-            console.log("로드 성공");
+            console.log("로드 성공", dataFromServer);
             setModalContent({ ...dataFromServer, date, postNo });
             setModalVisible(true);
-            //console.log(modalContent);
         }
         if (!dataFromServer) {
             console.log("로드 실패");
@@ -167,6 +166,7 @@ const RecordGallery = ({ navigation, filterParams }) => {
                 modalContent={modalContent}
                 onClose={() => setModalVisible(false)} 
                 onDeleteSuccess={removePostFromGallery}
+                navigation={navigation}
             />
             <FloatingButton
                 onPress={() => navigation.navigate('WearWriting')}
