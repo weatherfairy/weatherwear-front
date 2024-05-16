@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import {Dimensions, FlatList} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import DetailModal from './DetailModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Container = styled.View`
     flex: 1;
@@ -60,11 +61,11 @@ const AddWritingIcon = styled(MaterialIcons).attrs(({theme}) => ({
 const RecordGallery = ({ navigation, filterParams }) => {
     const [imageData, setImageData] = useState([]);
 
-    useEffect(() => {
-        fetchImageData();
-    }, [filterParams]);
+    // useEffect(() => {
+    //     fetchImageData();
+    // }, [filterParams]);
 
-    const fetchImageData = async () => {
+    const fetchImageData = useCallback(async () => {
         try {
             const url = `http://15.165.61.76:8080/api/v1/closet/lists?${filterParams}`
             const userToken = await AsyncStorage.getItem('userToken');
@@ -86,7 +87,13 @@ const RecordGallery = ({ navigation, filterParams }) => {
         } catch (error) {
             console.error('Error fetching image data:', error);
         }
-    };
+    }, [filterParams]);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchImageData();
+        }, [fetchImageData])
+    )
 
     // 날짜 포맷 변경 함수
     const formatDate = (dateString) => {
