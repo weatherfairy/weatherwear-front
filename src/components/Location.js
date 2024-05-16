@@ -172,8 +172,6 @@ const Location = ({
     setSelectedSubRegion
 }) => {
     const [selectedRegionName, setSelectedRegionName] = useState("");
-    // const [selectedMainRegion, setSelectedMainRegion] = useState(null);
-    // const [selectedSubRegion, setSelectedSubRegion] = useState(null);
     const isLocationSelected = selectedMainRegion !== null && (selectedMainRegion.subRegions.length === 0 || selectedSubRegion !== null);
 
     const handleMainRegionSelect = (region) => () => {
