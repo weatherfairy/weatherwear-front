@@ -162,6 +162,7 @@ const WearWriting = ({route, navigation}) => {
         
         console.log(response.data); // 응답 데이터
         Alert.alert('성공', '데이터가 성공적으로 전송되었습니다.');
+        navigation.navigate('WearMain', {screen: '내 기록'});
     } catch (error) {
         console.error(error); // 에러
         Alert.alert('오류', '데이터 전송 중 오류가 발생했습니다.');
