@@ -89,7 +89,8 @@ const DetailModal = ({ visible, modalContent, onClose, onDeleteSuccess, navigati
                                         review: modalContent.review,
                                         emoji: modalContent.emoji,
                                         postNo: modalContent.postNo,
-                                        images: [modalContent.image1, modalContent.image2, modalContent.image3]
+                                        images: [modalContent.image1, modalContent.image2, modalContent.image3],
+                                        isEditMode: true
                                     });
                                 }}>
                                     <EditIcon/>

@@ -61,10 +61,6 @@ const AddWritingIcon = styled(MaterialIcons).attrs(({theme}) => ({
 const RecordGallery = ({ navigation, filterParams }) => {
     const [imageData, setImageData] = useState([]);
 
-    // useEffect(() => {
-    //     fetchImageData();
-    // }, [filterParams]);
-
     const fetchImageData = useCallback(async () => {
         try {
             const url = `http://15.165.61.76:8080/api/v1/closet/lists?${filterParams}`
@@ -176,7 +172,7 @@ const RecordGallery = ({ navigation, filterParams }) => {
                 navigation={navigation}
             />
             <FloatingButton
-                onPress={() => navigation.navigate('WearWriting')}
+                onPress={() => navigation.navigate('WearWriting', {isEditMode: false})}
             >
                 <AddWritingIcon/>
             </FloatingButton>

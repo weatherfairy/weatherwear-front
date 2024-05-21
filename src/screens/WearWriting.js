@@ -48,6 +48,8 @@ const WearWriting = ({route, navigation}) => {
   const [review, setReview] = useState('');
   const [satisfaction, setSatisfaction] = useState(null);
   const [photos, setPhotos] = useState([null, null, null]);
+  const [editMode, setEditMode] = useState(false);
+  const [postNo, setPostNo] = useState(null);
 
   const formatDate = (dateString) => {
     if (!dateString) return null;
@@ -56,6 +58,7 @@ const WearWriting = ({route, navigation}) => {
   };
 
   useEffect(() => {
+    console.log("satisfaction: ", satisfaction);
     const loadData = async () => {
       const storedMinTemp = await AsyncStorage.getItem('minTemp');
       const storedMaxTemp = await AsyncStorage.getItem('maxTemp');
@@ -68,8 +71,11 @@ const WearWriting = ({route, navigation}) => {
       setMaxTemp(route.params?.maxTemp || storedMaxTemp || '');
       setClothesText(route.params?.clothesText || '');
       setReview(route.params?.review || '');
-      setSatisfaction(route.params?.emoji || null);
+      setSatisfaction(route.params?.emoji ?? null);
       setPhotos(images);
+      setEditMode(route.params?.isEditMode || false);
+      setPostNo(route.params?.postNo || null);
+      console.log("satisfaction: ", satisfaction);
     };
 
     loadData();
@@ -128,44 +134,95 @@ const WearWriting = ({route, navigation}) => {
     // FormData 객체 생성
     const formData = new FormData();
 
-    formData.append('min', minTemp.toString());
-    formData.append('max', maxTemp.toString());
     formData.append('clothes' ,clothesText);
     formData.append('review', review);
     formData.append('emoji',satisfaction);
-    formData.append('sky',skyIcon);
     photos.forEach((photo, index) => {
         if (photo) {
             const uri = photo;
-            const filename = uri.split('/').pop();
-            const match = /\.(\w+)$/.exec(filename);
-            const type = match ? `image/${match[1]}` : `image`;
+            // const filename = uri.split('/').pop();
+            // const match = /\.(\w+)$/.exec(filename);
+            // const type = match ? `image/${match[1]}` : `image`;
+            const filename = `image${index + 1}.jpg`; // 기본 파일 이름 설정
+            const type = 'image/jpeg'; // 기본 이미지 타입 설정
             formData.append(`image${index + 1}`, { uri, name: filename, type });
         }
     });
 
 
-
-    try {
-        // Axios를 사용하여 FormData와 함께 POST 요청 보내기
-        const userToken = await AsyncStorage.getItem('userToken');
-        const response = await axios.post(
-            'http://15.165.61.76:8080/api/v1/closet',
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/formdata',
-                'Authorization': userToken,
-              },
+    // try {
+    //     // Axios를 사용하여 FormData와 함께 POST 요청 보내기
+    //     const userToken = await AsyncStorage.getItem('userToken');
+    //     const response = await axios.post(
+    //         'http://15.165.61.76:8080/api/v1/closet',
+    //         formData,
+    //         {
+    //           headers: {
+    //             'Content-Type': 'multipart/formdata',
+    //             'Authorization': userToken,
+    //           },
+    //         },
+    //       );
+        
+    //     console.log(response.data); // 응답 데이터
+    //     Alert.alert('성공', '데이터가 성공적으로 전송되었습니다.');
+    //     navigation.navigate('WearMain', {screen: '내 기록'});
+    // } catch (error) {
+    //     console.error(error); // 에러
+    //     Alert.alert('오류', '데이터 전송 중 오류가 발생했습니다.');
+    // }
+    try{
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (editMode) {
+        console.log("editMode");
+        console.log("http://15.165.61.76:8080/api/v1/closet/"+postNo);
+        const response = await axios.put(
+          `http://15.165.61.76:8080/api/v1/closet/${postNo}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/formdata',
+              'Authorization': userToken,
             },
-          );
+          },
+        );
+        console.log(response.data);
+        Alert.alert('수정성공', '수정된 데이터가 성공적으로 전송되었습니다.');
+        navigation.navigate('WearMain', {screen: '내 기록'});
+      } else {
+        formData.append('min', minTemp.toString());
+        formData.append('max', maxTemp.toString());
+        formData.append('sky',skyIcon);
+
+        const response = await axios.post(
+          'http://15.165.61.76:8080/api/v1/closet',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/formdata',
+              'Authorization': userToken,
+            },
+          },
+        );
         
         console.log(response.data); // 응답 데이터
         Alert.alert('성공', '데이터가 성공적으로 전송되었습니다.');
         navigation.navigate('WearMain', {screen: '내 기록'});
+      }
     } catch (error) {
-        console.error(error); // 에러
-        Alert.alert('오류', '데이터 전송 중 오류가 발생했습니다.');
+      if (error.response) {
+        // 서버가 4xx 또는 5xx 응답을 반환한 경우
+        console.error('Server responded with an error:', error.response.data);
+        Alert.alert(`Error: ${error.response.status} - ${error.response.data.message || 'An error occurred'}`);
+      } else if (error.request) {
+        // 요청이 서버에 도달하지 못한 경우
+        console.error('No response received:', error.request);
+        Alert.alert('No response received from server. Please try again later.');
+      } else {
+        // 요청을 설정하는 도중에 오류가 발생한 경우
+        console.error('Error in setting up the request:', error.message);
+        Alert.alert(`Request error: ${error.message}`);
+      }
     }
   };
 
