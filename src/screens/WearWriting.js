@@ -9,7 +9,7 @@ const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get('window');
 
 const AddPicture = styled.TouchableOpacity`
   background-color: lightgray;
-  margin-top: ${ScreenHeight * 0.09}px;
+  margin-top: ${ScreenHeight * 0.04}px;
   width: ${ScreenWidth * 0.3}px;
   height: ${ScreenWidth * 0.3}px;
   align-self: center;
@@ -58,7 +58,7 @@ const WearWriting = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    console.log("satisfaction: ", satisfaction);
+    //console.log("satisfaction: ", satisfaction);
     const loadData = async () => {
       const storedMinTemp = await AsyncStorage.getItem('minTemp');
       const storedMaxTemp = await AsyncStorage.getItem('maxTemp');
@@ -75,20 +75,20 @@ const WearWriting = ({route, navigation}) => {
       setPhotos(images);
       setEditMode(route.params?.isEditMode || false);
       setPostNo(route.params?.postNo || null);
-      console.log("satisfaction: ", satisfaction);
+      //console.log("satisfaction: ", satisfaction);
     };
 
     loadData();
   }, []);
 
   const handleSatisfactionClick = (option)=>{
-    console.log(`Selected satisfaction level before setting state: ${option}`); // 상태 설정 전 로그
+    //console.log(`Selected satisfaction level before setting state: ${option}`); // 상태 설정 전
     setSatisfaction(option);
-    console.log(`Selected satisfaction level after setting state: ${satisfaction}`); // 상태 설정 후 로그
+    //console.log(`Selected satisfaction level after setting state: ${satisfaction}`); // 상태 설정 후
   };
 
   useEffect(() => {
-    console.log(`Satisfaction updated to: ${satisfaction}`);
+    //console.log(`Satisfaction updated to: ${satisfaction}`);
   }, [satisfaction]);
 
   const selectPhotoTapped = async (index) => {
@@ -119,7 +119,7 @@ const WearWriting = ({route, navigation}) => {
   };
 
   const handleSaveClick = async()=>{
-    console.log(`Saving with satisfaction: ${satisfaction}`);
+    //console.log(`Saving with satisfaction: ${satisfaction}`);
     if(!clothesText || !review || photos.some(photo => photo === null)){
         Alert.alert('모든 필드를 입력해주세요');
         return;
@@ -174,8 +174,8 @@ const WearWriting = ({route, navigation}) => {
     try{
       const userToken = await AsyncStorage.getItem('userToken');
       if (editMode) {
-        console.log("editMode");
-        console.log("http://15.165.61.76:8080/api/v1/closet/"+postNo);
+        //console.log("editMode");
+        //console.log("http://15.165.61.76:8080/api/v1/closet/"+postNo);
         const response = await axios.put(
           `http://15.165.61.76:8080/api/v1/closet/${postNo}`,
           formData,
@@ -186,7 +186,7 @@ const WearWriting = ({route, navigation}) => {
             },
           },
         );
-        console.log(response.data);
+        //console.log(response.data);
         Alert.alert('수정성공', '수정된 데이터가 성공적으로 전송되었습니다.');
         navigation.navigate('WearMain', {screen: '내 기록'});
       } else {
@@ -205,7 +205,7 @@ const WearWriting = ({route, navigation}) => {
           },
         );
         
-        console.log(response.data); // 응답 데이터
+        //console.log(response.data); // 응답 데이터
         Alert.alert('성공', '데이터가 성공적으로 전송되었습니다.');
         navigation.navigate('WearMain', {screen: '내 기록'});
       }
@@ -232,46 +232,40 @@ const WearWriting = ({route, navigation}) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20, width: '100%' }}>
             {photos.map((photo, index) => (
               <AddPicture key={index} onPress={() => selectPhotoTapped(index)}>
-                {photo ? (
-                  <Image source={{ uri: photo }} style={{ width: ScreenWidth * 0.3, height: ScreenWidth * 0.3, borderRadius: 10 }} />
-                ) : (
-                  <Text style={styles.centered}>+</Text>
-                )}
+                {photo ? (<Image source={{ uri: photo }} style={{ width: ScreenWidth * 0.3, height: ScreenWidth * 0.3, borderRadius: 10 }} />) : (<Text style={styles.centered}>+</Text>)}
               </AddPicture>
             ))}
         </View>
-        <View style={{flex: 1}}>
-            <TodayInfoContainer>
-              <Text style = {styles.lightText}>{date}</Text>
-              <Text style = {[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
-            </TodayInfoContainer>
-            <ClothesText
-                maxLength={40}
-                textAlignVertical='top'
-                multiline = {true}
-                onChangeText = {setClothesText}
-                value = {clothesText}
-                placeholder = "ex) 코트, 청바지, 니트" 
-            />
-            <ReviewText
-                maxLength={50}
-                textAlignVertical='top'
-                multiline={true}
-                onChangeText = {setReview}
-                value = {review}
-                placeholder = "ex) 코트 입어서 추웠던 날" 
-            />
-            
-            <SatisfactionContainer>
-                <SatisfactionButton onPress = {()=>  handleSatisfactionClick(0)} name = "만족" style = {{backgroundColor:'#D0F0C0',marginRight: 8}} selected={satisfaction===0}/>
-                <SatisfactionButton onPress = {()=>  handleSatisfactionClick(1)} name = "보통" style = {{backgroundColor:'#FFDB58', marginRight: 8}} selected={satisfaction===1}/>
-                <SatisfactionButton onPress = {()=>  handleSatisfactionClick(2)} name = "불만족" style = {{backgroundColor:'#FC6C85'}} selected={satisfaction===2}/>
-            </SatisfactionContainer>
-        </View>
-        <View style={{marginBottom: 30}}>
-          <SaveButton onPress={handleSaveClick} name="저장"/>
+        <TodayInfoContainer>
+          <Text style={styles.lightText}>{date}</Text>
+          <Text style={[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
+        </TodayInfoContainer>
+        <ClothesText
+          maxLength={40}
+          textAlignVertical='top'
+          multiline={true}
+          onChangeText={setClothesText}
+          value={clothesText}
+          placeholder="ex) 코트, 청바지, 니트" 
+        />
+        <ReviewText
+          maxLength={50}
+          textAlignVertical='top'
+          multiline={true}
+          onChangeText={setReview}
+          value={review}
+          placeholder="ex) 코트 입어서 추웠던 날" 
+        />
+        <SatisfactionContainer>
+          <SatisfactionButton onPress={() => handleSatisfactionClick(0)} name="만족" style={{ backgroundColor:'#D0F0C0', marginRight: 8 }} selected={satisfaction === 0} />
+          <SatisfactionButton onPress={() => handleSatisfactionClick(1)} name="보통" style={{ backgroundColor:'#FFDB58', marginRight: 8 }} selected={satisfaction === 1} />
+          <SatisfactionButton onPress={() => handleSatisfactionClick(2)} name="불만족" style={{ backgroundColor:'#FC6C85' }} selected={satisfaction === 2} />
+        </SatisfactionContainer>
+        <View style = {styles.margin}>
+        <SaveButton onPress={handleSaveClick} name="저 장"/>
         </View>
       </View>
+
     </TouchableWithoutFeedback>
     );
 };
@@ -279,7 +273,7 @@ const WearWriting = ({route, navigation}) => {
 const SatisfactionContainer = styled.View`
   justify-content: center;
   flex-direction: row;
-  margin-top: ${ScreenHeight * 0.04}px;
+  margin-top: ${ScreenHeight * 0.03}px;
 `;
 
 
@@ -310,12 +304,10 @@ const styles = StyleSheet.create({
       width: ScreenWidth * 0.9,
       alignSelf: "center",
       height: ScreenHeight * 0.045,
-      justifyContent: "center",
-      marginBottom: ScreenHeight * 0.04,
-      
+      justifyContent: "center",      
     },
     saveButtonText:{
-      fontSize: 30,
+      fontSize: 20,
       textAlign: "center",
     },
     satisfactionButton:{
@@ -329,8 +321,9 @@ const styles = StyleSheet.create({
         fontSize: 17,
     },
     selectedButton: {
-        borderWidth: 2, // 테두리 두께
-        borderColor: 'black', // 테두리 색상
+        //테두리
+        borderWidth: 2, 
+        borderColor: 'black', 
     },
     
     lightText:{
@@ -342,7 +335,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
     margin:{
-        marginTop:ScreenHeight * 0.02,
+        marginTop:ScreenHeight * 0.03,
     },
     input:{
         backgroundColor: "lightgray",
@@ -350,7 +343,6 @@ const styles = StyleSheet.create({
         height:ScreenHeight *0.1,
         borderRadius:7,
         alignSelf: 'center',
-        marginTop: ScreenHeight*0.03,
         fontSize: 20,
     },
 });
