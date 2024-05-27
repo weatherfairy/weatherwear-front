@@ -4,6 +4,7 @@ import axios from 'axios';
 import { TouchableWithoutFeedback,Alert, Keyboard, View,Text, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get('window');
 
@@ -227,46 +228,48 @@ const WearWriting = ({route, navigation}) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{flex: 1}}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20, width: '100%' }}>
-            {photos.map((photo, index) => (
-              <AddPicture key={index} onPress={() => selectPhotoTapped(index)}>
-                {photo ? (<Image source={{ uri: photo }} style={{ width: ScreenWidth * 0.3, height: ScreenWidth * 0.3, borderRadius: 10 }} />) : (<Text style={styles.centered}>+</Text>)}
-              </AddPicture>
-            ))}
+    <KeyboardAwareScrollView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={{flex: 1}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20, width: '100%' }}>
+              {photos.map((photo, index) => (
+                <AddPicture key={index} onPress={() => selectPhotoTapped(index)}>
+                  {photo ? (<Image source={{ uri: photo }} style={{ width: ScreenWidth * 0.3, height: ScreenWidth * 0.3, borderRadius: 10 }} />) : (<Text style={styles.centered}>+</Text>)}
+                </AddPicture>
+              ))}
+          </View>
+          <TodayInfoContainer>
+            <Text style={styles.lightText}>{date}</Text>
+            <Text style={[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
+          </TodayInfoContainer>
+          <ClothesText
+            maxLength={40}
+            textAlignVertical='top'
+            multiline={true}
+            onChangeText={setClothesText}
+            value={clothesText}
+            placeholder="ex) 코트, 청바지, 니트" 
+          />
+          <ReviewText
+            maxLength={50}
+            textAlignVertical='top'
+            multiline={true}
+            onChangeText={setReview}
+            value={review}
+            placeholder="ex) 코트 입어서 추웠던 날" 
+          />
+          <SatisfactionContainer>
+            <SatisfactionButton onPress={() => handleSatisfactionClick(0)} name="만족" style={{ backgroundColor:'#D0F0C0', marginRight: 8 }} selected={satisfaction === 0} />
+            <SatisfactionButton onPress={() => handleSatisfactionClick(1)} name="보통" style={{ backgroundColor:'#FFDB58', marginRight: 8 }} selected={satisfaction === 1} />
+            <SatisfactionButton onPress={() => handleSatisfactionClick(2)} name="불만족" style={{ backgroundColor:'#FC6C85' }} selected={satisfaction === 2} />
+          </SatisfactionContainer>
+          <View style = {styles.margin}>
+          <SaveButton onPress={handleSaveClick} name="저 장"/>
+          </View>
         </View>
-        <TodayInfoContainer>
-          <Text style={styles.lightText}>{date}</Text>
-          <Text style={[styles.boldText, styles.margin]}>{minTemp}°C~{maxTemp}°C</Text>
-        </TodayInfoContainer>
-        <ClothesText
-          maxLength={40}
-          textAlignVertical='top'
-          multiline={true}
-          onChangeText={setClothesText}
-          value={clothesText}
-          placeholder="ex) 코트, 청바지, 니트" 
-        />
-        <ReviewText
-          maxLength={50}
-          textAlignVertical='top'
-          multiline={true}
-          onChangeText={setReview}
-          value={review}
-          placeholder="ex) 코트 입어서 추웠던 날" 
-        />
-        <SatisfactionContainer>
-          <SatisfactionButton onPress={() => handleSatisfactionClick(0)} name="만족" style={{ backgroundColor:'#D0F0C0', marginRight: 8 }} selected={satisfaction === 0} />
-          <SatisfactionButton onPress={() => handleSatisfactionClick(1)} name="보통" style={{ backgroundColor:'#FFDB58', marginRight: 8 }} selected={satisfaction === 1} />
-          <SatisfactionButton onPress={() => handleSatisfactionClick(2)} name="불만족" style={{ backgroundColor:'#FC6C85' }} selected={satisfaction === 2} />
-        </SatisfactionContainer>
-        <View style = {styles.margin}>
-        <SaveButton onPress={handleSaveClick} name="저 장"/>
-        </View>
-      </View>
 
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </KeyboardAwareScrollView>
     );
 };
 
